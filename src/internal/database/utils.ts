@@ -18,7 +18,7 @@ interface CommandUsageEntry {
 export async function newCommandUsageEntry({ commandName, userId, guildId, status }: CommandUsageEntry) {
     await db.insert(commandUsage).values({
         command: commandName,
-        userId: userId,
+        discordId: userId,
         guildId: guildId,
         status: status,
         timestamp: new Date(),

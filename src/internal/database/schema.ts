@@ -26,20 +26,14 @@ export const users = pgTable(
 
 export const commandUsageStatus = pgEnum("command_usage_status", ["success", "denied", "error"]);
 
-export const commandUsage = pgTable(
-    "command_usage",
-    {
-        id: cuid2("id").defaultRandom().primaryKey(),
-        userId: varchar("userId").notNull(),
-        guildId: varchar("guildId").notNull(),
-        command: varchar("command").notNull(),
-        timestamp: timestamp("timestamp").notNull(),
-        status: commandUsageStatus("status").notNull(),
-    },
-    (commandUsage) => ({
-        userIdCommandUidx: uniqueIndex("command_usage_user_id_command_uidx").on(
-            commandUsage.userId,
-            commandUsage.command,
-        ),
-    }),
-);
+export const commandUsage = pgTable("command_usage", {
+    id: cuid2("id").defaultRandom().primaryKey(),
+    /**
+     * The Discord user ID of the user who used the command.
+     */
+    discordId: varchar("userId").notNull(),
+    guildId: varchar("guildId").notNull(),
+    command: varchar("command").notNull(),
+    timestamp: timestamp("timestamp").notNull(),
+    status: commandUsageStatus("status").notNull(),
+});
