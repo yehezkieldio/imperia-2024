@@ -12,8 +12,6 @@
 
 Imperia is a multipurpose Discord bot with an extensive feature set that is seperated into various modules. Planned scope of Imperia is still in it's early stages. It includes performing tasks such as server administration, effortless moderation with automated systems, multilingual, various entertainment options, information gathering, economy system, etc.
 
-Imperia is of Latin origin; Typically feminine, and comes from the word Impĕro which means command, power, or imperial.
-
 ## License
 
 Imperia is licensed under the [MIT License](LICENSE). Please refer to the license for more information.
