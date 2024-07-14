@@ -21,19 +21,21 @@ export class UserAgreementHandler extends InteractionHandler {
     }
 
     public parse(interaction: ButtonInteraction) {
-        if (interaction.customId.startsWith(USER_AGREEMENT_ID)) {
-            const [_, userId, status] = interaction.customId.split("-");
-            const currentStatus = status as UserAgreementStatus;
+        this.container.logger.debug("UserAgreementHandler: Button Interaction", interaction);
 
-            if (currentStatus === UserAgreementStatus.CONFIRMED) {
-                return this.some<ParsedData>({ userId, status: UserAgreementStatus.CONFIRMED });
-            }
-
-            if (currentStatus === UserAgreementStatus.CANCELLED) {
-                return this.some<ParsedData>({ userId, status: UserAgreementStatus.CANCELLED });
-            }
-
+        if (!interaction.customId.startsWith(USER_AGREEMENT_ID)) {
             return this.none();
+        }
+
+        const [_, userId, status] = interaction.customId.split("-");
+        const currentStatus = status as UserAgreementStatus;
+
+        if (currentStatus === UserAgreementStatus.CONFIRMED) {
+            return this.some<ParsedData>({ userId, status: UserAgreementStatus.CONFIRMED });
+        }
+
+        if (currentStatus === UserAgreementStatus.CANCELLED) {
+            return this.some<ParsedData>({ userId, status: UserAgreementStatus.CANCELLED });
         }
 
         return this.none();
@@ -46,14 +48,13 @@ export class UserAgreementHandler extends InteractionHandler {
             components: [],
         });
 
-        if (data.status === UserAgreementStatus.CONFIRMED) {
-            return interaction.reply({
+        if (data.status === UserAgreementStatus.CANCELLED) {
+            return interaction.editReply({
                 embeds: [
                     new ImperiaEmbedBuilder().setDescription(
                         "You have declined Imperia's user agreement, and have not been registered. Some features may not be available to you, should you change your mind, you can re-run the register command.",
                     ),
                 ],
-                ephemeral: true,
             });
         }
 
