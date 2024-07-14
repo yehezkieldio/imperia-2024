@@ -26,7 +26,7 @@ export class PingCommand extends ImperiaCommand {
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
         const msg = await interaction.reply({
             content: "Performing a ping request...",
-            ephemeral: true,
+            ephemeral: await this.isEphemeralResponse(interaction.user.id),
             fetchReply: true,
         });
 

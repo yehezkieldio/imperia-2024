@@ -1,5 +1,5 @@
 import { db } from "@/internal/database/connection";
-import { commandUsage, commandUsageStatus as commandUsageStatusEnum } from "@/internal/database/schema";
+import { commandUsage, commandUsageStatus as commandUsageStatusEnum, users } from "@/internal/database/schema";
 import { z } from "zod";
 
 /**
@@ -23,4 +23,9 @@ export async function newCommandUsageEntry({ commandName, userId, guildId, statu
         status: status,
         timestamp: new Date(),
     });
+}
+
+export async function checkIfUserExists(userId: string) {
+    const result = await db.select().from(users);
+    return result.length > 0;
 }
