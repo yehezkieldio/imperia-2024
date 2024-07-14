@@ -24,3 +24,10 @@ export class ImperiaClient extends SapphireClient {
         }
     }
 }
+
+declare module "@sapphire/framework" {
+    interface Preconditions {
+        RegisteredUserOnly: never;
+        DeveloperOnly: never;
+    }
+}

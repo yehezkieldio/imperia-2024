@@ -21,8 +21,6 @@ export class UserAgreementHandler extends InteractionHandler {
     }
 
     public parse(interaction: ButtonInteraction) {
-        this.container.logger.debug("UserAgreementHandler: Button Interaction", interaction);
-
         if (!interaction.customId.startsWith(USER_AGREEMENT_ID)) {
             return this.none();
         }

@@ -19,7 +19,7 @@ export abstract class ImperiaCommand extends Subcommand {
      *
      * We do this here instead of a pre-condition because we want to return something rather than true/false checks.
      */
-    public async isEphemeralResponse(userId: string): Promise<boolean> {
+    public static async isEphemeralResponse(userId: string): Promise<boolean> {
         if (await checkIfUserExists(userId)) {
             const [result] = await db.select().from(users);
 

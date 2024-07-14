@@ -9,7 +9,7 @@ export class RegisteredUserOnlyPrecondition extends Precondition {
     public constructor(context: Precondition.LoaderContext, options: Precondition.Options) {
         super(context, {
             ...options,
-            name: ImperiaIdentifiers.DeveloperOnly,
+            name: ImperiaIdentifiers.RegisteredUserOnly,
         });
     }
 
@@ -22,11 +22,5 @@ export class RegisteredUserOnlyPrecondition extends Precondition {
                   identifier: ImperiaIdentifiers.RegisteredUserOnly,
               })
             : this.ok();
-    }
-}
-
-declare module "@sapphire/framework" {
-    interface Preconditions {
-        RegisteredUserOnly: never;
     }
 }

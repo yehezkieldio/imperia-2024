@@ -20,9 +20,3 @@ export class DeveloperOnlyPrecondition extends Precondition {
               });
     }
 }
-
-declare module "@sapphire/framework" {
-    interface Preconditions {
-        DeveloperOnly: never;
-    }
-}

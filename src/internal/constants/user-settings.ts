@@ -4,3 +4,7 @@ export const userOptions = [
         value: "responsePrivacy",
     },
 ];
+
+export const userOptionsObject = {
+    responsePrivacy: "responsePrivacy",
+};
