@@ -3,9 +3,8 @@
 <div align="center">
 <img src=".github/assets/Imperia.png" align="center" width="180px" />
 
-
 <h3>Imperia</h3>
-<p>All-in-one Discord bot featuring a plethora of tools for moderation, entertainment, productivity, and community engagement. <p>
+<p>All-in-one Discord bot solution for various tasks.</p>
 </div>
 
 ## Overview
