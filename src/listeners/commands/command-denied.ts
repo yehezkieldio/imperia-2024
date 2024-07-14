@@ -17,17 +17,35 @@ export class ChatInputCommandDeniedListener extends Listener {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isErrorEmbed();
 
         switch (error.identifier) {
+            // Catch for when the command is disabled
+            case ImperiaIdentifiers.CommandDisabled:
+                embed.setDescription("This command has been disabled.");
+                return data.interaction.reply({ embeds: [embed], ephemeral: true });
+
+            // Catch for when the command is guild only.
+            // TODO: Current identifier is deprecated, update to the new recommended identifier.
+            case ImperiaIdentifiers.PreconditionGuildOnly:
+                embed.setDescription("This command can only be used in a server.");
+                return data.interaction.reply({ embeds: [embed], ephemeral: true });
+
+            // Catch for when the user does not have the required cooldown
             case ImperiaIdentifiers.PreconditionCooldown:
                 embed.setDescription("Please wait before using this command again.");
                 return data.interaction.reply({ embeds: [embed], ephemeral: true });
+
+            // Catch for when the user does not have the required permissions
             case ImperiaIdentifiers.PreconditionUserPermissions ||
                 ImperiaIdentifiers.PreconditionUserPermissionsNoPermissions:
                 embed.setDescription("You do not have the required permissions to use this command.");
                 return data.interaction.reply({ embeds: [embed], ephemeral: true });
+
+            // Catch for when the bot does not have the required permissions
             case ImperiaIdentifiers.PreconditionClientPermissions ||
                 ImperiaIdentifiers.PreconditionClientPermissionsNoPermissions:
                 embed.setDescription("I do not have the required permissions to use this command.");
                 return data.interaction.reply({ embeds: [embed], ephemeral: true });
+
+            // Catch all for any other errors
             default:
                 this.container.logger.error(error);
                 embed.setDescription(
