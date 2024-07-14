@@ -1,5 +1,5 @@
 import { cuid2 } from "drizzle-cuid2/postgres";
-import { boolean, pgTable, pgTableCreator, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, pgTableCreator, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM.
@@ -21,5 +21,25 @@ export const users = pgTable(
     },
     (user) => ({
         usernameUidx: uniqueIndex("user_username_uidx").on(user.discordId),
+    }),
+);
+
+export const commandUsageStatus = pgEnum("command_usage_status", ["success", "denied", "error"]);
+
+export const commandUsage = pgTable(
+    "command_usage",
+    {
+        id: cuid2("id").defaultRandom().primaryKey(),
+        userId: varchar("userId").notNull(),
+        guildId: varchar("guildId").notNull(),
+        command: varchar("command").notNull(),
+        timestamp: timestamp("timestamp").notNull(),
+        status: commandUsageStatus("status").notNull(),
+    },
+    (commandUsage) => ({
+        userIdCommandUidx: uniqueIndex("command_usage_user_id_command_uidx").on(
+            commandUsage.userId,
+            commandUsage.command,
+        ),
     }),
 );

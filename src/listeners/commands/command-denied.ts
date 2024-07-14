@@ -1,3 +1,4 @@
+import { newCommandUsageEntry } from "@/internal/database/utils";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaEvents } from "@/internal/types/events";
 import { ImperiaIdentifiers } from "@/internal/types/identifiers";
@@ -15,6 +16,13 @@ export class ChatInputCommandDeniedListener extends Listener {
 
     public async run(error: UserError, data: ChatInputCommandDeniedPayload): Promise<InteractionResponse<boolean>> {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isErrorEmbed();
+
+        await newCommandUsageEntry({
+            commandName: data.interaction.commandName,
+            userId: data.interaction.user.id,
+            guildId: data.interaction.guildId ?? "dm",
+            status: "denied",
+        });
 
         switch (error.identifier) {
             // Catch for when the command is disabled
