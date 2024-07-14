@@ -1,6 +1,6 @@
 import { newCommandUsageEntry } from "@/internal/database/utils";
 import { ImperiaEvents } from "@/internal/types/events";
-import { type ChatInputCommandSuccessPayload, Listener, type UserError } from "@sapphire/framework";
+import { type ChatInputCommandSuccessPayload, Listener } from "@sapphire/framework";
 
 export class ChatInputCommandSuccessListener extends Listener {
     public constructor(context: Listener.LoaderContext, options: Listener.Options) {
@@ -11,11 +11,11 @@ export class ChatInputCommandSuccessListener extends Listener {
         });
     }
 
-    public async run(error: UserError, data: ChatInputCommandSuccessPayload) {
+    public async run(payload: ChatInputCommandSuccessPayload) {
         await newCommandUsageEntry({
-            commandName: data.interaction.commandName,
-            userId: data.interaction.user.id,
-            guildId: data.interaction.guildId ?? "dm",
+            commandName: payload.interaction.commandName,
+            userId: payload.interaction.user.id,
+            guildId: payload.interaction.guildId ?? "dm",
             status: "success",
         });
     }
