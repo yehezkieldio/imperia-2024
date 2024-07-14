@@ -42,6 +42,7 @@ export class AboutCommand extends ImperiaCommand {
         const user: User = this.container.client.user as User;
 
         return interaction.reply({
+            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
             embeds: [
                 new ImperiaEmbedBuilder()
                     .setAuthor({
