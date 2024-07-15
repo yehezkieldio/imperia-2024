@@ -37,6 +37,7 @@
         "@sapphire/plugin-subcommands": "^6.0.3",
         "@sapphire/utilities": "^3.16.2",
         "@t3-oss/env-core": "^0.10.1",
+        "dayjs": "^1.11.11",
         "discord.js": "^14.15.3",
         "drizzle-cuid2": "^1.0.5",
         "drizzle-orm": "^0.32.0",

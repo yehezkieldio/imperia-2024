@@ -4,6 +4,7 @@ enum Identifiers {
     RegisteredUserOnly = "RegisteredUserOnly",
     DeveloperOnly = "DeveloperOnly",
     SearchResultsNotFound = "SearchResultsNotFound",
+    CommandServiceError = "CommandServiceError",
 }
 
 export const ImperiaIdentifiers = {
