@@ -32,7 +32,13 @@ export class RandomWaifuCommand extends ImperiaCommand {
     }
 
     public async getWaifu() {
-        const response = await fetch("https://api.waifu.pics/sfw/waifu");
+        const response = await fetch("https://api.waifu.pics/sfw/waifu", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "User-Agent": "Imperia (https://github.com/i9ntheory/imperia)",
+            },
+        });
         const data = await response.json();
         return data.url;
     }

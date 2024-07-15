@@ -57,6 +57,7 @@ export class ChunkNorrisCommand extends ImperiaCommand {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "User-Agent": "Imperia (https://github.com/i9ntheory/imperia)",
                     Accept: "application/json",
                 },
             }).then((response) => response.json());

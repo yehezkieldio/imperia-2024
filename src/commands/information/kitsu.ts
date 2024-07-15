@@ -86,7 +86,12 @@ export class AnilistCommand extends ImperiaCommand {
         const search = encodeURIComponent(title);
 
         try {
-            const response = await fetch(`${url}/${type}?filter[text]=${search}`);
+            const response = await fetch(`${url}/${type}?filter[text]=${search}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "User-Agent": "Imperia (https://github.com/i9ntheory/imperia)",
+                },
+            });
             const data = await response.json();
 
             if (data.data.length === 0) {

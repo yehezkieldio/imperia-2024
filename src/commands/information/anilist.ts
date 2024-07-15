@@ -110,6 +110,7 @@ export class AnilistCommand extends ImperiaCommand {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "User-Agent": "Imperia (https://github.com/i9ntheory/imperia)",
                     Accept: "application/json",
                 },
                 body: JSON.stringify({ query, variables }),

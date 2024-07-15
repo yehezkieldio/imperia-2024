@@ -108,6 +108,7 @@ export class GithubCommand extends ImperiaCommand {
                 method: "GET",
                 headers: {
                     Accept: "application/vnd.github+json",
+                    "User-Agent": "Imperia (https://github.com/i9ntheory/imperia)",
                 },
             }).then((response) => response.json());
 
