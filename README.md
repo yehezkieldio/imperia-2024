@@ -9,7 +9,7 @@
 
 ## Overview
 
-Imperia is a multipurpose Discord bot with an extensive feature set that is seperated into various modules. Planned scope of Imperia is still in it's early stages. It includes performing tasks such as server administration, effortless moderation with automated systems, multilingual, various entertainment options, information gathering, economy system, etc.
+Imperia is a multipurpose Discord bot with an extensive feature set that is seperated into various modules. Planned scope of Imperia is still in it's early stages. It includes performing tasks such as server administration, effortless moderation with automated systems, various entertainment options, information gathering, economy system, etc.
 
 ## License
 
