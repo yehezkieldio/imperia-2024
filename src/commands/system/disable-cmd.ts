@@ -31,7 +31,7 @@ export class DisableCommandCommand extends ImperiaCommand {
             );
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
+            behaviorWhenNotIdentical: RegisterBehavior.VerboseOverwrite,
             guildIds: DEVELOPMENT_SERVERS,
             idHints: [],
         });
