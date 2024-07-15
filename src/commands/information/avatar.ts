@@ -60,6 +60,9 @@ export class AvatarCommand extends ImperiaCommand {
                           .setImage(userAvatar),
                   ];
 
-        return interaction.reply({ embeds: avatars });
+        return interaction.reply({
+            embeds: avatars,
+            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+        });
     }
 }

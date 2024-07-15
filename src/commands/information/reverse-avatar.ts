@@ -63,6 +63,7 @@ export class ReverseAvatarCommand extends ImperiaCommand {
                     ${hyperlink("Google", google)} | ${hyperlink("Bing", bing)} | ${hyperlink("TinEye", tineye)}`,
                 ),
             ],
+            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
         });
     }
 }

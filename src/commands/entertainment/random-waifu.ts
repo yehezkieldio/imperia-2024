@@ -27,6 +27,7 @@ export class RandomWaifuCommand extends ImperiaCommand {
             embeds: [
                 new ImperiaEmbedBuilder().setDescription(`~Here's your waifu! :3`).setImage(await this.getWaifu()),
             ],
+            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
         });
     }
 

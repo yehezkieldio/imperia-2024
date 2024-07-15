@@ -39,6 +39,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
         if (!serverAvatar) {
             return interaction.reply({
                 embeds: [new ImperiaEmbedBuilder().setDescription("This server does not have an avatar.")],
+                ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
             });
         }
 
@@ -48,6 +49,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
                     .setAuthor({ name: `${server.name}'s avatar`, iconURL: serverAvatar })
                     .setImage(serverAvatar),
             ],
+            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
         });
     }
 }
