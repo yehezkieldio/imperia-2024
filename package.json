@@ -36,6 +36,7 @@
         "@sapphire/plugin-logger": "^4.0.2",
         "@sapphire/plugin-subcommands": "^6.0.3",
         "@sapphire/utilities": "^3.16.2",
+        "@silvia-odwyer/photon-node": "^0.3.3",
         "@t3-oss/env-core": "^0.10.1",
         "dayjs": "^1.11.11",
         "discord.js": "^14.15.3",
