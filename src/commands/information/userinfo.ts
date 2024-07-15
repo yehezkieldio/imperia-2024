@@ -14,7 +14,6 @@ import dayjs from "dayjs";
 export class UserInformationCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
-            name: "userinfo",
             description: "View your information or the information of another user.",
             requiredClientPermissions: ["SendMessages"],
             ...options,

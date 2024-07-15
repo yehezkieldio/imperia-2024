@@ -12,9 +12,9 @@ import dayjs from "dayjs";
 export class ServerInformationCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
-            name: "serverinfo",
             description: "View information of the server where this command is executed.",
             requiredClientPermissions: ["SendMessages"],
+            preconditions: ["GuildOnly"],
             ...options,
         });
     }

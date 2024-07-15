@@ -7,7 +7,6 @@ import { type GuildMember, SlashCommandBuilder } from "discord.js";
 export class AvatarCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
-            name: "avatar",
             description: "View the avatar of a user.",
             requiredClientPermissions: ["SendMessages"],
             ...options,

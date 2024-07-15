@@ -7,7 +7,6 @@ import { type GuildMember, SlashCommandBuilder, bold, hyperlink } from "discord.
 export class ReverseAvatarCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
-            name: "reverse-avatar",
             description: "Reverse search your avatar or the avatar of another user.",
             requiredClientPermissions: ["SendMessages"],
             ...options,
