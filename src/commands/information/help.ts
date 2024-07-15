@@ -51,7 +51,7 @@ export class HelpCommand extends ImperiaCommand {
                     iconURL: (this.container.client.user as User).displayAvatarURL(),
                 })
                 .setDescription(
-                    `Here, you can find a list of available commands and their descriptions. Please use the select menu below to navigate through the available command categories.\n\nInterested about Imperia? Use ${getCommandMention(
+                    `Here, you can find a short list of available commands and their descriptions. Please use the select menu below to navigate through the available command categories.\n\nIf you wish to view all commands, please select the ${getCommandMention("commands")} command.\n\nInterested about Imperia? Use ${getCommandMention(
                         "about",
                     )} to find out more!`,
                 )
@@ -72,7 +72,11 @@ export class HelpCommand extends ImperiaCommand {
             const categoryCommands: Collection<string, Command> = commands.filter(
                 (cmd: Command): boolean => cmd.category === category,
             );
-            const fields: Command[] = categoryCommands.map((cmd: Command) => cmd);
+            let fields: Command[] = categoryCommands.map((cmd: Command) => cmd);
+
+            if (fields.length > 9) {
+                fields = fields.slice(0, 9);
+            }
 
             const commandFields: CommandField[] = fields.map((cmd: Command) => {
                 const command = getCommandMention(cmd.name);
