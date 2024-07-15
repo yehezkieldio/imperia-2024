@@ -2,7 +2,7 @@ import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaIdentifiers } from "@/internal/types/identifiers";
 import { RegisterBehavior, UserError } from "@sapphire/framework";
 import * as phonton from "@silvia-odwyer/photon-node";
-import { AttachmentBuilder, type GuildMember, SlashCommandBuilder } from "discord.js";
+import { AttachmentBuilder, SlashCommandBuilder } from "discord.js";
 
 export class GrayscaleAvatarCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -31,6 +31,10 @@ export class GrayscaleAvatarCommand extends ImperiaCommand {
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
+        await interaction.deferReply({
+            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+        });
+
         const user = interaction.options.getUser("user") ?? interaction.user;
 
         if (!interaction.guild) {
@@ -40,11 +44,7 @@ export class GrayscaleAvatarCommand extends ImperiaCommand {
             });
         }
 
-        const member: GuildMember =
-            interaction.guild.members.cache.get(user.id) ?? (await interaction.guild.members.fetch(user.id));
-
         const userAvatar = user.displayAvatarURL({ size: 4096 });
-        const memberAvatar = member.displayAvatarURL({ size: 4096 });
 
         const imageToBase64 = async (url: string) => {
             const response = await fetch(url);
@@ -63,8 +63,7 @@ export class GrayscaleAvatarCommand extends ImperiaCommand {
             name: "grayscale.png",
         });
 
-        return interaction.reply({
-            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+        return interaction.editReply({
             files: [avatar],
         });
     }
