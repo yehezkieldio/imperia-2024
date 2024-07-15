@@ -15,19 +15,11 @@ export class DisableCommandCommand extends ImperiaCommand {
     }
 
     public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
-        const commands = this.container.stores.get("commands");
-
         const command = new SlashCommandBuilder()
             .setName(this.name)
             .setDescription(this.description)
             .addStringOption((option) =>
-                option
-                    .setName("command")
-                    .setDescription("The command name to disable.")
-                    .setRequired(true)
-                    .addChoices(
-                        ...commands.map((command) => ({ name: command.name, value: `${command.name.toLowerCase()}` })),
-                    ),
+                option.setName("command").setDescription("The command name to disable.").setRequired(true),
             );
 
         void registry.registerChatInputCommand(command, {
