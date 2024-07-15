@@ -1,4 +1,4 @@
-interface GitHubRepositoriesResult {
+export interface GitHubRepositoriesResult {
     total_count: number;
     incomplete_results: boolean;
     items: GitHubRepositoryQueryResult[];
