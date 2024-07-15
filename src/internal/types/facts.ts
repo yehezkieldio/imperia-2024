@@ -7,3 +7,7 @@ export interface RandomDogFactQueryResult {
     facts: string[];
     success: boolean;
 }
+
+export interface RandomFactQueryResult {
+    fact: string;
+}
