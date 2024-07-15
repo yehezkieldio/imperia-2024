@@ -39,15 +39,19 @@ export class ServerInformationCommand extends ImperiaCommand {
             });
         }
 
+        const response = new ImperiaEmbedBuilder().setFields([...fieldResponses]);
+
+        if (interaction.guild.iconURL({ size: 4096 }) === null) {
+            response.setAuthor({ name: interaction.guild.name });
+        } else {
+            response.setAuthor({
+                name: interaction.guild.name,
+                iconURL: interaction.guild.iconURL({ size: 4096 }) ?? "",
+            });
+        }
+
         return interaction.reply({
-            embeds: [
-                new ImperiaEmbedBuilder()
-                    .setAuthor({
-                        name: interaction.guild.name,
-                        iconURL: interaction.guild.iconURL({ size: 4096 }) ?? "",
-                    })
-                    .setFields([...fieldResponses]),
-            ],
+            embeds: [response],
             ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
         });
     }
