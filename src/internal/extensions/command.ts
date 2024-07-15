@@ -18,6 +18,9 @@ export abstract class ImperiaCommand extends Subcommand {
      * If it doesn't, we return false.
      *
      * We do this here instead of a pre-condition because we want to return something rather than true/false checks.
+     *
+     * @param userId The user ID to check for.
+     * @returns Whether the user has the responsePrivacy flag set to true.
      */
     public static async isEphemeralResponse(userId: string): Promise<boolean> {
         if (await checkIfUserExists(userId)) {
