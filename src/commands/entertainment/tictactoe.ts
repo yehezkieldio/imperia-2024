@@ -44,15 +44,7 @@ export class TicTacToeCommand extends ImperiaCommand {
             });
         }
 
-        if (interaction.guild?.members.cache.get(opponent.id)?.presence?.status === "offline") {
-            return interaction.reply({
-                content: "The user you are trying to play against is offline!",
-                ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
-            });
-        }
-
         await interaction.deferReply();
-
         await interaction.editReply({
             content: "Please wait while the game is being set up...",
         });
@@ -103,6 +95,7 @@ export class TicTacToeCommand extends ImperiaCommand {
         );
 
         return interaction.editReply({
+            content: "The game has been set up!",
             components: [boardButtonsRowOne, boardButtonsRowTwo, boardButtonsRowThree],
         });
     }

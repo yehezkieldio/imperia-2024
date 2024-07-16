@@ -8,7 +8,7 @@ import {
     ButtonStyle,
     type MessageActionRowComponentBuilder,
 } from "discord.js";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 interface ParsedData {
     ordo: string;
@@ -211,7 +211,17 @@ export class TicTacToeGameHandler extends InteractionHandler {
     }
 
     public static async getGameState(guildId: string, userId: string, opponentId: string) {
-        const [fetchGameState] = await db.select().from(ticTacToeGames).where(eq(ticTacToeGames.status, "IN_PROGRESS"));
+        const [fetchGameState] = await db
+            .select()
+            .from(ticTacToeGames)
+            .where(
+                and(
+                    eq(ticTacToeGames.status, "IN_PROGRESS"),
+                    eq(ticTacToeGames.guildId, guildId),
+                    eq(ticTacToeGames.userId, userId),
+                    eq(ticTacToeGames.opponentId, opponentId),
+                ),
+            );
 
         if (!fetchGameState) {
             const [createGameState] = await db
