@@ -1,6 +1,6 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { RegisterBehavior } from "@sapphire/framework";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, type User } from "discord.js";
 
 export class TicTacToeCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -28,13 +28,34 @@ export class TicTacToeCommand extends ImperiaCommand {
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
+        const opponent: User = interaction.options.getUser("opponent", true);
+
+        if (opponent.bot) {
+            return interaction.reply({
+                content: "You cannot play against a bot!",
+                ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+            });
+        }
+
+        if (opponent.id === interaction.user.id) {
+            return interaction.reply({
+                content: "You cannot play against yourself!",
+                ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+            });
+        }
+
+        if (interaction.guild?.members.cache.get(opponent.id)?.presence?.status === "offline") {
+            return interaction.reply({
+                content: "The user you are trying to play against is offline!",
+                ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+            });
+        }
+
         await interaction.deferReply();
 
-        interaction.editReply({
+        await interaction.editReply({
             content: "Please wait while the game is being set up...",
         });
-
-        const opponent = interaction.options.getUser("opponent", true);
 
         const boardButtonsRowOne = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
@@ -82,7 +103,6 @@ export class TicTacToeCommand extends ImperiaCommand {
         );
 
         return interaction.editReply({
-            content: "test",
             components: [boardButtonsRowOne, boardButtonsRowTwo, boardButtonsRowThree],
         });
     }

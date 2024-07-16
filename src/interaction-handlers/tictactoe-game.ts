@@ -29,7 +29,7 @@ export class TicTacToeGameHandler extends InteractionHandler {
         });
     }
 
-    public boardMatrix: string[][] = [
+    public static boardMatrix: string[][] = [
         ["1", "2", "3"],
         ["4", "5", "6"],
         ["7", "8", "9"],
@@ -48,7 +48,7 @@ export class TicTacToeGameHandler extends InteractionHandler {
             return this.none();
         }
 
-        const gameState = await this.getGameState(interaction.guildId as string, userId, opponentId);
+        const gameState = await TicTacToeGameHandler.getGameState(interaction.guildId as string, userId, opponentId);
         const gameBoard: string[][] = JSON.parse(gameState.state);
 
         if (gameState.turn === "X" && interaction.user.id === opponentId) {
@@ -210,7 +210,7 @@ export class TicTacToeGameHandler extends InteractionHandler {
         return false;
     }
 
-    private async getGameState(guildId: string, userId: string, opponentId: string) {
+    public static async getGameState(guildId: string, userId: string, opponentId: string) {
         const [fetchGameState] = await db.select().from(ticTacToeGames).where(eq(ticTacToeGames.status, "IN_PROGRESS"));
 
         if (!fetchGameState) {
@@ -220,7 +220,7 @@ export class TicTacToeGameHandler extends InteractionHandler {
                     guildId: guildId,
                     userId: userId,
                     opponentId: opponentId,
-                    state: JSON.stringify(this.boardMatrix),
+                    state: JSON.stringify(TicTacToeGameHandler.boardMatrix),
                     turn: "X",
                     status: "IN_PROGRESS",
                 })
