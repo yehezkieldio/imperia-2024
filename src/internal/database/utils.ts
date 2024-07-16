@@ -2,11 +2,11 @@ import { db } from "@/internal/database/connection";
 import { commandUsage, commandUsageStatus as commandUsageStatusEnum, users } from "@/internal/database/schema";
 import { z } from "zod";
 
-/**
- * TODO: Find a better way to handle this.
- */
 const statusSchema = z.enum(commandUsageStatusEnum.enumValues);
 export type CommandUsageStatus = z.infer<typeof statusSchema>;
+
+const gameStatusSchema = z.enum(["IN_PROGRESS", "WIN", "DRAW"]);
+export type GameStatus = z.infer<typeof gameStatusSchema>;
 
 interface CommandUsageEntry {
     commandName: string;
