@@ -43,7 +43,7 @@ export class LastCommandUsageCommand extends ImperiaCommand {
                 const currentTime = dayjs();
                 const difference = currentTime.diff(entryTime, "minute");
 
-                return difference <= 5;
+                return difference <= 15;
             });
 
             if (filteredCommands.length === 0) {
@@ -74,7 +74,7 @@ export class LastCommandUsageCommand extends ImperiaCommand {
             const currentTime = dayjs();
             const difference = currentTime.diff(entryTime, "minute");
 
-            return difference <= 5;
+            return difference <= 15;
         });
 
         if (filteredCommands.length === 0) {
