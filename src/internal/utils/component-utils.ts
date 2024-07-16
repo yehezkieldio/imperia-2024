@@ -23,6 +23,13 @@ export function updateComponent<T extends ButtonBuilder>(
     return actionRows;
 }
 
+export function disableComponent(
+    interaction: MessageComponentInteraction,
+    customId = interaction.customId,
+): ActionRowBuilder<MessageActionRowComponentBuilder>[] {
+    return updateComponent(interaction, (button) => button.setDisabled(true), customId);
+}
+
 export function findComponent(
     interaction: MessageComponentInteraction,
     customId: string,

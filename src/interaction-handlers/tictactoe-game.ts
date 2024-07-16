@@ -11,11 +11,13 @@ import {
 import { eq } from "drizzle-orm";
 
 interface ParsedData {
-    gameType: string;
-    buttonClicked: string;
+    ordo: string;
     userId: string;
     opponentId: string;
-    win: boolean;
+    victorId: string;
+    gameId: string;
+    boardState: string[][];
+    isWin: boolean;
 }
 
 export class TicTacToeGameHandler extends InteractionHandler {
@@ -35,78 +37,66 @@ export class TicTacToeGameHandler extends InteractionHandler {
 
     public async parse(interaction: ButtonInteraction) {
         if (!interaction.customId.startsWith("tictactoe")) return this.none();
-        const parts = interaction.customId.split("_");
-
-        const gameType = parts[0];
-        const buttonClicked = parts[1];
-        const userId = parts[2];
-        const opponentId = parts[3];
-
-        let gameState: {
-            createdAt: Date;
-            id: string;
-            guildId: string;
-            userId: string;
-            opponentId: string;
-            victorId: string | null;
-            state: string;
-            turn: "X" | "O";
-            status: "IN_PROGRESS" | "WIN" | "DRAW";
-            updatedAt: Date;
-        };
-
-        const [fetchGameState] = await db.select().from(ticTacToeGames).where(eq(ticTacToeGames.status, "IN_PROGRESS"));
-        if (!fetchGameState) {
-            const [createGameState] = await db
-                .insert(ticTacToeGames)
-                .values({
-                    guildId: interaction.guildId as string,
-                    userId: userId,
-                    opponentId: opponentId,
-                    state: JSON.stringify(this.boardMatrix),
-                    turn: "X",
-                    status: "IN_PROGRESS",
-                })
-                .returning();
-
-            gameState = createGameState;
-        }
-
-        gameState = fetchGameState;
+        const [_, ordo, userId, opponentId] = interaction.customId.split("_");
 
         if (interaction.user.id !== userId && interaction.user.id !== opponentId) {
+            await interaction.reply({
+                content: "You are not part of this game!",
+                ephemeral: true,
+            });
+
             return this.none();
         }
 
-        for (let i = 0; i < this.boardMatrix.length; i++) {
-            for (let j = 0; j < this.boardMatrix[i].length; j++) {
-                if (this.boardMatrix[i][j] === buttonClicked) {
-                    this.boardMatrix[i][j] = interaction.user.id === userId ? "X" : "O";
+        const gameState = await this.getGameState(interaction.guildId as string, userId, opponentId);
+        const gameBoard: string[][] = JSON.parse(gameState.state);
+
+        if (gameState.turn === "X" && interaction.user.id === opponentId) {
+            await interaction.reply({
+                content: "It's not your turn!",
+                ephemeral: true,
+            });
+
+            return this.none();
+        }
+
+        if (gameState.turn === "O" && interaction.user.id === userId) {
+            await interaction.reply({
+                content: "It's not your turn!",
+                ephemeral: true,
+            });
+
+            return this.none();
+        }
+
+        for (let i = 0; i < gameBoard.length; i++) {
+            for (let j = 0; j < gameBoard[i].length; j++) {
+                if (gameBoard[i][j] === ordo) {
+                    gameBoard[i][j] = interaction.user.id === userId ? "X" : "O";
                 }
             }
         }
 
-        if (this.checkWin(this.boardMatrix, interaction.user.id === userId ? "X" : "O")) {
-            await db
-                .update(ticTacToeGames)
-                .set({ status: "WIN", victorId: interaction.user.id })
-                .where(eq(ticTacToeGames.id, gameState.id));
-
-            return this.some<ParsedData>({ gameType, buttonClicked, userId, opponentId, win: true });
-        }
-
-        return this.some<ParsedData>({ gameType, buttonClicked, userId, opponentId, win: false });
+        return this.some<ParsedData>({
+            ordo,
+            userId: gameState.userId,
+            opponentId: gameState.opponentId,
+            victorId: "",
+            gameId: gameState.id,
+            boardState: gameBoard,
+            isWin: false,
+        });
     }
 
     public async run(interaction: ButtonInteraction, data?: ParsedData) {
         if (!data) return;
 
-        if (data.win) {
-            this.boardMatrix = [
-                ["1", "2", "3"],
-                ["4", "5", "6"],
-                ["7", "8", "9"],
-            ];
+        if (data.isWin) {
+            await db.update(ticTacToeGames).set({
+                victorId: interaction.user.id,
+                state: JSON.stringify(data.boardState),
+                status: "WIN",
+            });
 
             return interaction.update({
                 content: `Player ${interaction.user.id} wins!`,
@@ -124,40 +114,44 @@ export class TicTacToeGameHandler extends InteractionHandler {
         }
 
         if (interaction.user.id === data.userId) {
-            buttons = updateComponent(interaction, (button) => button.setStyle(ButtonStyle.Primary).setLabel("X"));
+            buttons = updateComponent(interaction, (button) =>
+                button.setStyle(ButtonStyle.Primary).setLabel("X").setDisabled(true),
+            );
         } else {
-            buttons = updateComponent(interaction, (button) => button.setStyle(ButtonStyle.Danger).setLabel("O"));
+            buttons = updateComponent(interaction, (button) =>
+                button.setStyle(ButtonStyle.Danger).setLabel("O").setDisabled(true),
+            );
         }
 
-        await interaction.update({
+        await db.update(ticTacToeGames).set({
+            state: JSON.stringify(data.boardState),
+            turn: interaction.user.id === data.userId ? "O" : "X",
+        });
+
+        return await interaction.update({
             components: buttons,
         });
     }
 
-    private checkWin(board: string[][], player: string) {
-        // horizontal
-        for (let i = 0; i < 3; i++) {
-            if (board[i][0] === player && board[i][1] === player && board[i][2] === player) {
-                return true;
-            }
+    private async getGameState(guildId: string, userId: string, opponentId: string) {
+        const [fetchGameState] = await db.select().from(ticTacToeGames).where(eq(ticTacToeGames.status, "IN_PROGRESS"));
+
+        if (!fetchGameState) {
+            const [createGameState] = await db
+                .insert(ticTacToeGames)
+                .values({
+                    guildId: guildId,
+                    userId: userId,
+                    opponentId: opponentId,
+                    state: JSON.stringify(this.boardMatrix),
+                    turn: "X",
+                    status: "IN_PROGRESS",
+                })
+                .returning();
+
+            return createGameState;
         }
 
-        // vertical
-        for (let i = 0; i < 3; i++) {
-            if (board[0][i] === player && board[1][i] === player && board[2][i] === player) {
-                return true;
-            }
-        }
-
-        // diagonal
-        if (board[0][0] === player && board[1][1] === player && board[2][2] === player) {
-            return true;
-        }
-
-        if (board[0][2] === player && board[1][1] === player && board[2][0] === player) {
-            return true;
-        }
-
-        return false;
+        return fetchGameState;
     }
 }

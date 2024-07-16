@@ -28,9 +28,7 @@ export class TicTacToeCommand extends ImperiaCommand {
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
-        await interaction.deferReply({
-            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
-        });
+        await interaction.deferReply();
 
         interaction.editReply({
             content: "Please wait while the game is being set up...",
