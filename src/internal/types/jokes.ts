@@ -11,6 +11,11 @@ export interface RandomJokesQueryResult {
     lang: string;
 }
 
+export interface RandomYomamaJokesQueryResult {
+    joke: string;
+    category: string;
+}
+
 interface Flags {
     nsfw: boolean;
     religious: boolean;
