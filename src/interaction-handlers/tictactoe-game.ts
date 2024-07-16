@@ -77,11 +77,38 @@ export class TicTacToeGameHandler extends InteractionHandler {
             }
         }
 
+        const isWin = this.computeWin(gameBoard, interaction.user.id === userId ? "X" : "O");
+        const isDraw = gameBoard.every((row) => row.every((cell) => cell === "X" || cell === "O"));
+
+        if (isWin) {
+            return this.some<ParsedData>({
+                ordo,
+                userId: gameState.userId,
+                opponentId: gameState.opponentId,
+                victorId: interaction.user.id,
+                gameId: gameState.id,
+                boardState: gameBoard,
+                isWin: true,
+            });
+        }
+
+        if (isDraw) {
+            return this.some<ParsedData>({
+                ordo,
+                userId: gameState.userId,
+                opponentId: gameState.opponentId,
+                victorId: "",
+                gameId: gameState.id,
+                boardState: gameBoard,
+                isWin: false,
+            });
+        }
+
         return this.some<ParsedData>({
             ordo,
             userId: gameState.userId,
             opponentId: gameState.opponentId,
-            victorId: "",
+            victorId: "-",
             gameId: gameState.id,
             boardState: gameBoard,
             isWin: false,
@@ -91,15 +118,36 @@ export class TicTacToeGameHandler extends InteractionHandler {
     public async run(interaction: ButtonInteraction, data?: ParsedData) {
         if (!data) return;
 
-        if (data.isWin) {
-            await db.update(ticTacToeGames).set({
-                victorId: interaction.user.id,
-                state: JSON.stringify(data.boardState),
-                status: "WIN",
-            });
+        if (data.victorId === "") {
+            await db
+                .update(ticTacToeGames)
+                .set({
+                    victorId: "",
+                    state: JSON.stringify(data.boardState),
+                    status: "DRAW",
+                })
+                .where(eq(ticTacToeGames.id, data.gameId));
 
             return interaction.update({
-                content: `Player ${interaction.user.id} wins!`,
+                content: "It's a draw!",
+                components: [],
+            });
+        }
+
+        if (data.isWin) {
+            await db
+                .update(ticTacToeGames)
+                .set({
+                    victorId: interaction.user.id,
+                    state: JSON.stringify(data.boardState),
+                    status: "WIN",
+                })
+                .where(eq(ticTacToeGames.id, data.gameId));
+
+            const username = this.container.client.users.cache.get(interaction.user.id)?.username;
+
+            return interaction.update({
+                content: `Player ${username} has won the game!`,
                 components: [],
             });
         }
@@ -123,14 +171,43 @@ export class TicTacToeGameHandler extends InteractionHandler {
             );
         }
 
-        await db.update(ticTacToeGames).set({
-            state: JSON.stringify(data.boardState),
-            turn: interaction.user.id === data.userId ? "O" : "X",
-        });
+        await db
+            .update(ticTacToeGames)
+            .set({
+                state: JSON.stringify(data.boardState),
+                turn: interaction.user.id === data.userId ? "O" : "X",
+            })
+            .where(eq(ticTacToeGames.id, data.gameId));
 
         return await interaction.update({
             components: buttons,
         });
+    }
+
+    private computeWin(state: string[][], player: string) {
+        // horizontal
+        for (let i = 0; i < state.length; i++) {
+            if (state[i].every((cell) => cell === player)) {
+                return true;
+            }
+        }
+
+        // vertical
+        for (let i = 0; i < state.length; i++) {
+            if (state.every((row) => row[i] === player)) {
+                return true;
+            }
+        }
+
+        // diagonal
+        if (state.every((row, i) => row[i] === player)) {
+            return true;
+        }
+        if (state.every((row, i) => row[state.length - 1 - i] === player)) {
+            return true;
+        }
+
+        return false;
     }
 
     private async getGameState(guildId: string, userId: string, opponentId: string) {
