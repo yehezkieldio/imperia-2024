@@ -31,10 +31,10 @@ export class ImperiaClient extends SapphireClient {
 
     public override async login(token: string) {
         container.db = database;
-        container.logger.info("ImperiaClient: Connected to PostgreSQL.");
+        container.logger.info("ImperiaClient: Connected to PostgreSQL, database layer initialized.");
 
         container.df = dragonfly;
-        container.logger.info("ImperiaClient: Connected to Dragonfly.");
+        container.logger.info("ImperiaClient: Connected to Dragonfly, cache layer and utilities initialized.");
 
         return super.login(token);
     }
