@@ -33,7 +33,7 @@ export class DogCommand extends ImperiaCommand {
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
 
-        const result: RandomDogResponse | undefined = await this.getRandomCat();
+        const result: RandomDogResponse | undefined = await this.getRandomDog();
 
         if (!result) {
             return interaction.editReply({
