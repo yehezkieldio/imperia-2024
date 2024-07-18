@@ -2,7 +2,13 @@ import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/types/identifiers";
 import { RegisterBehavior, UserError } from "@sapphire/framework";
-import { type GuildMember, SlashCommandBuilder, bold } from "discord.js";
+import {
+    type GuildMember,
+    type GuildMemberRoleManager,
+    PermissionsBitField,
+    SlashCommandBuilder,
+    bold,
+} from "discord.js";
 
 export class BanCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -48,6 +54,45 @@ export class BanCommand extends ImperiaCommand {
 
         const member: GuildMember =
             interaction.guild.members.cache.get(user.id) ?? (await interaction.guild.members.fetch(user.id));
+
+        if (user.id === interaction.user.id) {
+            return interaction.reply({
+                embeds: [new ImperiaEmbedBuilder().isErrorEmbed().setDescription("You cannot ban yourself.")],
+            });
+        }
+
+        if (member.id === interaction.guild.ownerId) {
+            return interaction.reply({
+                embeds: [new ImperiaEmbedBuilder().isErrorEmbed().setDescription("I cannot ban the server owner.")],
+            });
+        }
+
+        if (
+            member.permissions.has(PermissionsBitField.Flags.BanMembers) ||
+            member.permissions.has(PermissionsBitField.Flags.Administrator)
+        ) {
+            return interaction.reply({
+                embeds: [
+                    new ImperiaEmbedBuilder()
+                        .isErrorEmbed()
+                        .setDescription("You cannot ban a user with the Ban Members or Administrator permission."),
+                ],
+            });
+        }
+
+        if (interaction.member) {
+            if (
+                (interaction.member.roles as GuildMemberRoleManager).highest.position <= member.roles.highest.position
+            ) {
+                return interaction.reply({
+                    embeds: [
+                        new ImperiaEmbedBuilder()
+                            .isErrorEmbed()
+                            .setDescription("You cannot ban a user with a higher or equal role position."),
+                    ],
+                });
+            }
+        }
 
         if (member.bannable) {
             await member.ban({ reason });
