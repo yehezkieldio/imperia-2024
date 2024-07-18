@@ -34,7 +34,7 @@ export class DadJokeCommand extends ImperiaCommand {
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
 
-        const result: RandomDadJokeResponse | undefined = await this.getRandomCat();
+        const result: RandomDadJokeResponse | undefined = await this.getRandomDadjokes();
 
         if (!result) {
             return interaction.editReply({
@@ -51,7 +51,7 @@ export class DadJokeCommand extends ImperiaCommand {
         });
     }
 
-    private async getRandomCat(): Promise<RandomDadJokeResponse | undefined> {
+    private async getRandomDadjokes(): Promise<RandomDadJokeResponse | undefined> {
         const cacheKey = "random_dad_jokes";
         const url = "https://icanhazdadjoke.com/";
 

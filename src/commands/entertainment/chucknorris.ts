@@ -38,7 +38,7 @@ export class ChuckNorrisCommand extends ImperiaCommand {
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
 
-        const result: RandomChuckNorrisFactResponse | undefined = await this.getRandomCat();
+        const result: RandomChuckNorrisFactResponse | undefined = await this.getRandomChuckNorrisFact();
 
         if (!result) {
             return interaction.editReply({
@@ -55,7 +55,7 @@ export class ChuckNorrisCommand extends ImperiaCommand {
         });
     }
 
-    private async getRandomCat(): Promise<RandomChuckNorrisFactResponse | undefined> {
+    private async getRandomChuckNorrisFact(): Promise<RandomChuckNorrisFactResponse | undefined> {
         const cacheKey = "random_cat_facts";
         const url = "https://catfact.ninja/fact";
 

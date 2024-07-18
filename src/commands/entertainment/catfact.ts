@@ -32,7 +32,7 @@ export class CatFactCommand extends ImperiaCommand {
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
 
-        const result: RandomCatFactResponse | undefined = await this.getRandomCat();
+        const result: RandomCatFactResponse | undefined = await this.getRandomCatFact();
 
         if (!result) {
             return interaction.editReply({
@@ -49,7 +49,7 @@ export class CatFactCommand extends ImperiaCommand {
         });
     }
 
-    private async getRandomCat(): Promise<RandomCatFactResponse | undefined> {
+    private async getRandomCatFact(): Promise<RandomCatFactResponse | undefined> {
         const cacheKey = "random_cat_facts";
         const url = "https://catfact.ninja/fact";
 
