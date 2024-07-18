@@ -9,7 +9,7 @@ export class ChatInputCommandSuccessListener extends ImperiaListener {
         super(context, {
             ...options,
             once: true,
-            event: ImperiaEvents.ClientReady,
+            event: ImperiaEvents.ContextMenuCommandSuccess,
         });
     }
 

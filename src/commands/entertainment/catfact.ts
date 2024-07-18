@@ -1,7 +1,7 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
-import { RegisterBehavior, UserError } from "@sapphire/framework";
+import { UserError } from "@sapphire/framework";
 import { type Message, SlashCommandBuilder } from "discord.js";
 
 interface RandomCatFactResponse {
@@ -22,7 +22,6 @@ export class CatFactCommand extends ImperiaCommand {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });

@@ -27,23 +27,22 @@ export class UptimeCommand extends ImperiaCommand {
         const machineUptime: number = os.uptime();
 
         return interaction.reply({
-            content: `I've been online for ${this.humanizeDuration(botUptime)} and my host machine has been online for ${this.humanizeDuration(
-                machineUptime,
-            )}.`,
+            content: `Bot Uptime: ${this.humanizeDuration(botUptime)}\nMachine Uptime: ${this.humanizeDuration(machineUptime)}`,
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
     }
 
     private humanizeDuration(ms: number): string {
         const duration: Dayjs = dayjs(ms);
-        const hours: number = duration.hour();
-        const minutes: number = duration.minute();
-        const seconds: number = duration.second();
+        const hours: number = duration.get("hours");
+        const minutes: number = duration.get("minutes");
+        const seconds: number = duration.get("seconds");
 
-        if (hours > 0) return `${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
-        if (minutes > 0) return `${minutes} minutes and ${seconds} seconds`;
-        if (seconds > 0) return `${seconds} seconds`;
+        const parts: string[] = [];
+        if (hours > 0) parts.push(`${hours} hours`);
+        if (minutes > 0) parts.push(`${minutes} minutes`);
+        if (seconds > 0) parts.push(`${seconds} seconds`);
 
-        return "less than a second";
+        return parts.length > 0 ? parts.join(", ") : "less than a second";
     }
 }
