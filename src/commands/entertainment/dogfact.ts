@@ -33,14 +33,14 @@ export class DogFactCommand extends ImperiaCommand {
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
 
-        const result: RandomDogFactResponse | undefined = await this.getRandomDog();
+        const result: RandomDogFactResponse | undefined = await this.getRandomDogFact();
 
         if (!result) {
             return interaction.editReply({
                 embeds: [
                     new ImperiaEmbedBuilder()
                         .isErrorEmbed()
-                        .setDescription("No dog images were found, please try again later."),
+                        .setDescription("No dog facts were found, please try again later."),
                 ],
             });
         }
@@ -50,7 +50,7 @@ export class DogFactCommand extends ImperiaCommand {
         });
     }
 
-    private async getRandomDog(): Promise<RandomDogFactResponse | undefined> {
+    private async getRandomDogFact(): Promise<RandomDogFactResponse | undefined> {
         const cacheKey = "random_dog_facts";
         const url = "https://dog-api.kinduff.com/api/facts?number=1";
 
