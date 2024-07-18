@@ -10,4 +10,8 @@ export class CommandUtils {
 
         return Boolean(user.responsePrivacy);
     }
+
+    public randomizeArray<T>(array: T[]): T {
+        return array[Math.floor(Math.random() * array.length)];
+    }
 }
