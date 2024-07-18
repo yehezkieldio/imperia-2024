@@ -1,6 +1,8 @@
 import { env } from "@/environment";
+import { DEVELOPERS } from "@/internal/constants/developers";
 import type { ImperiaClientOptions } from "@/internal/extensions/client";
 import { LogLevel } from "@sapphire/framework";
+import { Time } from "@sapphire/time-utilities";
 import { ActivityType, GatewayIntentBits } from "discord.js";
 
 export const configuration: ImperiaClientOptions = {
@@ -9,6 +11,10 @@ export const configuration: ImperiaClientOptions = {
     loadMessageCommandListeners: true,
     loadSubcommandErrorListeners: true,
     loadDefaultErrorListeners: true,
+    defaultCooldown: {
+        delay: Time.Second * 2,
+        filteredUsers: DEVELOPERS,
+    },
     defaultPrefix: "ii.",
     presence: {
         activities: [

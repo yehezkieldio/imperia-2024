@@ -36,6 +36,7 @@
         "@sapphire/framework": "^5.2.1",
         "@sapphire/plugin-logger": "^4.0.2",
         "@sapphire/plugin-subcommands": "^6.0.3",
+        "@sapphire/time-utilities": "^1.7.12",
         "@sapphire/utilities": "^3.16.2",
         "@silvia-odwyer/photon-node": "^0.3.3",
         "@t3-oss/env-core": "^0.10.1",

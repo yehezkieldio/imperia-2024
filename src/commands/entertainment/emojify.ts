@@ -8,6 +8,7 @@ export class EmojifyCommand extends ImperiaCommand {
         super(context, {
             description: "Add some emojis to your text!",
             requiredClientPermissions: ["SendMessages"],
+            preconditions: ["GuildOnly"],
             ...options,
         });
     }
