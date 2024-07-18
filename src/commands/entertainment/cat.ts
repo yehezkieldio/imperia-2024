@@ -1,8 +1,9 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import type { RandomCatQueryResult } from "@/internal/types/cat";
+import { ImperiaIdentifiers } from "@/internal/types/identifiers";
 import {} from "@/internal/utils/string-utils";
-import { RegisterBehavior } from "@sapphire/framework";
+import { RegisterBehavior, UserError } from "@sapphire/framework";
 import { SlashCommandBuilder } from "discord.js";
 
 export class CatCommand extends ImperiaCommand {
