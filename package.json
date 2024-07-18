@@ -1,6 +1,7 @@
 {
     "name": "imperia",
     "module": "src/main.ts",
+    "version": "1.0.0",
     "type": "module",
     "scripts": {
         "start": "bun run src/main.ts",
