@@ -47,6 +47,16 @@ export class MemeCommand extends ImperiaCommand {
 
         const randomMeme: string = this.utils.randomizeArray(result.urls);
 
+        if (await this.utils.isValidUrl(randomMeme)) {
+            return interaction.editReply({
+                embeds: [
+                    new ImperiaEmbedBuilder()
+                        .isErrorEmbed()
+                        .setDescription("The meme URL is invalid, please try again later."),
+                ],
+            });
+        }
+
         return interaction.editReply({
             embeds: [new ImperiaEmbedBuilder().isSuccessEmbed().setImage(randomMeme)],
         });

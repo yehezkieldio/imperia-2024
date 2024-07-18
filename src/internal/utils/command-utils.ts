@@ -11,6 +11,16 @@ export class CommandUtils {
         return Boolean(user.responsePrivacy);
     }
 
+    public async isValidUrl(url: string): Promise<boolean> {
+        try {
+            const response = await fetch(url, { method: "HEAD" });
+            return response.ok;
+        } catch (error) {
+            this.container.logger.error(`Error validating URL ${url}:`, error);
+            return false;
+        }
+    }
+
     public randomizeArray<T>(array: T[]): T {
         return array[Math.floor(Math.random() * array.length)];
     }
