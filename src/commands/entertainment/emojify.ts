@@ -1,4 +1,3 @@
-import { commonWords, inappropriateEmojis } from "@/internal/constants/emoji";
 import emojiData from "@/internal/database/data/emoji-data.json";
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { type InteractionResponse, SlashCommandBuilder } from "discord.js";
@@ -27,8 +26,46 @@ export class EmojifyCommand extends ImperiaCommand {
         });
     }
 
+    private commonWords: Set<string> = new Set([
+        "a",
+        "an",
+        "as",
+        "is",
+        "if",
+        "of",
+        "the",
+        "it",
+        "its",
+        "or",
+        "are",
+        "this",
+        "with",
+        "so",
+        "to",
+        "at",
+        "was",
+        "and",
+    ]) as Set<string>;
+
+    private inappropriateEmojis: string[] = [
+        "🍆",
+        "💦",
+        "🍑",
+        "🌮",
+        "👅",
+        "🐍",
+        "🔯",
+        "🖕",
+        "🚬",
+        "💣",
+        "🔫",
+        "🔪",
+        "💊",
+        "💉",
+    ] as const;
+
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
-        const isInappropriate = (str: string) => inappropriateEmojis.some((emoji: string) => str.includes(emoji));
+        const isInappropriate = (str: string) => this.inappropriateEmojis.some((emoji: string) => str.includes(emoji));
         const shouldFilterEmojis = true;
 
         const words = interaction.options.getString("text", true).replace(/\n/g, " ").split(" ");
@@ -40,7 +77,7 @@ export class EmojifyCommand extends ImperiaCommand {
                 const accNext: string = `${acc} ${wordRaw}`;
 
                 const randomChoice: number = Math.random() * 100;
-                const isTooCommon: boolean = commonWords.has(word);
+                const isTooCommon: boolean = this.commonWords.has(word);
 
                 const emojiFilter = shouldFilterEmojis ? (option: string) => !isInappropriate(option) : () => true;
 
