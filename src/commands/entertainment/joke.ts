@@ -94,7 +94,7 @@ export class JokeCommand extends ImperiaCommand {
 
             new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
-                message: "An error occurred while fetching the cat fact, please try again later.",
+                message: "An error occurred while fetching the joke, please try again later.",
             });
         }
     }

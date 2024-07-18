@@ -39,7 +39,7 @@ export class FactCommand extends ImperiaCommand {
                 embeds: [
                     new ImperiaEmbedBuilder()
                         .isErrorEmbed()
-                        .setDescription("No dog images were found, please try again later."),
+                        .setDescription("No fact were found, please try again later."),
                 ],
             });
         }
@@ -74,7 +74,7 @@ export class FactCommand extends ImperiaCommand {
 
             new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
-                message: "An error occurred while fetching the cat fact, please try again later.",
+                message: "An error occurred while fetching the fact, please try again later.",
             });
         }
     }

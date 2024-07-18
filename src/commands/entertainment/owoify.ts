@@ -46,7 +46,7 @@ export class OwoifyCommand extends ImperiaCommand {
                 embeds: [
                     new ImperiaEmbedBuilder()
                         .isErrorEmbed()
-                        .setDescription("No joke were found, please try again later."),
+                        .setDescription("No owoified text were found, please try again later."),
                 ],
             });
         }
@@ -75,7 +75,7 @@ export class OwoifyCommand extends ImperiaCommand {
 
             new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
-                message: "An error occurred while fetching the cat fact, please try again later.",
+                message: "An error occurred while fetching the owoified response, please try again later.",
             });
         }
     }

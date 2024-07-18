@@ -75,7 +75,7 @@ export class DogFactCommand extends ImperiaCommand {
 
             new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
-                message: "An error occurred while fetching the cat fact, please try again later.",
+                message: "An error occurred while fetching the dog fact, please try again later.",
             });
         }
     }
