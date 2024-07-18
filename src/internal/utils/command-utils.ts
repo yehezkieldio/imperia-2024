@@ -1,39 +1,13 @@
-import { container } from "@sapphire/framework";
-import { chatInputApplicationCommandMention } from "discord.js";
+import { users } from "@/internal/database/postgres/schema";
+import { type Container, container as c } from "@sapphire/framework";
 
-// based on the folder names of the commands
-export const commandCategories = [
-    {
-        name: "Configuration",
-        value: "configuration",
-    },
-    {
-        name: "Entertainment",
-        value: "entertainment",
-    },
-    {
-        name: "Information",
-        value: "information",
-    },
-    {
-        name: "Miscellaneous",
-        value: "miscellaneous",
-    },
-    {
-        name: "Moderation",
-        value: "moderation",
-    },
-    {
-        name: "System",
-        value: "system",
-    },
-];
+export class CommandUtils {
+    public container: Container = c;
 
-export const getCommandMention = (commandName: string): string | `</${string}:${string}>` => {
-    const command = container.applicationCommandRegistries.acquire(commandName);
-    const commandId = command.globalChatInputCommandIds.values().next().value;
+    public async responsePrivacy(userId: string): Promise<boolean> {
+        const [user] = await this.container.db.select().from(users);
+        if (!user) return false;
 
-    if (!commandId) return `/${commandName}`;
-
-    return chatInputApplicationCommandMention(command.commandName, commandId);
-};
+        return Boolean(user.responsePrivacy);
+    }
+}

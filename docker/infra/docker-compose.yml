@@ -1,0 +1,33 @@
+services:
+  postgresql:
+    container_name: imperia-pg
+    image: postgres:latest
+    env_file:
+      - path: "../../.env"
+        required: true
+    ports:
+      - '5432:5432'
+    environment:
+        POSTGRES_USER: ${DOCKER_DB_USER}
+        POSTGRES_PASSWORD: ${DOCKER_DB_PASSWORD}
+        POSTGRES_DB: ${DOCKER_DB_NAME}
+    volumes:
+      - ./postgresqldata:/var/lib/postgresql/data
+    networks:
+      - imperia-network
+    restart: always
+  dragonfly:
+    container_name: imperia-dragonfly
+    image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+    ulimits:
+      memlock: -1
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./dragonflydata:/data
+networks:
+  imperia-network:
+    driver: bridge
+volumes:
+  postgresqldata:
+  dragonflydata:

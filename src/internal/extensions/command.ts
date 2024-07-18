@@ -1,53 +1,23 @@
-import { db } from "@/internal/database/connection";
-import { users } from "@/internal/database/schema";
-import { checkIfUserExists } from "@/internal/database/utils";
-import type { ChatInputCommand } from "@sapphire/framework";
-import { Subcommand, type SubcommandOptions } from "@sapphire/plugin-subcommands";
+import { CommandUtils } from "@/internal/utils/command-utils";
+import { Command, type CommandOptions } from "@sapphire/framework";
 
-export abstract class ImperiaCommand extends Subcommand {
-    protected constructor(context: Subcommand.LoaderContext, options: SubcommandOptions) {
+export abstract class ImperiaCommand extends Command {
+    protected constructor(context: Command.LoaderContext, options: CommandOptions) {
         super(context, {
             ...options,
         });
     }
 
-    /**
-     * We check if the user exists in the database.
-     * If it does, we check if the user has the responsePrivacy flag set to true.
-     * If it does, we return true.
-     * If it doesn't, we return false.
-     *
-     * We do this here instead of a pre-condition because we want to return something rather than true/false checks.
-     *
-     * @param userId The user ID to check for.
-     * @returns Whether the user has the responsePrivacy flag set to true.
-     */
-    public static async isEphemeralResponse(userId: string): Promise<boolean> {
-        if (await checkIfUserExists(userId)) {
-            const [result] = await db.select().from(users);
-
-            if (result.responsePrivacy) return true;
-        }
-
-        return false;
-    }
-
-    // @ts-expect-error: Promise<unknown> instead of Promise<void>
-    public async chatInputRun(
-        interaction: ChatInputCommand.Interaction,
-        context: ChatInputCommand.RunContext,
-    ): Promise<unknown> {
-        return super.chatInputRun(interaction, context);
-    }
+    protected utils: CommandUtils = new CommandUtils();
 }
 
 export declare namespace ImperiaCommand {
-    type Options = SubcommandOptions;
-    type JSON = Subcommand.JSON;
-    type Context = Subcommand.LoaderContext;
-    type RunInTypes = Subcommand.RunInTypes;
-    type ChatInputCommandInteraction = Subcommand.ChatInputCommandInteraction;
-    type ContextMenuCommandInteraction = Subcommand.ContextMenuCommandInteraction;
-    type AutocompleteInteraction = Subcommand.AutocompleteInteraction;
-    type Registry = Subcommand.Registry;
+    type Options = CommandOptions;
+    type JSON = Command.JSON;
+    type Context = Command.LoaderContext;
+    type RunInTypes = Command.RunInTypes;
+    type ChatInputCommandInteraction = Command.ChatInputCommandInteraction;
+    type ContextMenuCommandInteraction = Command.ContextMenuCommandInteraction;
+    type AutocompleteInteraction = Command.AutocompleteInteraction;
+    type Registry = Command.Registry;
 }

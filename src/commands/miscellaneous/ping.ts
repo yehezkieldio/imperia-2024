@@ -1,7 +1,7 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { isMessageInstance } from "@sapphire/discord.js-utilities";
-import { RegisterBehavior } from "@sapphire/framework";
-import { SlashCommandBuilder } from "discord.js";
+import dayjs from "dayjs";
+import { type Message, SlashCommandBuilder } from "discord.js";
 
 export class PingCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -13,26 +13,26 @@ export class PingCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
-        const msg = await interaction.reply({
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
+        const msg: Message = await interaction.reply({
             content: "Performing a ping request...",
-            ephemeral: await ImperiaCommand.isEphemeralResponse(interaction.user.id),
+            ephemeral: await this.utils.responsePrivacy(interaction.user.id),
             fetchReply: true,
         });
 
         if (isMessageInstance(msg)) {
-            const diff = msg.createdTimestamp - interaction.createdTimestamp;
-            const ping = Math.round(this.container.client.ws.ping);
+            const diff: number = dayjs(msg.createdTimestamp).diff(dayjs(interaction.createdTimestamp));
+            const ping: number = Math.round(this.container.client.ws.ping);
+
             return interaction.editReply(
                 `Ping request returned with these results:\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
             );
