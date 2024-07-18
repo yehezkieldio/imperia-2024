@@ -13,7 +13,9 @@ export class ClientReadyListener extends ImperiaListener {
 
     public async run(client: Client) {
         const { username, id } = client.user as ClientUser;
+        const commandsSize = this.container.stores.get("commands").size;
 
         this.container.logger.info(`ReadyListener: Successfully logged in as ${username} (${id})`);
+        this.container.logger.info(`ReadyListener: Loaded ${commandsSize} commands.`);
     }
 }
