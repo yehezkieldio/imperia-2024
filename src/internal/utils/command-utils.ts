@@ -53,6 +53,12 @@ export class CommandUtils {
         return array[Math.floor(Math.random() * array.length)];
     }
 
+    public trimString = (str: string, length: number) => {
+        return str.length > length ? `${str.substring(0, length)}...` : str;
+    };
+
+    public stripHtmlTags = (str: string) => str.replace(/<[^>]*>?/gm, "").replace(/<br\/?>/gm, "\n");
+
     public getCommandMention = (commandName: string): string | `</${string}:${string}>` => {
         const command = this.container.applicationCommandRegistries.acquire(commandName);
         const commandId = command.globalChatInputCommandIds.values().next().value;
