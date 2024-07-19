@@ -1,8 +1,10 @@
+import { ticTacToeGames } from "@/internal/database/postgres/schema";
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { RegisterBehavior } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
 import { TimerManager } from "@sapphire/timer-manager";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, type User } from "discord.js";
+import { and, eq } from "drizzle-orm";
 
 export class TicTacToeCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -98,11 +100,25 @@ export class TicTacToeCommand extends ImperiaCommand {
                     .setStyle(ButtonStyle.Secondary),
             );
 
-        TimerManager.setTimeout(() => {
+        TimerManager.setTimeout(async () => {
             interaction.editReply({
                 content: "This game has timed out or ended.",
                 components: [],
             });
+
+            await this.container.db
+                .update(ticTacToeGames)
+                .set({
+                    status: "TIMEOUT",
+                })
+                .where(
+                    and(
+                        eq(ticTacToeGames.status, "IN_PROGRESS"),
+                        eq(ticTacToeGames.guildId, interaction.guildId as string),
+                        eq(ticTacToeGames.userId, interaction.user.id),
+                        eq(ticTacToeGames.opponentId, opponent.id),
+                    ),
+                );
         }, Time.Minute * 1);
 
         interaction.editReply({
