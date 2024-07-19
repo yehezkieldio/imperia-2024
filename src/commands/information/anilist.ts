@@ -31,7 +31,7 @@ import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
 import type { DragonflySearchResult } from "@/internal/typings/dragonfly";
 import { RegisterBehavior, UserError } from "@sapphire/framework";
-import { SlashCommandBuilder } from "discord.js";
+import { type Message, SlashCommandBuilder } from "discord.js";
 
 export class AnilistCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -43,7 +43,7 @@ export class AnilistCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder()
             .setName(this.name)
             .setDescription(this.description)
@@ -71,7 +71,7 @@ export class AnilistCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
         await interaction.deferReply({
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });

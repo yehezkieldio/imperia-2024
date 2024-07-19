@@ -2,7 +2,7 @@ import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
 import { RegisterBehavior, UserError } from "@sapphire/framework";
-import { type GuildMember, SlashCommandBuilder } from "discord.js";
+import { type GuildMember, type InteractionResponse, SlashCommandBuilder, type User } from "discord.js";
 
 export class AvatarCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -30,8 +30,8 @@ export class AvatarCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
-        const user = interaction.options.getUser("user") ?? interaction.user;
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
+        const user: User = interaction.options.getUser("user") ?? interaction.user;
 
         if (!interaction.guild) {
             throw new UserError({
@@ -43,8 +43,8 @@ export class AvatarCommand extends ImperiaCommand {
         const member: GuildMember =
             interaction.guild.members.cache.get(user.id) ?? (await interaction.guild.members.fetch(user.id));
 
-        const userAvatar = user.displayAvatarURL({ size: 4096 });
-        const memberAvatar = member.displayAvatarURL({ size: 4096 });
+        const userAvatar: string = user.displayAvatarURL({ size: 4096 });
+        const memberAvatar: string = member.displayAvatarURL({ size: 4096 });
 
         const avatars: ImperiaEmbedBuilder[] =
             userAvatar !== memberAvatar

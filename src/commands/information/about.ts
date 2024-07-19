@@ -1,6 +1,13 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, type User } from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    type InteractionResponse,
+    SlashCommandBuilder,
+    type User,
+} from "discord.js";
 
 export class AboutCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -12,7 +19,7 @@ export class AboutCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -21,11 +28,11 @@ export class AboutCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
-        const helpCommand = this.utils.getCommandMention("help");
-        const registerCommand = this.utils.getCommandMention("register");
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
+        const helpCommand: string = this.utils.getCommandMention("help");
+        const registerCommand: string = this.utils.getCommandMention("register");
 
-        const links = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        const links: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setLabel("Invite")
                 .setStyle(ButtonStyle.Link)
