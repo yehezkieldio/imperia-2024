@@ -117,22 +117,6 @@ export class TicTacToeGameHandler extends InteractionHandler {
     public async run(interaction: ButtonInteraction, data?: ParsedData) {
         if (!data) return;
 
-        if (data.victorId === "") {
-            await this.container.db
-                .update(ticTacToeGames)
-                .set({
-                    victorId: "",
-                    state: JSON.stringify(data.boardState),
-                    status: "DRAW",
-                })
-                .where(eq(ticTacToeGames.id, data.gameId));
-
-            return interaction.update({
-                content: "It's a draw!",
-                components: [],
-            });
-        }
-
         let buttons: ActionRowBuilder<MessageActionRowComponentBuilder>[];
 
         if (interaction.component.style === ButtonStyle.Danger || interaction.component.style === ButtonStyle.Primary) {
@@ -159,6 +143,28 @@ export class TicTacToeGameHandler extends InteractionHandler {
                 turn: interaction.user.id === data.userId ? "O" : "X",
             })
             .where(eq(ticTacToeGames.id, data.gameId));
+
+        if (data.victorId === "") {
+            await this.container.db
+                .update(ticTacToeGames)
+                .set({
+                    victorId: "",
+                    state: JSON.stringify(data.boardState),
+                    status: "DRAW",
+                })
+                .where(eq(ticTacToeGames.id, data.gameId));
+
+            await interaction.update({
+                components: buttons,
+            });
+
+            const disableButtons = disableAllComponent(interaction);
+
+            return interaction.update({
+                content: "It's a draw!",
+                components: [...disableButtons],
+            });
+        }
 
         if (data.isWin) {
             await this.container.db
