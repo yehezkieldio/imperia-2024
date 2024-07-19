@@ -1,3 +1,4 @@
+import "@sapphire/plugin-scheduled-tasks/register";
 import { env } from "@/environment";
 import { ImperiaClient } from "@/internal/extensions/client";
 import "@sapphire/plugin-logger/register";

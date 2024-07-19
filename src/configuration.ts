@@ -30,6 +30,19 @@ export const configuration: ImperiaClientOptions = {
         ],
         status: "dnd",
     },
+    tasks: {
+        queue: "{scheduled-tasks}",
+        bull: {
+            defaultJobOptions: {
+                removeOnComplete: true,
+            },
+            connection: {
+                port: env.DRAGONFLY_PORT,
+                host: env.DRAGONFLY_HOST,
+                db: 4,
+            },
+        },
+    },
     typing: true,
     logger: {
         level: env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info,

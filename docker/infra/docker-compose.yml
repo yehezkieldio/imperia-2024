@@ -19,6 +19,7 @@ services:
   dragonfly:
     container_name: imperia-dragonfly
     image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+    command: --cluster_mode=emulated --lock_on_hashtags
     ulimits:
       memlock: -1
     ports:
