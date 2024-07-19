@@ -7,6 +7,7 @@ import {
     type SapphireClientOptions,
     container,
 } from "@sapphire/framework";
+import { TimerManager } from "@sapphire/timer-manager";
 import type { ClientOptions } from "discord.js";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Redis } from "ioredis";
@@ -43,6 +44,7 @@ export class ImperiaClient extends SapphireClient {
         await conn.end({
             timeout: 5,
         });
+        TimerManager.destroy();
 
         return super.destroy();
     }

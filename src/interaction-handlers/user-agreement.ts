@@ -26,8 +26,6 @@ export class UserAgreementHandler extends InteractionHandler {
         const [_, userId, status] = interaction.customId.split("-");
         const currentStatus = status as UserAgreementStatus;
 
-        this.container.logger.info(`User ${userId} has ${currentStatus} the user agreement.`);
-
         if (currentStatus === UserAgreementStatus.CONFIRMED) {
             return this.some<ParsedData>({ userId, status: UserAgreementStatus.CONFIRMED });
         }
