@@ -1,6 +1,5 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
-import { RegisterBehavior } from "@sapphire/framework";
 import { SlashCommandBuilder } from "discord.js";
 
 export class CoinflipCommand extends ImperiaCommand {
@@ -17,7 +16,6 @@ export class CoinflipCommand extends ImperiaCommand {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });
