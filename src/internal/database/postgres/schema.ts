@@ -35,7 +35,7 @@ export const users = pgTable(
 );
 
 export const ticTacToeTurn = pgEnum("tic_tac_toe_turn", ["X", "O"]);
-export const gameStatus = pgEnum("game_status", ["IN_PROGRESS", "WIN", "DRAW"]);
+export const gameStatus = pgEnum("game_status", ["IN_PROGRESS", "WIN", "DRAW", "TIMEOUT"]);
 
 export const ticTacToeGames = pgTable(
     "tic_tac_toe_game",
