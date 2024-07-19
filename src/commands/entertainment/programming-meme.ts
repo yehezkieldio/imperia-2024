@@ -47,7 +47,7 @@ export class ProgrammingMemeCommand extends ImperiaCommand {
 
         const randomMeme: string = this.utils.randomizeArray(result.urls);
 
-        if (await this.utils.isValidUrl(randomMeme)) {
+        if (!(await this.utils.isValidUrl(randomMeme))) {
             return interaction.editReply({
                 embeds: [
                     new ImperiaEmbedBuilder()
