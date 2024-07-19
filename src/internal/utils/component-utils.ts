@@ -15,9 +15,9 @@ export function updateComponent<T extends ButtonBuilder>(
         return [];
     }
 
-    const actionRows = interaction.message.components.map<ActionRowBuilder<MessageActionRowComponentBuilder>>((row) =>
-        ActionRowBuilder.from(row),
-    );
+    const actionRows: ActionRowBuilder<MessageActionRowComponentBuilder>[] = interaction.message.components.map<
+        ActionRowBuilder<MessageActionRowComponentBuilder>
+    >((row) => ActionRowBuilder.from(row));
     newButtonFunc(actionRows[indices.actionRowIndex].components[indices.componentIndex] as T);
 
     return actionRows;
@@ -47,4 +47,51 @@ export function findComponent(
             }
         }
     }
+}
+
+export function disableAllComponent<T extends ButtonBuilder>(
+    interaction: MessageComponentInteraction,
+    customId = interaction.customId,
+): ActionRowBuilder<MessageActionRowComponentBuilder>[] {
+    const indices = findAllComponent(interaction, interaction.customId);
+    if (!indices) {
+        return [];
+    }
+
+    const actionRows: ActionRowBuilder<MessageActionRowComponentBuilder>[] = interaction.message.components.map<
+        ActionRowBuilder<MessageActionRowComponentBuilder>
+    >((row) => ActionRowBuilder.from(row));
+    for (const index of indices) {
+        actionRows[index.actionRowIndex].components[index.componentIndex].setDisabled(true);
+    }
+
+    return actionRows;
+}
+
+export function findAllComponent(
+    interaction: MessageComponentInteraction,
+    customId: string,
+): { actionRowIndex: number; componentIndex: number }[] {
+    const actionRows = interaction.message.components;
+    const indices: { actionRowIndex: number; componentIndex: number }[] = [];
+    for (let actionRowIndex = 0; actionRowIndex < actionRows.length; ++actionRowIndex) {
+        const actionRow = actionRows[actionRowIndex];
+
+        for (let componentIndex = 0; componentIndex < actionRow.components.length; ++componentIndex) {
+            indices.push({
+                actionRowIndex,
+                componentIndex,
+            });
+        }
+    }
+
+    return indices;
+}
+
+export function getAllButtons(interaction: MessageComponentInteraction) {
+    const buttonIds: (string | null)[][] = interaction.message.components.map((row) =>
+        row.components.map((button) => button.customId),
+    );
+
+    return buttonIds.reduce((acc, val) => acc.concat(val), []);
 }

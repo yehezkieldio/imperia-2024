@@ -3,11 +3,16 @@ import { DEVELOPERS } from "@/internal/constants/developers";
 import type { ImperiaClientOptions } from "@/internal/extensions/client";
 import { LogLevel } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
-import { ActivityType, GatewayIntentBits } from "discord.js";
+import { ActivityType, GatewayIntentBits, Partials } from "discord.js";
 
 export const configuration: ImperiaClientOptions = {
+    allowedMentions: {
+        users: [],
+        roles: [],
+    },
     overrideApplicationCommandsRegistries: env.NODE_ENV === "development",
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+    partials: [Partials.Channel, Partials.GuildMember],
     loadMessageCommandListeners: true,
     loadSubcommandErrorListeners: true,
     loadDefaultErrorListeners: true,

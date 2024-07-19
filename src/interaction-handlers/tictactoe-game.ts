@@ -1,5 +1,5 @@
 import { ticTacToeGames } from "@/internal/database/postgres/schema";
-import { updateComponent } from "@/internal/utils/component-utils";
+import { disableAllComponent, updateComponent } from "@/internal/utils/component-utils";
 import { InteractionHandler, InteractionHandlerTypes } from "@sapphire/framework";
 import {
     type ActionRowBuilder,
@@ -133,24 +133,6 @@ export class TicTacToeGameHandler extends InteractionHandler {
             });
         }
 
-        if (data.isWin) {
-            await this.container.db
-                .update(ticTacToeGames)
-                .set({
-                    victorId: interaction.user.id,
-                    state: JSON.stringify(data.boardState),
-                    status: "WIN",
-                })
-                .where(eq(ticTacToeGames.id, data.gameId));
-
-            const username: string = this.container.client.users.cache.get(interaction.user.id)?.username as string;
-
-            return interaction.update({
-                content: `Player ${username} has won the game!`,
-                components: [],
-            });
-        }
-
         let buttons: ActionRowBuilder<MessageActionRowComponentBuilder>[];
 
         if (interaction.component.style === ButtonStyle.Danger || interaction.component.style === ButtonStyle.Primary) {
@@ -178,7 +160,32 @@ export class TicTacToeGameHandler extends InteractionHandler {
             })
             .where(eq(ticTacToeGames.id, data.gameId));
 
+        if (data.isWin) {
+            await this.container.db
+                .update(ticTacToeGames)
+                .set({
+                    victorId: interaction.user.id,
+                    state: JSON.stringify(data.boardState),
+                    status: "WIN",
+                })
+                .where(eq(ticTacToeGames.id, data.gameId));
+
+            const username: string = this.container.client.users.cache.get(interaction.user.id)?.username as string;
+
+            await interaction.update({
+                components: buttons,
+            });
+
+            const disableButtons = disableAllComponent(interaction);
+
+            return await interaction.editReply({
+                content: `Congratulations ${username} has won!`,
+                components: [...disableButtons],
+            });
+        }
+
         return await interaction.update({
+            content: `It's ${interaction.user.id === data.userId ? "O" : "X"}'s turn!`,
             components: buttons,
         });
     }
