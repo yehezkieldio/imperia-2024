@@ -29,6 +29,7 @@ export interface AnilistQueryResponse {
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
+import type { DragonflySearchResult } from "@/internal/typings/dragonfly";
 import { RegisterBehavior, UserError } from "@sapphire/framework";
 import { SlashCommandBuilder } from "discord.js";
 
@@ -58,6 +59,9 @@ export class AnilistCommand extends ImperiaCommand {
                     .setDescription("The type of media you want to search for.")
                     .addChoices({ name: "Anime", value: "anime" }, { name: "Manga", value: "manga" })
                     .setRequired(false),
+            )
+            .addBooleanOption((option) =>
+                option.setName("cached").setDescription("Whether to use cached data or not.").setRequired(false),
             );
 
         void registry.registerChatInputCommand(command, {
@@ -74,6 +78,7 @@ export class AnilistCommand extends ImperiaCommand {
 
         const title: string = interaction.options.getString("title", true);
         const type: string = interaction.options.getString("type") ?? "anime";
+        const cached: boolean = interaction.options.getBoolean("cached") ?? true;
 
         if (["anime", "manga"].includes(type) === false) {
             return interaction.editReply({
@@ -81,7 +86,11 @@ export class AnilistCommand extends ImperiaCommand {
             });
         }
 
-        const result: AnilistQueryResponse | undefined = await this.anilistSearch(title, type as "anime" | "manga");
+        const result: AnilistQueryResponse | undefined = await this.anilistSearch(
+            title,
+            type as "anime" | "manga",
+            cached,
+        );
 
         if (!result) {
             return interaction.editReply({
@@ -110,10 +119,17 @@ export class AnilistCommand extends ImperiaCommand {
     private async anilistSearch(
         search: string,
         type: "anime" | "manga" = "anime",
+        cached = true,
     ): Promise<AnilistQueryResponse | undefined> {
-        const cacheKey = `anilist_search_${search}_${type}`;
+        if (cached) {
+            const cachedResult = await this.getCachedData(search, type);
+            if (cachedResult) {
+                return cachedResult;
+            }
+        }
+
         const url = "https://graphql.anilist.co";
-        const mediaType = type === "anime" ? "ANIME" : "MANGA";
+        const mediaType: "ANIME" | "MANGA" = type === "anime" ? "ANIME" : "MANGA";
 
         const variables = { search, mediaType };
         const query = `#graphql
@@ -143,14 +159,14 @@ export class AnilistCommand extends ImperiaCommand {
                 body: JSON.stringify({ query, variables }),
             }).then((response) => response.json());
 
-            await this.container.df.set(cacheKey, JSON.stringify(response.data.Media));
+            await this.setCachedData(search, type, response.data.Media);
 
             return response.data.Media;
         } catch (error) {
             this.container.logger.error(error);
 
-            const cached: string | null = await this.container.df.get(cacheKey);
-            if (cached) return JSON.parse(cached);
+            const cached = await this.getCachedData(search, type);
+            if (cached) return cached;
 
             new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
@@ -158,5 +174,45 @@ export class AnilistCommand extends ImperiaCommand {
                 context: { search, type },
             });
         }
+    }
+
+    private async setCachedData(
+        search: string,
+        type: "anime" | "manga",
+        data: AnilistQueryResponse,
+        ttl = 3600,
+    ): Promise<void> {
+        const key = `anilist_search_${type}_${search.toLowerCase()}`;
+        await this.container.df.hset(key, {
+            type,
+            search: search.toLowerCase(),
+            data: JSON.stringify(data),
+        });
+        await this.container.df.expire(key, ttl);
+    }
+
+    private async getCachedData(search: string, type: "anime" | "manga"): Promise<AnilistQueryResponse | null> {
+        const query = `@type:{${type}} @search:(${search.toLowerCase()})`;
+        const searchResults = (await this.container.df.call(
+            "FT.SEARCH",
+            "anilist_idx",
+            query,
+            "LIMIT",
+            "0",
+            "1",
+        )) as DragonflySearchResult;
+
+        if (searchResults[0] === 0) {
+            return null;
+        }
+
+        return this.parseAnilistData(searchResults);
+    }
+
+    private parseAnilistData(array: DragonflySearchResult): AnilistQueryResponse {
+        const [, , [, , , dataStr]] = array;
+        const data: AnilistQueryResponse = JSON.parse(dataStr);
+
+        return data;
     }
 }
