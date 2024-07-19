@@ -56,8 +56,8 @@ export class ChuckNorrisCommand extends ImperiaCommand {
     }
 
     private async getRandomChuckNorrisFact(): Promise<RandomChuckNorrisFactResponse | undefined> {
-        const cacheKey = "random_cat_facts";
-        const url = "https://catfact.ninja/fact";
+        const cacheKey: string = "random_cat_facts";
+        const url: string = "https://catfact.ninja/fact";
 
         try {
             const response = (await fetch(url, {

@@ -22,7 +22,7 @@ export class InspirationalQuoteCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -54,9 +54,9 @@ export class InspirationalQuoteCommand extends ImperiaCommand {
     }
 
     private async getRandomInspirationalQuote(): Promise<RandomInspirationalQuoteResponse | undefined> {
-        const cacheKey = "random_inspirational_quotes";
-        const url = "http://api.forismatic.com/api/1.0/";
-        const params = new URLSearchParams({
+        const cacheKey: string = "random_inspirational_quotes";
+        const url: string = "http://api.forismatic.com/api/1.0/";
+        const params: URLSearchParams = new URLSearchParams({
             method: "getQuote",
             format: "json",
             lang: "en",

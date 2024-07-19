@@ -19,7 +19,7 @@ export class DogFactCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -51,8 +51,8 @@ export class DogFactCommand extends ImperiaCommand {
     }
 
     private async getRandomDogFact(): Promise<RandomDogFactResponse | undefined> {
-        const cacheKey = "random_dog_facts";
-        const url = "https://dog-api.kinduff.com/api/facts?number=1";
+        const cacheKey: string = "random_dog_facts";
+        const url: string = "https://dog-api.kinduff.com/api/facts?number=1";
 
         try {
             const response = (await fetch(url, {

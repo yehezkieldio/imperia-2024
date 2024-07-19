@@ -19,7 +19,7 @@ export class MemeCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -63,12 +63,12 @@ export class MemeCommand extends ImperiaCommand {
     }
 
     private async getRandomMeme(): Promise<RandomMemeResponse | undefined> {
-        const cacheKey = "random_memes";
-        const sortTypes = ["score", "num_comments", "created_utc"];
+        const cacheKey: string = "random_memes";
+        const sortTypes: string[] = ["score", "num_comments", "created_utc"];
 
         const randomSortType: string = this.utils.randomizeArray(sortTypes);
 
-        const url = `https://api.pullpush.io/reddit/submission/search?html_decode=True&subreddit=dankmemes&size=100&sort_type=${randomSortType}`;
+        const url: string = `https://api.pullpush.io/reddit/submission/search?html_decode=True&subreddit=dankmemes&size=100&sort_type=${randomSortType}`;
 
         const cached: string[] = await this.container.df.lrange(cacheKey, 0, -1);
 

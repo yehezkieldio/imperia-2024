@@ -50,8 +50,8 @@ export class FactCommand extends ImperiaCommand {
     }
 
     private async getRandomFact(): Promise<RandomFactResponse | undefined> {
-        const cacheKey = "random_facts";
-        const url = "https://nekos.life/api/v2/fact";
+        const cacheKey: string = "random_facts";
+        const url: string = "https://nekos.life/api/v2/fact";
 
         try {
             const response = (await fetch(url, {

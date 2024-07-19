@@ -36,7 +36,7 @@ export class JokeCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -68,8 +68,8 @@ export class JokeCommand extends ImperiaCommand {
     }
 
     private async getRandomJoke(): Promise<RandomJokeResponse | undefined> {
-        const cacheKey = "random_jokes";
-        const url = "https://sv443.net/jokeapi/v2/joke/Any";
+        const cacheKey: string = "random_jokes";
+        const url: string = "https://sv443.net/jokeapi/v2/joke/Any";
 
         try {
             const response = (await fetch(url, {

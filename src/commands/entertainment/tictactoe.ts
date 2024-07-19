@@ -2,7 +2,14 @@ import { ticTacToeGames } from "@/internal/database/postgres/schema";
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { Time } from "@sapphire/time-utilities";
 import { TimerManager } from "@sapphire/timer-manager";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, type User } from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    type InteractionResponse,
+    SlashCommandBuilder,
+    type User,
+} from "discord.js";
 import { and, eq } from "drizzle-orm";
 
 export class TicTacToeCommand extends ImperiaCommand {
@@ -15,7 +22,7 @@ export class TicTacToeCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder()
             .setName(this.name)
             .setDescription(this.description)
@@ -29,7 +36,9 @@ export class TicTacToeCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
+    public async chatInputRun(
+        interaction: ImperiaCommand.ChatInputCommandInteraction,
+    ): Promise<InteractionResponse | undefined> {
         const opponent: User = interaction.options.getUser("opponent", true);
 
         if (opponent.bot) {

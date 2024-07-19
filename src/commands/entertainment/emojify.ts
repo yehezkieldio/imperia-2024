@@ -68,9 +68,9 @@ export class EmojifyCommand extends ImperiaCommand {
         const isInappropriate = (str: string) => this.inappropriateEmojis.some((emoji: string) => str.includes(emoji));
         const shouldFilterEmojis = true;
 
-        const words = interaction.options.getString("text", true).replace(/\n/g, " ").split(" ");
+        const words: string[] = interaction.options.getString("text", true).replace(/\n/g, " ").split(" ");
 
-        const result = words
+        const result: string = words
             .reduce((acc: string, wordRaw: string) => {
                 const word: string = wordRaw.replace(/[^0-9a-zA-Z]/g, "").toLowerCase();
 

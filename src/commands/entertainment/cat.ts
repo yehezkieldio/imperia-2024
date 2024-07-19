@@ -23,7 +23,7 @@ export class CatCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -55,8 +55,8 @@ export class CatCommand extends ImperiaCommand {
     }
 
     private async getRandomCat(): Promise<RandomCatResponse | undefined> {
-        const cacheKey = "random_cats";
-        const url = "https://cataas.com/cat?json=true";
+        const cacheKey: string = "random_cats";
+        const url: string = "https://cataas.com/cat?json=true";
 
         try {
             const response = (await fetch(url, {

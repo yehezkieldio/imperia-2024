@@ -20,7 +20,7 @@ export class DadJokeCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -52,8 +52,8 @@ export class DadJokeCommand extends ImperiaCommand {
     }
 
     private async getRandomDadjokes(): Promise<RandomDadJokeResponse | undefined> {
-        const cacheKey = "random_dad_jokes";
-        const url = "https://icanhazdadjoke.com/";
+        const cacheKey: string = "random_dad_jokes";
+        const url: string = "https://icanhazdadjoke.com/";
 
         try {
             const response = (await fetch(url, {

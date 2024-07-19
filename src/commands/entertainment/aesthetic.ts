@@ -11,7 +11,7 @@ export class AestheticCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder()
             .setName(this.name)
             .setDescription(this.description)
@@ -38,8 +38,8 @@ export class AestheticCommand extends ImperiaCommand {
     }
 
     private toFullWidth(text: string): string {
-        return text.replace(/[!-~]/g, (char) => {
-            const code = char.charCodeAt(0);
+        return text.replace(/[!-~]/g, (char: string): string => {
+            const code: number = char.charCodeAt(0);
             return String.fromCharCode(code + 0xfee0);
         });
     }

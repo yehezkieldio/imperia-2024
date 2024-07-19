@@ -1,6 +1,6 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
-import { SlashCommandBuilder } from "discord.js";
+import { type Message, SlashCommandBuilder } from "discord.js";
 
 export class CoinflipCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -12,7 +12,7 @@ export class CoinflipCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -21,12 +21,12 @@ export class CoinflipCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
         await interaction.deferReply({
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
 
-        const result = ["Heads", "Tails"][Math.floor(Math.random() * 2)];
+        const result: string = ["Heads", "Tails"][Math.floor(Math.random() * 2)];
 
         return interaction.editReply({
             embeds: [

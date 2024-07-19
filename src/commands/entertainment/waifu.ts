@@ -18,7 +18,7 @@ export class WaifuCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -50,8 +50,8 @@ export class WaifuCommand extends ImperiaCommand {
     }
 
     private async getRandomWaifu(): Promise<RandomWaifuResponse | undefined> {
-        const cacheKey = "random_waifu";
-        const url = "https://api.waifu.pics/sfw/waifu";
+        const cacheKey: string = "random_waifu";
+        const url: string = "https://api.waifu.pics/sfw/waifu";
 
         try {
             const response = (await fetch(url, {

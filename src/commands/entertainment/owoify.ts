@@ -18,7 +18,7 @@ export class OwoifyCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder()
             .setName(this.name)
             .setDescription(this.description)

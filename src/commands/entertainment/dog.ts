@@ -19,7 +19,7 @@ export class DogCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -51,8 +51,8 @@ export class DogCommand extends ImperiaCommand {
     }
 
     private async getRandomDog(): Promise<RandomDogResponse | undefined> {
-        const cacheKey = "random_dogs";
-        const url = "https://dog.ceo/api/breeds/image/random";
+        const cacheKey: string = "random_dogs";
+        const url: string = "https://dog.ceo/api/breeds/image/random";
 
         try {
             const response = (await fetch(url, {

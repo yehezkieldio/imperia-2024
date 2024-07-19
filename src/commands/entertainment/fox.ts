@@ -19,7 +19,7 @@ export class FoxCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -51,8 +51,8 @@ export class FoxCommand extends ImperiaCommand {
     }
 
     private async getRandomFox(): Promise<RandomFoxResponse | undefined> {
-        const cacheKey = "random_foxs";
-        const url = "https://randomfox.ca/floof";
+        const cacheKey: string = "random_foxs";
+        const url: string = "https://randomfox.ca/floof";
 
         try {
             const response = (await fetch(url, {

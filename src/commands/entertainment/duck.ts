@@ -19,7 +19,7 @@ export class DuckCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -51,8 +51,8 @@ export class DuckCommand extends ImperiaCommand {
     }
 
     private async getRandomCat(): Promise<RandomDuckResponse | undefined> {
-        const cacheKey = "random_ducks";
-        const url = "https://random-d.uk/api/random";
+        const cacheKey: string = "random_ducks";
+        const url: string = "https://random-d.uk/api/random";
 
         try {
             const response = (await fetch(url, {

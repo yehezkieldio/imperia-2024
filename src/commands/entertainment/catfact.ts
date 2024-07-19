@@ -18,7 +18,7 @@ export class CatFactCommand extends ImperiaCommand {
         });
     }
 
-    public override registerApplicationCommands(registry: ImperiaCommand.Registry) {
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
@@ -50,8 +50,8 @@ export class CatFactCommand extends ImperiaCommand {
     }
 
     private async getRandomCatFact(): Promise<RandomCatFactResponse | undefined> {
-        const cacheKey = "random_cat_facts";
-        const url = "https://catfact.ninja/fact";
+        const cacheKey: string = "random_cat_facts";
+        const url: string = "https://catfact.ninja/fact";
 
         try {
             const response = (await fetch(url, {
