@@ -1,5 +1,7 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { RegisterBehavior } from "@sapphire/framework";
+import { Time } from "@sapphire/time-utilities";
+import { TimerManager } from "@sapphire/timer-manager";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, type User } from "discord.js";
 
 export class TicTacToeCommand extends ImperiaCommand {
@@ -96,8 +98,15 @@ export class TicTacToeCommand extends ImperiaCommand {
                     .setStyle(ButtonStyle.Secondary),
             );
 
-        return interaction.editReply({
-            content: "The game has been set up!",
+        TimerManager.setTimeout(() => {
+            interaction.editReply({
+                content: "This game has timed out or ended.",
+                components: [],
+            });
+        }, Time.Minute * 1);
+
+        interaction.editReply({
+            content: "The game has been set up and will end in 1 minute if no one responds.",
             components: [boardButtonsRowOne, boardButtonsRowTwo, boardButtonsRowThree],
         });
     }
