@@ -64,8 +64,11 @@ export class ProgrammingMemeCommand extends ImperiaCommand {
 
     private async getRandomProgrammingMeme(): Promise<RandomProgrammingMemeResponse | undefined> {
         const cacheKey = "random_programming_memes";
-        const url =
-            "https://api.pullpush.io/reddit/submission/search?html_decode=True&subreddit=ProgrammerHumor&size=100&sort_type=score";
+        const sortTypes = ["score", "num_comments", "created_utc"];
+
+        const randomSortType: string = this.utils.randomizeArray(sortTypes);
+
+        const url = `https://api.pullpush.io/reddit/submission/search?html_decode=True&subreddit=dankmemes&size=100&sort_type=${randomSortType}`;
 
         const cached: string[] = await this.container.df.lrange(cacheKey, 0, -1);
 
@@ -83,6 +86,7 @@ export class ProgrammingMemeCommand extends ImperiaCommand {
                 const urls: string[] = response.data.map((data) => data.url);
 
                 await this.container.df.rpush(cacheKey, ...urls);
+                await this.container.df.expire(cacheKey, 7200);
 
                 return { urls };
             } catch (error) {
