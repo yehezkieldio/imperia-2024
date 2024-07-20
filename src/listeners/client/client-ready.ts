@@ -14,6 +14,6 @@ export class ClientReadyListener extends ImperiaListener {
     public async run(client: Client): Promise<void> {
         const { username, id } = client.user as ClientUser;
 
-        this.container.logger.info(`ClientReadyListener: Successfully logged in as ${username} (${id})`);
+        this.container.logger.info(`ClientReadyListener: Successfully logged in as ${username}. (${id})`);
     }
 }

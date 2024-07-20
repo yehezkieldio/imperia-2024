@@ -48,7 +48,7 @@ export const configuration: ImperiaClientOptions = {
     loadDefaultErrorListeners: true,
     loadMessageCommandListeners: true,
     logger: { level: env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info },
-    overrideApplicationCommandsRegistries: env.NODE_ENV === "development",
+    overrideApplicationCommandsRegistries: false,
     partials: Partials,
     tasks: ScheduledTaskOptions,
     typing: true,

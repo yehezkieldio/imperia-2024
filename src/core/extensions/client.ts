@@ -12,6 +12,7 @@ import type { ClientOptions } from "discord.js";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Redis } from "ioredis";
 
+import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import type * as schema from "../database/postgres/schema";
 
 /**
@@ -46,6 +47,10 @@ export class ImperiaClient extends SapphireClient {
             container.logger.info("ImperiaClient: Creating full-text search index for the data store.");
             await createDfSearchIndexes();
             container.logger.info("ImperiaClient: Full-text search index created.");
+
+            container.logger.info("ImperiaClient: Loading emoji data into the data store.");
+            await loadEmoji();
+            container.logger.info("ImperiaClient: Emoji data loaded.");
         });
 
         container.df.on("error", (error): void => {
