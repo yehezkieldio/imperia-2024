@@ -9,5 +9,6 @@
         "strings": "on"
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.preferences.preferTypeOnlyAutoImports": true
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "vscord.app.privacyMode.enable": true
 }

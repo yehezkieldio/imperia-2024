@@ -28,7 +28,7 @@ services:
         POSTGRES_PASSWORD: ${DOCKER_DB_PASSWORD}
         POSTGRES_DB: ${DOCKER_DB_NAME}
     volumes:
-      - ./data/postgresqldata:/var/lib/postgresql/data
+      - ./data/pg:/var/lib/postgresql/data
     networks:
       - imperia-network
     restart: always
@@ -41,7 +41,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./data/dragonflydata:/data
+      - ./data/dragonfly:/data
     networks:
       - imperia-network
 networks:

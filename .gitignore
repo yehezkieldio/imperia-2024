@@ -105,6 +105,10 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
+.env.prod
+
+.env.development
+.env.production
 
 # parcel-bundler cache (https://parceljs.org/)
 
@@ -135,7 +139,6 @@ dist
 # vuepress v2.x temp and cache directory
 
 .temp
-.env.prod
 
 # Docusaurus cache and generated files
 
@@ -175,7 +178,11 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
+# Docker
 docker/data
 docker/infra/data
 docker/infra/postgresqldata
 docker/infra/dragonflydata
+
+# Hidden
+.hidden

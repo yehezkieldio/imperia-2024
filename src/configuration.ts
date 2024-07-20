@@ -1,50 +1,55 @@
-import { env } from "@/environment";
-import { DEVELOPERS } from "@/internal/constants/developers";
-import type { ImperiaClientOptions } from "@/internal/extensions/client";
-import { LogLevel } from "@sapphire/framework";
+import { DEVELOPERS } from "@/core/constants";
+import type { ImperiaClientOptions } from "@/core/extensions/client";
+import { env } from "@/~environment";
+import { LogLevel, type CooldownOptions as SapphireCooldownOptions } from "@sapphire/framework";
+import type { ScheduledTaskHandlerOptions } from "@sapphire/plugin-scheduled-tasks";
 import { Time } from "@sapphire/time-utilities";
-import { ActivityType, GatewayIntentBits, Partials } from "discord.js";
+import { GatewayIntentBits, type MessageMentionOptions, Partials as PartialEnums } from "discord.js";
 
-export const configuration: ImperiaClientOptions = {
-    allowedMentions: {
-        users: [],
-        roles: [],
-    },
-    overrideApplicationCommandsRegistries: env.NODE_ENV === "development",
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
-    partials: [Partials.Channel, Partials.GuildMember],
-    loadMessageCommandListeners: true,
-    loadSubcommandErrorListeners: true,
-    loadDefaultErrorListeners: true,
-    defaultCooldown: {
-        delay: Time.Second * 2,
-        filteredUsers: DEVELOPERS,
-    },
-    defaultPrefix: "ii.",
-    presence: {
-        activities: [
-            {
-                type: ActivityType.Playing,
-                name: "with reality, the manifested. ✨",
-            },
-        ],
-        status: "dnd",
-    },
-    tasks: {
-        queue: "{scheduled-tasks}",
-        bull: {
-            defaultJobOptions: {
-                removeOnComplete: true,
-            },
-            connection: {
-                port: env.DRAGONFLY_PORT,
-                host: env.DRAGONFLY_HOST,
-                db: 4,
-            },
+const Partials: Array<PartialEnums> = [PartialEnums.Message, PartialEnums.User, PartialEnums.GuildMember];
+
+const Intents: Array<GatewayIntentBits> = [
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+];
+
+const AllowedMentions: MessageMentionOptions = {
+    parse: [],
+    users: [],
+    roles: [],
+    repliedUser: true,
+};
+
+const ScheduledTaskOptions: ScheduledTaskHandlerOptions = {
+    queue: "{scheduled-tasks}",
+    bull: {
+        connection: {
+            host: env.DRAGONFLY_HOST,
+            port: env.DRAGONFLY_PORT,
+            db: 4,
         },
     },
+};
+
+const CooldownOptions: SapphireCooldownOptions = {
+    delay: Time.Second * 3,
+    filteredUsers: DEVELOPERS,
+};
+
+/**
+ * The configuration for the bot.
+ */
+export const configuration: ImperiaClientOptions = {
+    allowedMentions: AllowedMentions,
+    defaultCooldown: CooldownOptions,
+    defaultPrefix: "ii.",
+    intents: Intents,
+    loadDefaultErrorListeners: true,
+    loadMessageCommandListeners: true,
+    logger: { level: env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info },
+    overrideApplicationCommandsRegistries: env.NODE_ENV === "development",
+    partials: Partials,
+    tasks: ScheduledTaskOptions,
     typing: true,
-    logger: {
-        level: env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info,
-    },
 };

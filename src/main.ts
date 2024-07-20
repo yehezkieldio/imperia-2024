@@ -1,13 +1,13 @@
-import "@sapphire/plugin-scheduled-tasks/register";
-import { env } from "@/environment";
-import { ImperiaClient } from "@/internal/extensions/client";
+import { configuration } from "@/configuration";
+import { ImperiaClient } from "@/core/extensions/client";
+import { env } from "@/~environment";
 import "@sapphire/plugin-logger/register";
-import { configuration } from "./configuration";
+import "@sapphire/plugin-scheduled-tasks/register";
 
 /**
- * The main entrypoint for the bot.
+ * Entrypoint of the bot.
  */
-const main = async (): Promise<void> => {
+const main: () => Promise<void> = async (): Promise<void> => {
     void new ImperiaClient(configuration).login(env.DISCORD_TOKEN);
 };
 

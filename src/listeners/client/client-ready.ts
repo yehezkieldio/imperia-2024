@@ -1,5 +1,5 @@
-import { ImperiaEvents } from "@/internal/extensions/events";
-import { ImperiaListener } from "@/internal/extensions/listener";
+import { ImperiaListener } from "@/core/extensions/listener";
+import { ImperiaEvents } from "@/core/types/events";
 import type { Client, ClientUser } from "discord.js";
 
 export class ClientReadyListener extends ImperiaListener {
@@ -11,11 +11,9 @@ export class ClientReadyListener extends ImperiaListener {
         });
     }
 
-    public async run(client: Client) {
+    public async run(client: Client): Promise<void> {
         const { username, id } = client.user as ClientUser;
-        const commandsSize = this.container.stores.get("commands").size;
 
-        this.container.logger.info(`ReadyListener: Successfully logged in as ${username} (${id})`);
-        this.container.logger.info(`ReadyListener: Loaded ${commandsSize} commands.`);
+        this.container.logger.info(`ClientReadyListener: Successfully logged in as ${username} (${id})`);
     }
 }
