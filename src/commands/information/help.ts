@@ -6,7 +6,7 @@ import type { Command, CommandStore } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
 import { type Collection, ComponentType, SlashCommandBuilder, type User, hyperlink } from "discord.js";
 
-type SelectMenuOptions = {
+export type SelectMenuOptions = {
     label: string;
     description: string;
     value: string;
