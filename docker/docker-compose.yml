@@ -1,10 +1,16 @@
 services:
   bot:
     container_name: imperia_bot_prod
+    image: imperia_bot_prod
     build:
       context: ../
       dockerfile: docker/Dockerfile
-    env_file: ../.env.prod
+    env_file:
+      - path: "../.env.prod"
+        required: true
+    depends_on:
+      - postgresql
+      - dragonfly
     volumes:
       - ../src/:/app/src/
     networks:
@@ -13,7 +19,7 @@ services:
     container_name: imperia_pg_prod
     image: postgres:latest
     env_file:
-      - path: "../../.env"
+      - path: "../.env"
         required: true
     ports:
       - '5432:5432'
