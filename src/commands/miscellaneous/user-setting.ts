@@ -72,7 +72,7 @@ export class UserSettingCommand extends ImperiaCommand {
             return interaction.editReply({
                 embeds: [
                     new ImperiaEmbedBuilder().setDescription(
-                        `Select a privacy setting below to configure how Imperia responds to your commands.\n\n${bold("PUBLIC")}: Imperia will respond to your commands in without ephemeral messages, visible to everyone in the channel.\n${bold("PRIVATE")}: Imperia will respond to your commands in ephemeral messages, only visible to you.\n\nCurrent privacy setting: ${bold((await this.utils.responsePrivacy(interaction.user.id)) ? "Private" : "Public")}`,
+                        `Select a privacy setting below to configure how Imperia responds to your commands.\n\n${bold("PUBLIC")}: Imperia will respond to your commands in without ephemeral messages, visible to everyone in the channel.\n${bold("PRIVATE")}: Imperia will respond to your commands in ephemeral messages, only visible to you.\n\nCurrent privacy setting: ${bold((await this.utils.responsePrivacy(interaction.user.id)) ? "Private" : "Public")}\n\nThis setting will only apply to slash commands.`,
                     ),
                 ],
                 components: [actionButtons],
