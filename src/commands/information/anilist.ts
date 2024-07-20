@@ -181,7 +181,7 @@ export class AnilistCommand extends ImperiaCommand {
         data: AnilistQueryResponse,
         ttl = 3600,
     ): Promise<void> {
-        const key = `anilist_search_${type}_${search.toLowerCase()}`;
+        const key = `anilist_search_${type}_${this.utils.slugify(search)}`;
         await this.container.df.hset(key, {
             type,
             search: search.toLowerCase(),

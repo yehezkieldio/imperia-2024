@@ -143,7 +143,7 @@ export class GithubCommand extends ImperiaCommand {
         data: GitHubRepositoryResponse,
         ttl = 3600,
     ): Promise<void> {
-        const key = `github_search_${author}_${search.toLowerCase()}`;
+        const key = `github_search_${this.utils.slugify(search)}_${this.utils.slugify(search)}`;
         await this.container.df.hset(key, {
             author,
             search: search.toLowerCase(),
