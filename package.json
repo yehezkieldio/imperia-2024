@@ -20,7 +20,8 @@
         "db:generate": "drizzle-kit generate",
         "-- DOCKER": "-------------------------",
         "docker:infra:up": "docker-compose --file docker/infra/docker-compose.yml --env-file .env up -d",
-        "docker:infra:down": "docker-compose --file docker/infra/docker-compose.yml --env-file .env down"
+        "docker:infra:down": "docker-compose --file docker/infra/docker-compose.yml --env-file .env down",
+        "docker:prod:build": "docker-compose --file docker/docker-compose.yml --env-file .env build"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.8.3",
