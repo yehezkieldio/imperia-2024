@@ -1,7 +1,7 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
-import { RegisterBehavior, UserError } from "@sapphire/framework";
+import { UserError } from "@sapphire/framework";
 import {
     type GuildMember,
     type GuildMemberRoleManager,
@@ -37,7 +37,6 @@ export class KickCommand extends ImperiaCommand {
             );
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });
