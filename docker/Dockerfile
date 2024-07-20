@@ -38,6 +38,7 @@ ENV NODE_ENV=production
 
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/tsconfig.json .
+COPY --from=builder /app/drizzle.config.ts .
 COPY --from=builder /app/src src
 
 CMD ["wait-for-it.sh", "imperia_pg_prod:5432", "--", "sh", "-c", "bun run db:push && bun run start"]
