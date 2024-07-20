@@ -42,6 +42,8 @@ services:
       - "6379:6379"
     volumes:
       - ./data/dragonflydata:/data
+    networks:
+      - imperia-network
 networks:
   imperia-network:
     driver: bridge

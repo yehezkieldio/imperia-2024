@@ -36,10 +36,13 @@ export class ImperiaClient extends SapphireClient {
         container.logger.info("ImperiaClient: Connected to PostgreSQL, database layer initialized.");
 
         container.df = dragonfly;
-        container.logger.info("ImperiaClient: Connected to Dragonfly, cache layer and utilities initialized.");
 
-        initIndexes();
-        container.logger.info("ImperiaClient: Initialized all indexes for Dragonfly.");
+        container.df.on("connect", () => {
+            container.logger.info("ImperiaClient: Connected to Dragonfly, cache layer and utilities initialized.");
+
+            initIndexes();
+            container.logger.info("ImperiaClient: Initialized all indexes for Dragonfly.");
+        });
 
         return super.login(token);
     }
