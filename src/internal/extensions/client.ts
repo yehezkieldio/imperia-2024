@@ -1,5 +1,5 @@
 import { dragonfly } from "@/internal/database/dragonfly/connection";
-import { initAnilistSearchIndex } from "@/internal/database/dragonfly/indexes";
+import { initIndexes } from "@/internal/database/dragonfly/indexes";
 import { conn, db as database } from "@/internal/database/postgres/connection";
 import {
     ApplicationCommandRegistries,
@@ -38,8 +38,8 @@ export class ImperiaClient extends SapphireClient {
         container.df = dragonfly;
         container.logger.info("ImperiaClient: Connected to Dragonfly, cache layer and utilities initialized.");
 
-        initAnilistSearchIndex();
-        container.logger.info("ImperiaClient: Initialized Anilist cache search index.");
+        initIndexes();
+        container.logger.info("ImperiaClient: Initialized all indexes for Dragonfly.");
 
         return super.login(token);
     }
