@@ -265,7 +265,7 @@ export class GithubCommand extends ImperiaCommand {
     }
 
     private async getCachedData(search: string, author: string): Promise<GitHubRepositoryResponse | null> {
-        const query = `@type:{${author}} @search:(${search.toLowerCase()})`;
+        const query = `@author:{${author}} @search:(${search.toLowerCase()})`;
         const searchResults = (await this.container.df.call(
             "FT.SEARCH",
             "github_idx",
