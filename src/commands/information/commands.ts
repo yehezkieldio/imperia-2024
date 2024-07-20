@@ -1,7 +1,7 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { CommandUtils } from "@/internal/utils/command-utils";
-import { PaginatedMessage } from "@sapphire/discord.js-utilities";
+import { type MessageBuilder, PaginatedMessage } from "@sapphire/discord.js-utilities";
 import type { Command, CommandStore } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
 import { ButtonStyle } from "discord.js";
@@ -58,9 +58,9 @@ export class CommandsListCommand extends ImperiaCommand {
                 const start: number = i * commandsPerPage;
                 const end: number = start + commandsPerPage;
 
-                const pageCommands = Array.from(categoryCommands.values()).slice(start, end);
+                const pageCommands: Command[] = Array.from(categoryCommands.values()).slice(start, end);
 
-                paginate.addPageBuilder((builder) => {
+                paginate.addPageBuilder((builder: MessageBuilder): MessageBuilder => {
                     const commandFields = pageCommands.map((cmd) => {
                         return {
                             name: `${cmd.name}`,
@@ -97,7 +97,7 @@ export class CommandsListCommand extends ImperiaCommand {
             );
             embed.addFields(commandFields);
 
-            paginate.addPageBuilder((builder) => {
+            paginate.addPageBuilder((builder: MessageBuilder): MessageBuilder => {
                 return builder.setEmbeds([embed]);
             });
         }
