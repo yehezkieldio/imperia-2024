@@ -29,12 +29,12 @@ FROM imbios/bun-node:1.1.20-20.12.2-slim AS runner
 WORKDIR /app
 
 COPY --from=deps /app/node_modules node_modules
-COPY --from=builder /app/.env .env
+COPY --from=builder /app/.env.prod .env.prod
 
 ENV NODE_ENV=production
 
-COPY --from=builder  /app/package.json .
-COPY --from=builder  /app/tsconfig.json .
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/tsconfig.json .
 COPY --from=builder /app/src src
 
-CMD [ "bun", "run", "start" ]
+CMD ["bun", "run", "start"]
