@@ -178,6 +178,7 @@ private/
 .vscode/
 .dockerignore
 
+docker/data
 docker/infra/data/
 docker/infra/dragonflydata/
 docker/infra/postgresqldata/
