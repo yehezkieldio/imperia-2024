@@ -12,7 +12,7 @@ interface GitHubRepositoriesSearchResponse {
     items: GitHubRepositoryResponse[];
 }
 
-export class GithubCommand extends ImperiaCommand {
+export class GithubSearchCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             description: "Find information about a repository on GitHub without specifying the owner.",
