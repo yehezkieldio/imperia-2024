@@ -5,7 +5,7 @@ import { chatInputApplicationCommandMention } from "discord.js";
 export class CommandUtils {
     private container: Container = c;
 
-    public commandCategories = [
+    public static commandCategories = [
         {
             name: "Configuration",
             value: "configuration",
