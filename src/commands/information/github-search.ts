@@ -2,6 +2,7 @@ import type { GitHubRepositoryResponse } from "@/commands/information/github";
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
+import type { DragonflySearchResult } from "@/internal/typings/dragonfly";
 import { UserError } from "@sapphire/framework";
 import { type APIEmbedField, type Message, SlashCommandBuilder } from "discord.js";
 
@@ -103,42 +104,30 @@ export class GithubCommand extends ImperiaCommand {
     }
 
     private async getRepository(repository: string, cached = true): Promise<GitHubRepositoryResponse | undefined> {
-        /**
-         * TODO: Should implement a alternate cache solution while taking into account the other github command, and it's search index.
-         */
-        const cache_key: string = `github_repo_${repository.toLowerCase()}`;
-        const url = `https://api.github.com/search/repositories?q=${repository}+in:name&sort=stars&order=desc`;
-
         if (cached) {
-            const cached: string | null = await this.container.df.hget(cache_key, "data");
-            if (cached) {
-                return JSON.parse(cached);
-            }
+            const cached: GitHubRepositoryResponse | null = await this.getCachedData(repository);
+            if (cached) return cached;
         }
 
+        const url = `https://api.github.com/search/repositories?q=${repository}+in:name&sort=stars&order=desc`;
+
         try {
-            const response = await fetch(url, {
+            const response = (await fetch(url, {
                 method: "GET",
                 headers: {
                     Accept: "application/vnd.github+json",
                     "User-Agent": "Imperia (https://github.com/i9ntheory/imperia)",
                 },
-            }).then((response) => response.json());
+            }).then((response) => response.json())) as GitHubRepositoriesSearchResponse;
 
-            await this.container.df.hset(cache_key, {
-                search: repository.toLowerCase(),
-                data: JSON.stringify(response),
-            });
-            await this.container.df.expire(cache_key, 3600);
+            await this.setCachedData(repository, response.items[0].owner.login, response.items[0]);
 
-            return response;
+            return response.items[0];
         } catch (error) {
             this.container.logger.error(error);
 
-            const cached: string | null = await this.container.df.hget(cache_key, "data");
-            if (cached) {
-                return JSON.parse(cached);
-            }
+            const cached: GitHubRepositoryResponse | null = await this.getCachedData(repository);
+            if (cached) return cached;
 
             new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
@@ -146,5 +135,45 @@ export class GithubCommand extends ImperiaCommand {
                 context: { repository },
             });
         }
+    }
+
+    private async setCachedData(
+        search: string,
+        author: string,
+        data: GitHubRepositoryResponse,
+        ttl = 3600,
+    ): Promise<void> {
+        const key = `github_search_${author}_${search.toLowerCase()}`;
+        await this.container.df.hset(key, {
+            author,
+            search: search.toLowerCase(),
+            data: JSON.stringify(data),
+        });
+        await this.container.df.expire(key, ttl);
+    }
+
+    private async getCachedData(search: string): Promise<GitHubRepositoryResponse | null> {
+        const query = `@search:(${search.toLowerCase()})`;
+        const searchResults = (await this.container.df.call(
+            "FT.SEARCH",
+            "github_idx",
+            query,
+            "LIMIT",
+            "0",
+            "1",
+        )) as DragonflySearchResult;
+
+        if (searchResults[0] === 0) {
+            return null;
+        }
+
+        return this.parseGitHubData(searchResults);
+    }
+
+    private parseGitHubData(array: DragonflySearchResult): GitHubRepositoryResponse {
+        const [, , [, dataStr]] = array;
+        const data: GitHubRepositoryResponse = JSON.parse(dataStr);
+
+        return data;
     }
 }

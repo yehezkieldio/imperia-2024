@@ -238,7 +238,7 @@ export class GithubCommand extends ImperiaCommand {
         } catch (error) {
             this.container.logger.error(error);
 
-            const cached = await this.getCachedData(repository, author);
+            const cached: GitHubRepositoryResponse | null = await this.getCachedData(repository, author);
             if (cached) return cached;
 
             new UserError({
