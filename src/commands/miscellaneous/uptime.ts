@@ -1,6 +1,6 @@
 import os from "node:os";
 import { ImperiaCommand } from "@/internal/extensions/command";
-import dayjs, { type Dayjs } from "dayjs";
+import { humanizeDuration } from "@/internal/utils/time-utils";
 import { type InteractionResponse, SlashCommandBuilder } from "discord.js";
 
 export class UptimeCommand extends ImperiaCommand {
@@ -27,22 +27,8 @@ export class UptimeCommand extends ImperiaCommand {
         const machineUptime: number = os.uptime();
 
         return interaction.reply({
-            content: `Bot Uptime: ${this.humanizeDuration(botUptime)}\nMachine Uptime: ${this.humanizeDuration(machineUptime)}`,
+            content: `Bot Uptime: ${humanizeDuration(botUptime)}\nMachine Uptime: ${humanizeDuration(machineUptime)}`,
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
-    }
-
-    private humanizeDuration(ms: number): string {
-        const duration: Dayjs = dayjs(ms);
-        const hours: number = duration.get("hours");
-        const minutes: number = duration.get("minutes");
-        const seconds: number = duration.get("seconds");
-
-        const parts: string[] = [];
-        if (hours > 0) parts.push(`${hours} hours`);
-        if (minutes > 0) parts.push(`${minutes} minutes`);
-        if (seconds > 0) parts.push(`${seconds} seconds`);
-
-        return parts.length > 0 ? parts.join(", ") : "less than a second";
     }
 }
