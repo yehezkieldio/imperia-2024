@@ -1,7 +1,7 @@
 import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
-import { RegisterBehavior, UserError } from "@sapphire/framework";
+import { UserError } from "@sapphire/framework";
 import { type GuildMember, type InteractionResponse, SlashCommandBuilder, type User } from "discord.js";
 
 export class AvatarCommand extends ImperiaCommand {
@@ -24,7 +24,6 @@ export class AvatarCommand extends ImperiaCommand {
             );
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });

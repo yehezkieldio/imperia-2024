@@ -2,7 +2,7 @@ import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { CommandUtils } from "@/internal/utils/command-utils";
 import { PaginatedMessage } from "@sapphire/discord.js-utilities";
-import { type Command, type CommandStore, RegisterBehavior } from "@sapphire/framework";
+import type { Command, CommandStore } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
 import { ButtonStyle } from "discord.js";
 import { ComponentType } from "discord.js";
@@ -31,7 +31,6 @@ export class CommandsListCommand extends ImperiaCommand {
             );
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });

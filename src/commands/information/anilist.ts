@@ -30,7 +30,7 @@ import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaEmbedBuilder } from "@/internal/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
 import type { DragonflySearchResult } from "@/internal/typings/dragonfly";
-import { RegisterBehavior, UserError } from "@sapphire/framework";
+import { UserError } from "@sapphire/framework";
 import { type Message, SlashCommandBuilder } from "discord.js";
 
 export class AnilistCommand extends ImperiaCommand {
@@ -65,7 +65,6 @@ export class AnilistCommand extends ImperiaCommand {
             );
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });

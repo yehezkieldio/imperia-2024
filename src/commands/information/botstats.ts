@@ -1,4 +1,4 @@
-import { RegisterBehavior, UserError } from "@sapphire/framework";
+import { UserError } from "@sapphire/framework";
 import { SlashCommandBuilder, codeBlock } from "discord.js";
 
 import { commandUsage } from "@/internal/database/postgres/schema";
@@ -23,7 +23,6 @@ export class BotStatisticsCommand extends ImperiaCommand {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
         void registry.registerChatInputCommand(command, {
-            behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
             guildIds: [],
             idHints: [],
         });
