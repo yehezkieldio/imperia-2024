@@ -2,7 +2,7 @@ import { ImperiaCommand } from "@/internal/extensions/command";
 import { ImperiaIdentifiers } from "@/internal/extensions/identifiers";
 import { RegisterBehavior, UserError } from "@sapphire/framework";
 import * as phonton from "@silvia-odwyer/photon-node";
-import { type Attachment, AttachmentBuilder, SlashCommandBuilder } from "discord.js";
+import { type Attachment, AttachmentBuilder, type Message, SlashCommandBuilder } from "discord.js";
 
 interface ImageFilter {
     name: string;
@@ -119,7 +119,7 @@ export class FilterImageCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
         await interaction.deferReply({
             ephemeral: await this.utils.responsePrivacy(interaction.user.id),
         });
