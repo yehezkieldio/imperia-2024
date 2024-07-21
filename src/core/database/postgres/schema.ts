@@ -29,7 +29,8 @@ export const users = pgTable(
 );
 
 const commandStatus = pgEnum("command_history_status", ["success", "denied", "error", "unknown"]);
-export const commandStatusSchema = z.enum(commandStatus.enumValues);
+const commandStatusSchema = z.enum(commandStatus.enumValues);
+export type CommandStatus = z.infer<typeof commandStatusSchema>;
 
 export const commandHistory = pgTable("command_history", {
     id: cuid2("id").defaultRandom().primaryKey(),
