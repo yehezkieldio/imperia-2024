@@ -28,15 +28,6 @@ services:
       - ./data/dragonfly:/data
     networks:
       - imperia-network
-  # lavalink:
-  #   container_name: imperia_lavalink_infra
-  #   image: fredboat/lavalink:latest
-  #   ports:
-  #     - "2333:2333"
-  #   volumes:
-  #     - ./docker/infra/lavalink.yml:/opt/Lavalink/application.yml:ro
-  #   networks:
-  #     - imperia-network
 networks:
   imperia-network:
     driver: bridge
