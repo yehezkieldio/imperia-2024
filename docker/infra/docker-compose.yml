@@ -3,7 +3,7 @@ services:
     container_name: imperia_pg_infra
     image: postgres:latest
     env_file:
-      - path: "../../.env.local"
+      - path: "../../.env"
         required: true
     ports:
       - '5432:5432'
@@ -26,9 +26,17 @@ services:
       - "6379:6379"
     volumes:
       - ./data/dragonfly:/data
+    networks:
+      - imperia-network
+  # lavalink:
+  #   container_name: imperia_lavalink_infra
+  #   image: fredboat/lavalink:latest
+  #   ports:
+  #     - "2333:2333"
+  #   volumes:
+  #     - ./docker/infra/lavalink.yml:/opt/Lavalink/application.yml:ro
+  #   networks:
+  #     - imperia-network
 networks:
   imperia-network:
     driver: bridge
-volumes:
-  postgresqldata:
-  dragonflydata:

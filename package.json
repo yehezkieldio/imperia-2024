@@ -19,8 +19,8 @@
         "db:studio": "drizzle-kit studio",
         "db:generate": "drizzle-kit generate",
         "-- DOCKER": "-------------------------",
-        "docker:infra:up": "docker-compose --file docker/infra/docker-compose.yml --env-file .env.local up -d",
-        "docker:infra:down": "docker-compose --file docker/infra/docker-compose.yml --env-file .env.local down",
+        "docker:infra:up": "docker-compose --file docker/infra/docker-compose.yml --env-file .env up -d",
+        "docker:infra:down": "docker-compose --file docker/infra/docker-compose.yml --env-file .env down",
         "docker:prod:build": "docker-compose --file docker/docker-compose.yml --env-file .env.production build",
         "docker:prod:up": "docker-compose --file docker/docker-compose.yml --env-file .env.production up -d",
         "docker:prod:down": "docker-compose --file docker/docker-compose.yml --env-file .env.production down"
@@ -40,6 +40,7 @@
         "@sapphire/plugin-logger": "^4.0.2",
         "@sapphire/plugin-scheduled-tasks": "^10.0.1",
         "@sapphire/plugin-subcommands": "^6.0.3",
+        "@sapphire/plugin-utilities-store": "^2.0.2",
         "@sapphire/time-utilities": "^1.7.12",
         "@sapphire/timer-manager": "^1.0.2",
         "@sapphire/utilities": "^3.16.2",

@@ -1,4 +1,5 @@
 import { dragonfly } from "@/core/database/dragonfly/connection";
+import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
 import { db } from "@/core/database/postgres/connection";
 import {
@@ -11,13 +12,8 @@ import {
 import type { ClientOptions } from "discord.js";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Redis } from "ioredis";
-
-import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import type * as schema from "../database/postgres/schema";
 
-/**
- * The options for the client, which extends the SapphireClientOptions and ClientOptions.
- */
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
     overrideApplicationCommandsRegistries?: boolean;
 }

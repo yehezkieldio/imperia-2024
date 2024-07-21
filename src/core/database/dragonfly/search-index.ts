@@ -13,6 +13,17 @@ async function createSearchIndex(indexName: string, prefix: string, schema: { [k
 
 export async function createDfSearchIndexes(): Promise<void> {
     await createSearchIndex("github_idx", "github:search_", {
+        author: "TEXT",
+        repository: "TEXT",
+    });
+
+    await createSearchIndex("anilist_idx", "anilist:search_", {
+        type: "TAG",
+        search: "TEXT",
+        data: "TEXT",
+    });
+
+    await createSearchIndex("kitsu_idx", "kitsu:search_", {
         type: "TAG",
         search: "TEXT",
         data: "TEXT",
