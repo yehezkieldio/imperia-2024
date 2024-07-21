@@ -1,7 +1,8 @@
-import { dragonfly } from "@/core/database/dragonfly/connection";
+import { dragonfly as df } from "@/core/database/dragonfly/connection";
 import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
 import { db } from "@/core/database/postgres/connection";
+import type { UserRepository } from "@/utilities/user-repository";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -35,9 +36,9 @@ export class ImperiaClient extends SapphireClient {
     }
 
     public override async login(token: string): Promise<string> {
-        container.df = dragonfly;
+        container.dragonfly = df;
 
-        container.df.on("connect", async (): Promise<void> => {
+        container.dragonfly.on("connect", async (): Promise<void> => {
             container.logger.info("ImperiaClient: Connected to the Dragonfly data store, caching is now available.");
 
             container.logger.info("ImperiaClient: Creating full-text search index for the data store.");
@@ -49,17 +50,17 @@ export class ImperiaClient extends SapphireClient {
             container.logger.info("ImperiaClient: Emoji data loaded.");
         });
 
-        container.df.on("error", (error): void => {
+        container.dragonfly.on("error", (error): void => {
             container.logger.error("ImperiaClient: An error occurred with the Dragonfly data store.");
             container.logger.error(error);
 
             process.exit(1);
         });
 
-        container.db = db;
+        container.database = db;
 
         try {
-            await container.db.query.users.findFirst();
+            await container.database.query.users.findFirst();
         } catch (error) {
             container.logger.error("ImperiaClient: An error occurred with the Postgres database.");
             container.logger.error(error);
@@ -75,7 +76,13 @@ export class ImperiaClient extends SapphireClient {
 
 declare module "@sapphire/pieces" {
     interface Container {
-        df: Redis;
-        db: PostgresJsDatabase<typeof schema>;
+        dragonfly: Redis;
+        database: PostgresJsDatabase<typeof schema>;
+    }
+}
+
+declare module "@sapphire/plugin-utilities-store" {
+    export interface Utilities {
+        userRepo: UserRepository;
     }
 }

@@ -1,9 +1,6 @@
 import { createEnv } from "@t3-oss/env-core";
 import { type ZodError, z } from "zod";
 
-/**
- * The environment variables that the application requires.
- */
 export const env = createEnv({
     server: {
         /**

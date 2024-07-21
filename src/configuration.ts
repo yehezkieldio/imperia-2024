@@ -38,7 +38,7 @@ const CooldownOptions: SapphireCooldownOptions = {
 };
 
 /**
- * The configuration for the bot.
+ * This is the overall configuration for the bot.
  */
 export const configuration: ImperiaClientOptions = {
     allowedMentions: AllowedMentions,
