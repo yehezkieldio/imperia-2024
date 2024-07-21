@@ -29,18 +29,6 @@ export const env = createEnv({
          * This is the port that the Dragonfly server is running on.
          */
         DRAGONFLY_PORT: z.coerce.number().int().min(1).max(6379).default(6379),
-        /**
-         * This is the host and port that the Lavalink server is running on.
-         */
-        LAVALINK_URL: z.string().min(1),
-        /**
-         * This is the name of the Lavalink server.
-         */
-        LAVALINK_NAME: z.string().min(1).default("imperia"),
-        /**
-         * This is the password that the Lavalink server will use to authenticate with the bot.
-         */
-        LAVALINK_AUTH: z.string().min(1),
     },
     runtimeEnv: process.env,
     onValidationError: (error: ZodError) => {
