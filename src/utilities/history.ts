@@ -1,4 +1,5 @@
-import { type CommandStatus, commandHistory } from "@/~schema";
+import type { CommandStatus, CommandType } from "@/core/database/postgres/utils";
+import { commandHistory } from "@/~schema";
 import { Utility } from "@sapphire/plugin-utilities-store";
 
 interface AddCommandHistoryOptions {
@@ -6,6 +7,7 @@ interface AddCommandHistoryOptions {
     guildId: string;
     commandName: string;
     status: CommandStatus;
+    type: CommandType;
 }
 
 export class CommandHistoryRepository extends Utility {
@@ -21,6 +23,7 @@ export class CommandHistoryRepository extends Utility {
         guildId,
         commandName,
         status,
+        type,
     }: AddCommandHistoryOptions): Promise<boolean> {
         const [entry] = await this.container.database
             .insert(commandHistory)
@@ -29,6 +32,7 @@ export class CommandHistoryRepository extends Utility {
                 guildId: guildId,
                 commandName: commandName,
                 status: status,
+                type: type,
             })
             .returning();
 

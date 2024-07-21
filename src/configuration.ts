@@ -12,6 +12,7 @@ const Intents: Array<GatewayIntentBits> = [
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
 ];
 
 const AllowedMentions: MessageMentionOptions = {
@@ -47,8 +48,10 @@ export const configuration: ImperiaClientOptions = {
     intents: Intents,
     loadDefaultErrorListeners: true,
     loadMessageCommandListeners: true,
+    loadScheduledTaskErrorListeners: true,
+    loadApplicationCommandRegistriesStatusListeners: true,
     logger: { level: env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info },
-    overrideApplicationCommandsRegistries: false,
+    overrideApplicationCommandsRegistries: true,
     partials: Partials,
     tasks: ScheduledTaskOptions,
     typing: true,
