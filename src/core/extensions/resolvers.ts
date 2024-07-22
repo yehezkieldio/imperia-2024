@@ -1,9 +1,9 @@
 import { Resolvers } from "@/core/resolvers/image-filter";
 import { Resolvers as SapphireResolvers } from "@sapphire/framework";
 
-type ImperiaResolvers = typeof SapphireResolvers & typeof Resolvers;
+type imperiaResolvers = typeof SapphireResolvers & typeof Resolvers;
 
-export const resolvers: ImperiaResolvers = {
+export const ImperiaResolvers: imperiaResolvers = {
     ...SapphireResolvers,
     ...Resolvers,
 };

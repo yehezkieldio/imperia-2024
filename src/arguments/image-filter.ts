@@ -1,4 +1,4 @@
-import { resolvers } from "@/core/extensions/resolvers";
+import { ImperiaResolvers } from "@/core/extensions/resolvers";
 import { ImperiaIdentifiers } from "@/core/types/identifiers";
 import { Argument } from "@sapphire/framework";
 
@@ -8,7 +8,7 @@ export class ImageFilterArgument extends Argument<string> {
     }
 
     public run(argument: string, context: Argument.Context): Argument.Result<string> {
-        const filter = resolvers.resolveImageFilter(argument);
+        const filter = ImperiaResolvers.resolveImageFilter(argument);
 
         if (filter.isErr()) {
             return this.error({
