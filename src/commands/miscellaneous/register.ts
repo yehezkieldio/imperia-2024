@@ -37,7 +37,7 @@ export class RegisterCommand extends ImperiaCommand {
             ephemeral: true,
         });
 
-        TimerManager.setTimeout(() => {
+        TimerManager.setTimeout((): void => {
             interaction.editReply({
                 components: [],
             });
@@ -49,7 +49,7 @@ export class RegisterCommand extends ImperiaCommand {
 
         const msg: Message = await message.reply(`Please use ${registerCommand} slash command to create an account.`);
 
-        TimerManager.setTimeout(() => {
+        TimerManager.setTimeout((): void => {
             if (msg.deletable) msg.delete();
         }, Time.Second * 60);
     }
@@ -57,11 +57,10 @@ export class RegisterCommand extends ImperiaCommand {
     private generateAgreement(userId: string) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder();
 
-        embed
-            .setTitle("Welcome to Imperia!")
-            .setDescription(
-                "Imperia will be collecting data from you to create your account within the system, please review the agreement below, click the agree button to proceed.",
-            );
+        embed.setTitle("Welcome to Imperia!");
+        embed.setDescription(
+            "Imperia will be collecting data from you to create your account, please review the agreement below.",
+        );
 
         embed.setFields([
             {
@@ -70,7 +69,13 @@ export class RegisterCommand extends ImperiaCommand {
             },
         ]);
 
-        const components = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        embed.setFooter({
+            text: "Click the buttons below to decide whether you agree or decline the agreement.",
+        });
+
+        const components: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder<ButtonBuilder>();
+
+        components.addComponents(
             new ButtonBuilder()
                 .setCustomId(`register-${userId}-${UserAgreementStatus.CONFIRMED}`)
                 .setLabel("Agree")
