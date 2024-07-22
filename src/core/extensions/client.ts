@@ -2,9 +2,6 @@ import { dragonfly as df } from "@/core/database/dragonfly/connection";
 import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
 import { connection, db } from "@/core/database/postgres/connection";
-import type { CommandHistoryRepository } from "@/utilities/history";
-import type { Toolbox } from "@/utilities/toolbox";
-import type { UserRepository } from "@/utilities/user-repository";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -13,9 +10,6 @@ import {
     container,
 } from "@sapphire/framework";
 import type { ClientOptions } from "discord.js";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import type { Redis } from "ioredis";
-import type * as schema from "../database/postgres/schema";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
     overrideApplicationCommandsRegistries?: boolean;
@@ -83,20 +77,5 @@ export class ImperiaClient extends SapphireClient {
         container.logger.info("ImperiaClient: Disconnected from the PostgresQL database.");
 
         return super.destroy();
-    }
-}
-
-declare module "@sapphire/pieces" {
-    interface Container {
-        dragonfly: Redis;
-        database: PostgresJsDatabase<typeof schema>;
-    }
-}
-
-declare module "@sapphire/plugin-utilities-store" {
-    export interface Utilities {
-        userRepo: UserRepository;
-        historyRepo: CommandHistoryRepository;
-        toolbox: Toolbox;
     }
 }
