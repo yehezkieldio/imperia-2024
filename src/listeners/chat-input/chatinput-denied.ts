@@ -30,7 +30,7 @@ export class ChatInputCommandDeniedListener extends ImperiaListener {
             `ChatInputCommandErrorListener: Denied execution of slash command ${payload.command.name} by ${payload.interaction.user.id} in ${payload.interaction.guildId}.`,
         );
 
-        const embed: ImperiaEmbedBuilder = this.container.utilities.toolbox.generateErrorEmbed(error);
+        const embed: ImperiaEmbedBuilder = this.container.utilities.toolbox.generateCommandDeniedEmbed(error);
 
         if (payload.interaction.deferred || payload.interaction.replied) {
             return payload.interaction.editReply({

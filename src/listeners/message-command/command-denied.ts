@@ -30,7 +30,7 @@ export class MessageCommandDeniedListener extends ImperiaListener {
             `MessageCommandDeniedListener: Failed to execute message command ${payload.command.name} by ${payload.message.author.id} in ${payload.message.guildId}.`,
         );
 
-        const embed: ImperiaEmbedBuilder = this.container.utilities.toolbox.generateErrorEmbed(error);
+        const embed: ImperiaEmbedBuilder = this.container.utilities.toolbox.generateCommandDeniedEmbed(error);
 
         if (payload.message.type === MessageType.Reply) {
             return payload.message.edit({

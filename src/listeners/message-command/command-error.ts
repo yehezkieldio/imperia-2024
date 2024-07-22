@@ -3,6 +3,7 @@ import { ImperiaListener } from "@/core/extensions/listener";
 import { ImperiaEvents } from "@/core/types/events";
 import { ImperiaIdentifiers } from "@/core/types/identifiers";
 import { ArgumentError, type MessageCommandErrorPayload, UserError } from "@sapphire/framework";
+import { capitalizeFirstLetter } from "@sapphire/utilities";
 import { type InteractionResponse, type Message, codeBlock } from "discord.js";
 
 export class MessageCommandErrorListener extends ImperiaListener {
@@ -42,10 +43,14 @@ export class MessageCommandErrorListener extends ImperiaListener {
     private handleUserError(error: UserError, payload: MessageCommandErrorPayload) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isErrorEmbed();
 
+        embed.setFooter({
+            text: `Error Identifier: ${capitalizeFirstLetter(error.identifier)}`,
+        });
+
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
                 embed.setTitle("Missing required arguments to execute this command!");
-                embed.setDescription(error.message);
+                embed.setDescription("You are missing a required argument to execute this command.");
                 break;
             case ImperiaIdentifiers.ArgumentFilterImageError:
                 embed.setTitle("The filter provided was not found!");
@@ -62,6 +67,10 @@ export class MessageCommandErrorListener extends ImperiaListener {
 
     private handleArgumentError(error: ArgumentError, payload: MessageCommandErrorPayload) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder();
+
+        embed.setFooter({
+            text: `Error Identifier: ${capitalizeFirstLetter(error.identifier)}`,
+        });
 
         embed.setTitle("An error occurred while parsing arguments for this command!");
         embed.setDescription(codeBlock(`${error.identifier}\n\n${error.message}`));

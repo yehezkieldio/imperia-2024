@@ -14,7 +14,7 @@ export class Toolbox extends Utility {
         });
     }
 
-    public generateErrorEmbed(error: UserError) {
+    public generateCommandDeniedEmbed(error: UserError) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isWarningEmbed();
 
         embed.setFooter({
