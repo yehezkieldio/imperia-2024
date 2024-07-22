@@ -46,7 +46,7 @@ export const configuration: ImperiaClientOptions = {
     defaultCooldown: CooldownOptions,
     defaultPrefix: "ii.",
     intents: Intents,
-    loadDefaultErrorListeners: true,
+    loadDefaultErrorListeners: env.NODE_ENV === "development",
     loadMessageCommandListeners: true,
     loadScheduledTaskErrorListeners: true,
     loadApplicationCommandRegistriesStatusListeners: true,

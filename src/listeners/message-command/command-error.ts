@@ -42,12 +42,19 @@ export class MessageCommandErrorListener extends ImperiaListener {
     private handleUserError(error: UserError, payload: MessageCommandErrorPayload) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isErrorEmbed();
 
-        if (error.identifier === ImperiaIdentifiers.ArgsMissing) {
-            embed.setTitle("I am missing required arguments to execute this command!");
-            embed.setDescription(error.message);
-        } else {
-            embed.setTitle("An error occurred while executing this command!");
-            embed.setDescription(error.message);
+        switch (error.identifier) {
+            case ImperiaIdentifiers.ArgsMissing:
+                embed.setTitle("Missing required arguments to execute this command!");
+                embed.setDescription(error.message);
+                break;
+            case ImperiaIdentifiers.ArgumentFilterImageError:
+                embed.setTitle("The filter provided was not found!");
+                embed.setDescription(error.message);
+                break;
+            default:
+                embed.setTitle("An error occurred while executing this command!");
+                embed.setDescription(error.message);
+                break;
         }
 
         return payload.message.channel.send({ embeds: [embed] });

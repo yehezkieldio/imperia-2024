@@ -14,7 +14,7 @@ export class ImageFilterArgument extends Argument<string> {
             return this.error({
                 context,
                 parameter: argument,
-                message: `The filter provided was not found!\nAvailable filters: ${filter.unwrapErr().join(", ")}`,
+                message: `Available filters: ${filter.unwrapErr().join(", ")}`,
                 identifier: ImperiaIdentifiers.ArgumentFilterImageError,
             });
         }

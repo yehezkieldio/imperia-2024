@@ -1,14 +1,22 @@
 import { ImperiaCommand } from "@/core/extensions/command";
-import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/core/types/identifiers";
+import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import {
     type Args,
     type ArgumentError,
     CommandOptionsRunTypeEnum,
     type ResultType,
-    type UserError,
+    UserError,
 } from "@sapphire/framework";
-import { type InteractionResponse, type Message, SlashCommandBuilder } from "discord.js";
+import { capitalizeFirstLetter } from "@sapphire/utilities";
+import * as phonton from "@silvia-odwyer/photon-node";
+import {
+    type Attachment,
+    AttachmentBuilder,
+    type InteractionResponse,
+    type Message,
+    SlashCommandBuilder,
+} from "discord.js";
 
 export class FilterImageCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -36,29 +44,73 @@ export class FilterImageCommand extends ImperiaCommand {
     }
 
     public async messageRun(message: Message, args: Args): Promise<Message> {
-        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder();
         const filterArgument: ResultType<string> = await args.pickResult("imageFilter");
 
         if (filterArgument.isErr()) {
             const error: UserError | ArgumentError<string> = filterArgument.unwrapErr();
-            embed.isErrorEmbed();
 
             if (error.identifier === ImperiaIdentifiers.ArgumentFilterImageError) {
-                const [title, ...descArray] = error.message.split("!");
-                const desc: string = descArray.join("!").trim();
-
-                embed.setTitle(title);
-                embed.setDescription(desc);
-                return message.reply({ embeds: [embed] });
+                throw new UserError({
+                    identifier: ImperiaIdentifiers.CommandServiceError,
+                    message: error.message,
+                });
             }
 
-            embed.setTitle("Missing required arguments to execute this command!");
-            embed.setDescription("You haven't provided a valid filter to apply to the image.");
-            return message.reply({ embeds: [embed] });
+            throw new UserError({
+                identifier: ImperiaIdentifiers.ArgsMissing,
+                message: "Missing required arguments to execute this command!",
+            });
         }
 
         if (message.attachments.size === 0) return message.reply("Please attach an image to apply a filter to.");
 
-        return message.reply("This command is under construction.");
+        const image: Attachment | undefined = message.attachments.first();
+        if (!image) return message.reply("Please attach an image to apply a filter to.");
+
+        if (!this.checkForImageFileExtension(image.url)) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "Please provide an image with a valid file extension (jpg, jpeg, png).",
+            });
+        }
+
+        const filter: string = filterArgument.unwrap();
+        const filteredImage: AttachmentBuilder = await this.applyFilterToImage(image, filter);
+
+        return message.reply({
+            files: [filteredImage],
+            content: `Here's your filtered image!\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
+        });
+    }
+
+    private async applyFilterToImage(image: Attachment, filter: string): Promise<AttachmentBuilder> {
+        const base64Image: string = await this.convertImagetoBase64(image.url);
+        const phontonImage: phonton.PhotonImage = phonton.PhotonImage.new_from_base64(base64Image);
+
+        phonton.filter(phontonImage, filter);
+
+        const uint8Array: Uint8Array = phontonImage.get_bytes();
+        const buffer: Buffer = Buffer.from(uint8Array);
+
+        return new AttachmentBuilder(buffer, {
+            name: "filtered-image.png",
+        });
+    }
+
+    private async convertImagetoBase64(url: string): Promise<string> {
+        const response: Buffer = await fetch(url, FetchResultTypes.Buffer);
+
+        return response.toString("base64");
+    }
+
+    private checkForImageFileExtension(url: string): boolean {
+        const imageExtensionPattern = /\.(jpg|jpeg|png)$/i;
+
+        try {
+            const urlObject = new URL(url);
+            return imageExtensionPattern.test(urlObject.pathname);
+        } catch {
+            return false;
+        }
     }
 }
