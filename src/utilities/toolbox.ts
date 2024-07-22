@@ -1,9 +1,10 @@
 import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/core/types/identifiers";
+import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import type { UserError } from "@sapphire/framework";
 import { Utility } from "@sapphire/plugin-utilities-store";
 import { capitalizeFirstLetter } from "@sapphire/utilities";
-import { ChannelType, inlineCode } from "discord.js";
+import { ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
 
 export class Toolbox extends Utility {
     public constructor(context: Utility.LoaderContext, options: Utility.Options) {
@@ -66,4 +67,33 @@ export class Toolbox extends Utility {
 
         return missing.map((perm) => inlineCode(perm)).join(" ");
     }
+
+    public getCommandMention = (commandName: string): string | `</${string}:${string}>` => {
+        const command = this.container.applicationCommandRegistries.acquire(commandName);
+        const commandId = command.globalChatInputCommandIds.values().next().value;
+
+        if (!commandId) return `/${commandName}`;
+
+        return chatInputApplicationCommandMention(command.commandName, commandId);
+    };
+
+    public async isValidUrl(url: string): Promise<boolean> {
+        try {
+            const response = await fetch(url, { method: "HEAD" }, FetchResultTypes.Result);
+            return response.ok;
+        } catch (error) {
+            this.container.logger.error(`Error validating URL ${url}:`, error);
+            return false;
+        }
+    }
+
+    public randomizeArray<T>(array: T[]): T {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
+    public trimString = (str: string, length: number) => {
+        return str.length > length ? `${str.substring(0, length)}...` : str;
+    };
+
+    public stripHtmlTags = (str: string) => str.replace(/<[^>]*>?/gm, "").replace(/<br\/?>/gm, "\n");
 }
