@@ -51,7 +51,7 @@ export class RegisterCommand extends ImperiaCommand {
 
         TimerManager.setTimeout((): void => {
             if (msg.deletable) msg.delete();
-        }, Time.Second * 60);
+        }, Time.Second * 5);
     }
 
     private generateAgreement(userId: string) {
