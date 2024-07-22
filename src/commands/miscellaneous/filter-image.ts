@@ -1,6 +1,6 @@
 import { ImperiaCommand } from "@/core/extensions/command";
+import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
 import { filters } from "@/core/resolvers/image-filter";
-import { ImperiaIdentifiers } from "@/core/types/identifiers";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import {
     type Args,

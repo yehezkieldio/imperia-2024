@@ -1,5 +1,5 @@
 import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
-import { ImperiaIdentifiers } from "@/core/types/identifiers";
+import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import type { UserError } from "@sapphire/framework";
 import { Utility } from "@sapphire/plugin-utilities-store";

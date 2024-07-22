@@ -1,4 +1,4 @@
-import { ImperiaIdentifiers } from "@/core/types/identifiers";
+import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
 import { Precondition, type PreconditionResult, type Result, type UserError } from "@sapphire/framework";
 import type { CommandInteraction, Message } from "discord.js";
 

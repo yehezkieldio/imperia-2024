@@ -1,7 +1,3 @@
-/**
- * ? - Should be moved to extensions folder?
- */
-
 import { Identifiers as SapphireIdentifiers } from "@sapphire/framework";
 
 enum Identifiers {

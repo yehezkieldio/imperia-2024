@@ -1,7 +1,7 @@
 import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
+import { ImperiaEvents } from "@/core/extensions/events";
+import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
 import { ImperiaListener } from "@/core/extensions/listener";
-import { ImperiaEvents } from "@/core/types/events";
-import { ImperiaIdentifiers } from "@/core/types/identifiers";
 import { ArgumentError, type MessageCommandErrorPayload, UserError } from "@sapphire/framework";
 import { capitalizeFirstLetter } from "@sapphire/utilities";
 import { type InteractionResponse, type Message, codeBlock } from "discord.js";

@@ -1,5 +1,5 @@
+import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
 import { ImperiaResolvers } from "@/core/extensions/resolvers";
-import { ImperiaIdentifiers } from "@/core/types/identifiers";
 import { Argument } from "@sapphire/framework";
 
 export class ImageFilterArgument extends Argument<string> {
