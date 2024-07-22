@@ -1,5 +1,5 @@
 import { dragonfly as df } from "@/core/database/dragonfly/connection";
-import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
+import { loadEmojiData } from "@/core/database/dragonfly/data/load-emoji";
 import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
 import { connection, db } from "@/core/database/postgres/connection";
 import {
@@ -42,7 +42,7 @@ export class ImperiaClient extends SapphireClient {
             container.logger.info("ImperiaClient: Full-text search index created.");
 
             container.logger.info("ImperiaClient: Loading emoji data into the data store.");
-            const load: boolean = await loadEmoji();
+            const load: boolean = await loadEmojiData();
 
             if (load) container.logger.info("ImperiaClient: Emoji data loaded.");
             else container.logger.info("ImperiaClient: Emoji data already exists in the data store, skipping load.");

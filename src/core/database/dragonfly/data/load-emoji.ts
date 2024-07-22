@@ -7,7 +7,7 @@ interface EmojiDataResponse {
 
 const url = "https://cdn.jsdelivr.net/gh/farkmarnum/emojify/src/data/emoji-data.json";
 
-export async function loadEmoji(): Promise<boolean> {
+export async function loadEmojiData(): Promise<boolean> {
     const check: number = await container.dragonfly.exists("emojis");
     if (check) return false;
 
