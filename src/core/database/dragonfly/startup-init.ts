@@ -42,7 +42,7 @@ async function createInitialSearchIndexes(): Promise<void> {
 }
 
 export async function onDfConnectInitialize(): Promise<void> {
-    container.logger.info("ImperiaClient: Connected to the Dragonfly data store, caching is now available.");
+    container.logger.info("ImperiaClient: Connected to the Dragonfly data store.");
 
     container.logger.info("ImperiaClient: Creating full-text search indexes for the data store.");
     await createInitialSearchIndexes();

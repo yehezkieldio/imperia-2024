@@ -52,7 +52,7 @@ export class ImperiaClient extends SapphireClient {
 
             process.exit(1);
         }
-        container.logger.info("ImperiaClient: PostgresQL database connection test successful.");
+        container.logger.info("ImperiaClient: PostgresQL database is ready for use.");
 
         return super.login(token);
     }
