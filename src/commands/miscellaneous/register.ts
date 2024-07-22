@@ -14,8 +14,8 @@ export class RegisterCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             description: "Create a new account on Imperia.",
+            tags: ["account"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
-            ...options,
         });
     }
 

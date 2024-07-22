@@ -7,8 +7,8 @@ export class PingCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             description: "Perform a ping command to check the bot's latency.",
+            tags: ["utility"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
-            ...options,
         });
     }
 
