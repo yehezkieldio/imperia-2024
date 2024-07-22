@@ -1,7 +1,7 @@
 import { dragonfly as df } from "@/core/database/dragonfly/connection";
 import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
-import { db } from "@/core/database/postgres/connection";
+import { connection, db } from "@/core/database/postgres/connection";
 import type { CommandHistoryRepository } from "@/utilities/history";
 import type { Toolbox } from "@/utilities/toolbox";
 import type { UserRepository } from "@/utilities/user-repository";
@@ -73,6 +73,16 @@ export class ImperiaClient extends SapphireClient {
         container.logger.info("ImperiaClient: Connected to the PostgresQL database.");
 
         return super.login(token);
+    }
+
+    public override async destroy() {
+        container.dragonfly.disconnect();
+        container.logger.info("ImperiaClient: Disconnected from the Dragonfly data store.");
+
+        await connection.end({ timeout: 3 });
+        container.logger.info("ImperiaClient: Disconnected from the PostgresQL database.");
+
+        return super.destroy();
     }
 }
 
