@@ -20,3 +20,11 @@ declare module "@sapphire/plugin-utilities-store" {
         toolbox: Toolbox;
     }
 }
+
+declare module "@sapphire/framework" {
+    interface ArgType {
+        imageFilter: string;
+    }
+}
+
+export default undefined;

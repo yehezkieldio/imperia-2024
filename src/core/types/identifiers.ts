@@ -5,6 +5,7 @@ enum Identifiers {
     DeveloperOnly = "DeveloperOnly",
     CommandServiceError = "CommandServiceError",
     RequestResultError = "RequestResultError",
+    ArgumentFilterImageError = "ArgumentFilterImageError",
 }
 
 export const ImperiaIdentifiers = {
