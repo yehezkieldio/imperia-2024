@@ -1,7 +1,7 @@
 import { ImperiaListener } from "@/core/extensions/listener";
 import { ImperiaEvents } from "@/core/types/events";
 import type { ChatInputCommandErrorPayload, UserError } from "@sapphire/framework";
-import { type InteractionResponse, type Message, bold } from "discord.js";
+import { type InteractionResponse, type Message, codeBlock } from "discord.js";
 
 export class ChatInputCommandErrorListener extends ImperiaListener {
     public constructor(context: ImperiaListener.Context, options: ImperiaListener.Options) {
@@ -31,12 +31,12 @@ export class ChatInputCommandErrorListener extends ImperiaListener {
 
         if (payload.interaction.deferred || payload.interaction.replied) {
             return payload.interaction.editReply({
-                content: `An error occurred while executing this command! Here's what went wrong:\n${bold(error.identifier)}: ${error.message}`,
+                content: `An error occurred while executing this command! Here's what went wrong:\n${codeBlock(`${error.identifier}\n\n${error.message}`)}`,
             });
         }
 
         return payload.interaction.reply({
-            content: `An error occurred while executing this command! Here's what went wrong:\n${bold(error.identifier)}: ${error.message}`,
+            content: `An error occurred while executing this command! Here's what went wrong:\n${codeBlock(`${error.identifier}\n\n${error.message}`)}`,
         });
     }
 }
