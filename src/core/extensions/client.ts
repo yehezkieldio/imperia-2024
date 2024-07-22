@@ -42,8 +42,12 @@ export class ImperiaClient extends SapphireClient {
             container.logger.info("ImperiaClient: Full-text search index created.");
 
             container.logger.info("ImperiaClient: Loading emoji data into the data store.");
-            await loadEmoji();
-            container.logger.info("ImperiaClient: Emoji data loaded.");
+            const load: boolean = await loadEmoji();
+
+            if (load) container.logger.info("ImperiaClient: Emoji data loaded.");
+            else container.logger.info("ImperiaClient: Emoji data already exists in the data store, skipping load.");
+
+            container.logger.info("ImperiaClient: Dragonfly data store is ready for use.");
         });
 
         container.dragonfly.on("error", (error): void => {
