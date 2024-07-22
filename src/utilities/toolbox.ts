@@ -96,4 +96,6 @@ export class Toolbox extends Utility {
     };
 
     public stripHtmlTags = (str: string) => str.replace(/<[^>]*>?/gm, "").replace(/<br\/?>/gm, "\n");
+
+    public slugifyKey = (str: string) => str.toLowerCase().replace(/\s+/g, "_");
 }
