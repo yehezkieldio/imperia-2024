@@ -1,6 +1,5 @@
 import { dragonfly as df } from "@/core/database/dragonfly/connection";
-import { loadEmojiData } from "@/core/database/dragonfly/data/load-emoji";
-import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
+import { onDfConnectInitialize } from "@/core/database/dragonfly/startup-init";
 import { connection, db } from "@/core/database/postgres/connection";
 import {
     ApplicationCommandRegistries,
@@ -33,23 +32,7 @@ export class ImperiaClient extends SapphireClient {
 
     public override async login(token: string): Promise<string> {
         container.dragonfly = df;
-
-        container.dragonfly.on("connect", async (): Promise<void> => {
-            container.logger.info("ImperiaClient: Connected to the Dragonfly data store, caching is now available.");
-
-            container.logger.info("ImperiaClient: Creating full-text search index for the data store.");
-            await createDfSearchIndexes();
-            container.logger.info("ImperiaClient: Full-text search index created.");
-
-            container.logger.info("ImperiaClient: Loading emoji data into the data store.");
-            const load: boolean = await loadEmojiData();
-
-            if (load) container.logger.info("ImperiaClient: Emoji data loaded.");
-            else container.logger.info("ImperiaClient: Emoji data already exists in the data store, skipping load.");
-
-            container.logger.info("ImperiaClient: Dragonfly data store is ready for use.");
-        });
-
+        container.dragonfly.on("connect", async (): Promise<void> => await onDfConnectInitialize());
         container.dragonfly.on("error", (error): void => {
             container.logger.error("ImperiaClient: An error occurred with the Dragonfly data store.");
             container.logger.error(error);
@@ -58,17 +41,18 @@ export class ImperiaClient extends SapphireClient {
         });
 
         container.database = db;
-
+        container.logger.info("ImperiaClient: Connected to the PostgresQL database.");
         try {
+            container.logger.info("ImperiaClient: Testing the PostgresQL database connection.");
             await container.database.query.users.findFirst();
+            container.logger.info("ImperiaClient: PostgresQL database connection test successful.");
         } catch (error) {
             container.logger.error("ImperiaClient: An error occurred with the Postgres database.");
             container.logger.error(error);
 
             process.exit(1);
         }
-
-        container.logger.info("ImperiaClient: Connected to the PostgresQL database.");
+        container.logger.info("ImperiaClient: PostgresQL database connection test successful.");
 
         return super.login(token);
     }
