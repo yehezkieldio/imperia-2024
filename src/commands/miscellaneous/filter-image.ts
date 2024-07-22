@@ -1,4 +1,5 @@
 import { ImperiaCommand } from "@/core/extensions/command";
+import { filters } from "@/core/resolvers/image-filter";
 import { ImperiaIdentifiers } from "@/core/types/identifiers";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import {
@@ -10,13 +11,7 @@ import {
 } from "@sapphire/framework";
 import { capitalizeFirstLetter } from "@sapphire/utilities";
 import * as phonton from "@silvia-odwyer/photon-node";
-import {
-    type Attachment,
-    AttachmentBuilder,
-    type InteractionResponse,
-    type Message,
-    SlashCommandBuilder,
-} from "discord.js";
+import { type Attachment, AttachmentBuilder, type Message, SlashCommandBuilder } from "discord.js";
 
 export class FilterImageCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -29,7 +24,19 @@ export class FilterImageCommand extends ImperiaCommand {
     }
 
     public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
-        const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
+        const command = new SlashCommandBuilder()
+            .setName(this.name)
+            .setDescription(this.description)
+            .addAttachmentOption((option) =>
+                option.setName("image").setDescription("The image to apply a filter to.").setRequired(true),
+            )
+            .addStringOption((option) =>
+                option
+                    .setName("filter")
+                    .setDescription("The filter to apply to the image.")
+                    .setRequired(true)
+                    .addChoices([...filters.map(({ name, value }) => ({ name, value }))]),
+            );
 
         void registry.registerChatInputCommand(command, {
             guildIds: [],
@@ -37,9 +44,24 @@ export class FilterImageCommand extends ImperiaCommand {
         });
     }
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
-        return interaction.reply({
-            content: "This command is under construction.",
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
+        await interaction.deferReply();
+
+        const image: Attachment = interaction.options.getAttachment("image", true);
+
+        if (!this.checkForImageFileExtension(image.url)) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "Please provide an image with a valid file extension (jpg, jpeg, png).",
+            });
+        }
+
+        const filter: string = interaction.options.getString("filter", true);
+        const filteredImage: AttachmentBuilder = await this.applyFilterToImage(image, filter);
+
+        return interaction.editReply({
+            files: [filteredImage],
+            content: `Here's your filtered image!\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
         });
     }
 
