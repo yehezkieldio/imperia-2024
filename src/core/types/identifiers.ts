@@ -1,11 +1,11 @@
 import { Identifiers as SapphireIdentifiers } from "@sapphire/framework";
 
 enum Identifiers {
-    RegisteredUserOnly = "RegisteredUserOnly",
-    DeveloperOnly = "DeveloperOnly",
-    CommandServiceError = "CommandServiceError",
-    RequestResultError = "RequestResultError",
-    ArgumentFilterImageError = "ArgumentFilterImageError",
+    RegisteredUserOnly = "registeredUserOnly",
+    DeveloperOnly = "developerOnly",
+    CommandServiceError = "commandServiceError",
+    RequestResultError = "requestResultError",
+    ArgumentFilterImageError = "argumentFilterImageError",
 }
 
 export const ImperiaIdentifiers = {
