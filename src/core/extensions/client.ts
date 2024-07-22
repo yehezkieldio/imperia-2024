@@ -3,6 +3,7 @@ import { loadEmoji } from "@/core/database/dragonfly/emoji/load-emoji";
 import { createDfSearchIndexes } from "@/core/database/dragonfly/search-index";
 import { db } from "@/core/database/postgres/connection";
 import type { CommandHistoryRepository } from "@/utilities/history";
+import type { Toolbox } from "@/utilities/toolbox";
 import type { UserRepository } from "@/utilities/user-repository";
 import {
     ApplicationCommandRegistries,
@@ -86,5 +87,6 @@ declare module "@sapphire/plugin-utilities-store" {
     export interface Utilities {
         userRepo: UserRepository;
         historyRepo: CommandHistoryRepository;
+        toolbox: Toolbox;
     }
 }

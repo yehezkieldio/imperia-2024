@@ -1,13 +1,13 @@
 import { ImperiaCommand } from "@/core/extensions/command";
 import { isMessageInstance } from "@sapphire/discord.js-utilities";
+import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { type Message, SlashCommandBuilder } from "discord.js";
 
 export class PingCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             description: "Perform a ping command to check the bot's latency.",
-            requiredClientPermissions: ["SendMessages"],
-            preconditions: ["GuildOnly"],
+            runIn: CommandOptionsRunTypeEnum.GuildText,
             ...options,
         });
     }
