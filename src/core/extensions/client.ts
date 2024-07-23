@@ -8,6 +8,7 @@ import {
     type SapphireClientOptions,
     container,
 } from "@sapphire/framework";
+import { type RootData, getRootData } from "@sapphire/pieces";
 import type { ClientOptions } from "discord.js";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
@@ -18,6 +19,8 @@ export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptio
  * The client that the bot uses to interact with Discord.
  */
 export class ImperiaClient extends SapphireClient {
+    private rootData: RootData = getRootData();
+
     public constructor(options: ImperiaClientOptions) {
         super(options);
 

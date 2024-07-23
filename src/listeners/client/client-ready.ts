@@ -18,5 +18,9 @@ export class ClientReadyListener extends ImperiaListener {
 
         this.container.logger.info(`ClientReadyListener: Successfully logged in as ${username}. (${id})`);
         this.container.logger.info(`ClientReadyListener: Serving ${userCount} users in ${guildCount} guilds.`);
+
+        const services = this.container.stores.get("services").size;
+
+        this.container.logger.info(`ClientReadyListener: Loaded ${services} services.`);
     }
 }
