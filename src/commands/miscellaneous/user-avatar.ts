@@ -32,7 +32,7 @@ export class UserAvatarCommand extends ImperiaCommand {
         const member: GuildMember | undefined =
             interaction.guild?.members.cache.get(user.id) ?? (await interaction.guild?.members.fetch(user.id));
 
-        const embed: ImperiaEmbedBuilder = this.processResponseEmbed(user, member);
+        const embed: ImperiaEmbedBuilder = this.generateResponseEmbed(user, member);
 
         return interaction.reply({
             embeds: [embed],
@@ -44,7 +44,7 @@ export class UserAvatarCommand extends ImperiaCommand {
         const member: GuildMember | undefined =
             message.guild?.members.cache.get(user.id) ?? (await message.guild?.members.fetch(user.id));
 
-        const embed: ImperiaEmbedBuilder = this.processResponseEmbed(user, member);
+        const embed: ImperiaEmbedBuilder = this.generateResponseEmbed(user, member);
 
         return message.reply({
             embeds: [embed],
@@ -60,7 +60,7 @@ export class UserAvatarCommand extends ImperiaCommand {
         return userAvatar !== memberAvatar ? memberAvatar : userAvatar;
     }
 
-    private processResponseEmbed(user: User, member: GuildMember | undefined): ImperiaEmbedBuilder {
+    private generateResponseEmbed(user: User, member: GuildMember | undefined): ImperiaEmbedBuilder {
         const avatar: string = this.getAvatar(user, member);
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isInformationEmbed();
 

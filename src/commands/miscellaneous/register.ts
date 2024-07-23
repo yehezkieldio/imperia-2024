@@ -54,24 +54,31 @@ export class RegisterCommand extends ImperiaCommand {
         }, Time.Second * 5);
     }
 
+    private getAgreementText() {
+        return {
+            title: "Welcome to Imperia!",
+            description:
+                "Imperia will be collecting data from you to create your account, please review the agreement below.",
+            fields: [
+                {
+                    name: "— Data Collection and Usage",
+                    value: "Imperia gathers various Discord-related identifiers and stores content provided by users to deliver its functionalities. This information is solely used to enable the intended features of Imperia and is not utilized for any other purposes.",
+                },
+            ],
+            footer: {
+                text: "Click the buttons below to decide whether you agree or decline the agreement.",
+            },
+        };
+    }
+
     private generateAgreement(userId: string) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder();
+        const agreementText = this.getAgreementText();
 
-        embed.setTitle("Welcome to Imperia!");
-        embed.setDescription(
-            "Imperia will be collecting data from you to create your account, please review the agreement below.",
-        );
-
-        embed.setFields([
-            {
-                name: "— Data Collection and Usage",
-                value: "Imperia gathers various Discord-related identifiers and stores content provided by users to deliver its functionalities. This information is solely used to enable the intended features of Imperia and is not utilized for any other purposes.",
-            },
-        ]);
-
-        embed.setFooter({
-            text: "Click the buttons below to decide whether you agree or decline the agreement.",
-        });
+        embed.setTitle(agreementText.title);
+        embed.setDescription(agreementText.description);
+        embed.setFields(agreementText.fields);
+        embed.setFooter(agreementText.footer);
 
         const components: ActionRowBuilder<ButtonBuilder> = new ActionRowBuilder<ButtonBuilder>();
 

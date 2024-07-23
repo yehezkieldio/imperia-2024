@@ -28,7 +28,7 @@ export class PingCommand extends ImperiaCommand {
         });
 
         if (isMessageInstance(msg)) {
-            const { diff, ping } = await this.processPing(msg, interaction);
+            const { diff, ping } = await this.getPing(msg, interaction);
 
             return interaction.editReply(
                 `Ping request returned with these results:\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
@@ -44,7 +44,7 @@ export class PingCommand extends ImperiaCommand {
         });
 
         if (isMessageInstance(msg)) {
-            const { diff, ping } = await this.processPing(msg, message);
+            const { diff, ping } = await this.getPing(msg, message);
 
             return msg.edit(
                 `Ping request returned with these results:\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
@@ -54,7 +54,7 @@ export class PingCommand extends ImperiaCommand {
         return message.reply("Failed to perform ping request.");
     }
 
-    private async processPing(
+    private async getPing(
         msg: Message,
         ctx: Message | ImperiaCommand.ChatInputCommandInteraction,
     ): Promise<{
