@@ -53,8 +53,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
         const embed = new ImperiaEmbedBuilder().isInformationEmbed();
 
         if (avatar === "") {
-            embed.setTitle("Server Avatar");
-            embed.setDescription("This server does not have an avatar.");
+            embed.setDescription("This server does not have an avatar!");
 
             return embed;
         }
