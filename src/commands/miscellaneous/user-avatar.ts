@@ -3,10 +3,11 @@ import { ImperiaEmbedBuilder } from "@core/extensions/embed-builder";
 import { type Args, CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { type GuildMember, type InteractionResponse, type Message, SlashCommandBuilder, type User } from "discord.js";
 
-export class AvatarCommand extends ImperiaCommand {
+export class UserAvatarCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             description: "View your own or another user's avatar.",
+            aliases: ["avatar", "av", "pfp"],
             tags: ["utility", "user"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
