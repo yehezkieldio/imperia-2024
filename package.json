@@ -14,6 +14,7 @@
         "lint": "biome check --write ./src",
         "lint:unsafe": "biome check --write --unsafe ./src",
         "lint:check": "biome check ./src",
+        "typecheck": "tsc -p tsconfig.typecheck.json",
         "-- DATABASE": "-------------------------",
         "db:push": "drizzle-kit push",
         "db:studio": "drizzle-kit studio",

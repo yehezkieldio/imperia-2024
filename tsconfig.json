@@ -30,7 +30,7 @@
         "paths": {
             "@/~environment": ["./src/environment.ts"],
             "@/~schema": ["./src/core/database/postgres/schema.ts"],
-            "@*": ["./src*"]
+            "@*": ["./src/*"]
         }
     }
 }
