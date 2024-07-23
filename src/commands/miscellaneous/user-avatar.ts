@@ -7,7 +7,7 @@ export class UserAvatarCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             description: "View your own or another user's avatar.",
-            aliases: ["avatar", "av", "pfp"],
+            aliases: ["useravatar", "avatar", "av", "pfp"],
             tags: ["utility", "user"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
