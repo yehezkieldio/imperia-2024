@@ -1,6 +1,6 @@
 import type { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
+import { ImperiaEvents } from "@/core/extensions/events";
 import { ImperiaListener } from "@/core/extensions/listener";
-import { ImperiaEvents } from "@/core/types/events";
 import type { ChatInputCommandDeniedPayload, UserError } from "@sapphire/framework";
 import type { InteractionResponse, Message } from "discord.js";
 

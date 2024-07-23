@@ -1,5 +1,5 @@
+import { ImperiaEvents } from "@/core/extensions/events";
 import { ImperiaListener } from "@/core/extensions/listener";
-import { ImperiaEvents } from "@/core/types/events";
 import type { Client, ClientUser } from "discord.js";
 
 export class ClientReadyListener extends ImperiaListener {

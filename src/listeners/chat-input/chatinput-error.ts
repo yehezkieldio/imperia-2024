@@ -1,5 +1,5 @@
+import { ImperiaEvents } from "@/core/extensions/events";
 import { ImperiaListener } from "@/core/extensions/listener";
-import { ImperiaEvents } from "@/core/types/events";
 import type { ChatInputCommandErrorPayload, UserError } from "@sapphire/framework";
 import { type InteractionResponse, type Message, codeBlock } from "discord.js";
 

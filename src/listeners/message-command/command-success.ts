@@ -1,5 +1,5 @@
+import { ImperiaEvents } from "@/core/extensions/events";
 import { ImperiaListener } from "@/core/extensions/listener";
-import { ImperiaEvents } from "@/core/types/events";
 import type { MessageCommandSuccessPayload } from "@sapphire/framework";
 
 export class MessageCommandSuccessListener extends ImperiaListener {
