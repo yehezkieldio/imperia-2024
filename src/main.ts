@@ -4,7 +4,8 @@ import { env } from "@/environment";
 
 import "@sapphire/plugin-logger/register";
 import "@sapphire/plugin-scheduled-tasks/register";
-import "@sapphire/plugin-utilities-store/register";
+
+import "./core/stores/register";
 
 const main: () => Promise<void> = async (): Promise<void> => {
     const client = new ImperiaClient(configuration);

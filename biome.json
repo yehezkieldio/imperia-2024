@@ -9,6 +9,10 @@
             "recommended": true,
             "correctness": {
                 "noUnusedImports": "error"
+            },
+            "complexity": {
+                "noStaticOnlyClass": "off",
+                "noThisInStatic": "off"
             }
         }
     },
@@ -25,7 +29,7 @@
         }
     },
     "files": {
-        "ignore": ["migrations", "node_modules", "docker"]
+        "ignore": ["migrations", "node_modules", "docker", "src/core/stores/register.ts"]
     },
     "vcs": {
         "enabled": true,

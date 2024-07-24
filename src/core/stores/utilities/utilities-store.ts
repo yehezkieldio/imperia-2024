@@ -1,8 +1,8 @@
-import { Service } from "@/core/stores/services/service";
 import { Store } from "@sapphire/pieces";
+import { Utility } from "./utility";
 
-export class UtilitiesStore extends Store<Service, "utilities"> {
+export class UtilitiesStore extends Store<Utility, "utilities"> {
     public constructor() {
-        super(Service, { name: "utilities" });
+        super(Utility, { name: "utilities" });
     }
 }
