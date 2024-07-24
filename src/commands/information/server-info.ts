@@ -31,13 +31,13 @@ export class ServerInfoCommand extends ImperiaCommand {
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
-        const embed: ImperiaEmbedBuilder = await this.generateResponseEmbed(interaction.guild);
+        const embed: ImperiaEmbedBuilder = await this.generateResponse(interaction.guild);
 
         return interaction.reply({ embeds: [embed] });
     }
 
     public async messageRun(message: Message): Promise<Message> {
-        const embed: ImperiaEmbedBuilder = await this.generateResponseEmbed(message.guild);
+        const embed: ImperiaEmbedBuilder = await this.generateResponse(message.guild);
 
         return message.reply({ embeds: [embed] });
     }
@@ -104,7 +104,7 @@ export class ServerInfoCommand extends ImperiaCommand {
         ];
     }
 
-    private async generateResponseEmbed(guild: Guild | null) {
+    private async generateResponse(guild: Guild | null) {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isInformationEmbed();
 
         if (!guild) {

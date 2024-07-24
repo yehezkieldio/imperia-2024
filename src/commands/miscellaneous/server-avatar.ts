@@ -24,7 +24,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
         const server: Guild = interaction.guild as Guild;
-        const embed: ImperiaEmbedBuilder = this.generateResponseEmbed(server);
+        const embed: ImperiaEmbedBuilder = this.generateResponse(server);
 
         return interaction.reply({
             embeds: [embed],
@@ -33,7 +33,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
 
     public async messageRun(message: Message): Promise<Message> {
         const server: Guild = message.guild as Guild;
-        const embed: ImperiaEmbedBuilder = this.generateResponseEmbed(server);
+        const embed: ImperiaEmbedBuilder = this.generateResponse(server);
 
         return message.reply({
             embeds: [embed],
@@ -47,7 +47,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
         return serverAvatar;
     }
 
-    private generateResponseEmbed(server: Guild) {
+    private generateResponse(server: Guild) {
         const avatar: string = this.getServerAvatar(server);
 
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isInformationEmbed();
