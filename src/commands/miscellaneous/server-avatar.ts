@@ -50,7 +50,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
     private generateResponseEmbed(server: Guild) {
         const avatar: string = this.getServerAvatar(server);
 
-        const embed = new ImperiaEmbedBuilder().isInformationEmbed();
+        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isInformationEmbed();
 
         if (avatar === "") {
             embed.setDescription("This server does not have an avatar!");
