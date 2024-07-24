@@ -20,7 +20,7 @@ export class RegisteredUserOnlyPrecondition extends Precondition {
 
     private async check(context: CommandInteraction | Message): Promise<PreconditionResult> {
         const userId: string | undefined = context.member?.user.id as string;
-        const user = await this.container.utilities.userRepo.findOne(userId);
+        const user = await this.container.repositories.user.findOne(userId);
 
         if (!user) {
             return this.error({

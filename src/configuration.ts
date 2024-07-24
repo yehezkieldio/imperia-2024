@@ -1,6 +1,6 @@
 import { DEVELOPERS } from "@/core/constants";
 import type { ImperiaClientOptions } from "@/core/extensions/client";
-import { env } from "@/~environment";
+import { env } from "@/environment";
 import { LogLevel, type CooldownOptions as SapphireCooldownOptions } from "@sapphire/framework";
 import type { ScheduledTaskHandlerOptions } from "@sapphire/plugin-scheduled-tasks";
 import { Time } from "@sapphire/time-utilities";

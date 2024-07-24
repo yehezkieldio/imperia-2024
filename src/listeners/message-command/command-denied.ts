@@ -14,7 +14,9 @@ export class MessageCommandDeniedListener extends ImperiaListener {
     }
 
     public async run(error: UserError, payload: MessageCommandDeniedPayload): Promise<Message | InteractionResponse> {
-        const historyEntry: boolean = await this.container.utilities.historyRepo.addCommandHistory({
+        const { repositories, utilities } = this.container;
+
+        const historyEntry: boolean = await repositories.commandHistory.addCommandHistory({
             userId: payload.message.author.id,
             guildId: payload.message.guildId as string,
             commandName: payload.command.name,
@@ -30,7 +32,7 @@ export class MessageCommandDeniedListener extends ImperiaListener {
             `MessageCommandDeniedListener: Failed to execute message command ${payload.command.name} by ${payload.message.author.id} in ${payload.message.guildId}.`,
         );
 
-        const embed: ImperiaEmbedBuilder = this.container.utilities.toolbox.generateCommandDeniedEmbed(error);
+        const embed: ImperiaEmbedBuilder = utilities.toolbox.generateCommandDeniedEmbed(error);
 
         if (payload.message.type === MessageType.Reply) {
             return payload.message.edit({

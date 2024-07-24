@@ -1,39 +1,48 @@
-import type { CommandHistoryRepository } from "@/utilities/history";
-import type { Toolbox } from "@/utilities/toolbox";
-import type { UserRepository } from "@/utilities/user-repository";
-
-import type { ServicesStore } from "@core/stores/services/service-store";
-import type { Services } from "@core/stores/services/services";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Redis } from "ioredis";
-import type * as schema from "./core/database/postgres/schema";
 
-declare module "discord.js" {
-    export interface Client {
-        services: Services;
-    }
+import type { CommandHistoryRepository } from "@/core/databases/postgres/repositories/command-history";
+import type { UserRepository } from "@/core/databases/postgres/repositories/user";
+import type { RepositoriesStore } from "@/core/stores/repositories/repositories-store";
+import type { ServicesStore } from "@/core/stores/services/services-store";
+import type { UtilitiesStore } from "@/core/stores/utilities/utilities-store";
+
+import type { ApiService } from "@/services/api";
+import type { ToolboxUtilities } from "@/utilities/toolbox";
+import type * as schema from "./core/databases/postgres/schema";
+
+interface Services {
+    api: ApiService;
+}
+
+interface Repositories {
+    user: UserRepository;
+    commandHistory: CommandHistoryRepository;
+}
+
+interface Utilities {
+    toolbox: ToolboxUtilities;
 }
 
 declare module "@sapphire/pieces" {
-    interface StoreRegistryEntries {
-        services: ServicesStore;
-    }
     interface Container {
-        dragonfly: Redis;
-        database: PostgresJsDatabase<typeof schema>;
+        database: {
+            postgres: PostgresJsDatabase<typeof schema>;
+            dragonfly: Redis;
+        };
         services: Services;
-    }
-}
-
-declare module "@sapphire/plugin-utilities-store" {
-    export interface Utilities {
-        userRepo: UserRepository;
-        historyRepo: CommandHistoryRepository;
-        toolbox: Toolbox;
+        repositories: Repositories;
+        utilities: Utilities;
     }
 }
 
 declare module "@sapphire/framework" {
+    interface StoreRegistryEntries {
+        services: ServicesStore;
+        repositories: RepositoriesStore;
+        utilities: UtilitiesStore;
+    }
+
     interface ArgType {
         imageFilter: string;
     }

@@ -12,7 +12,9 @@ export class ChatInputCommandSuccessListener extends ImperiaListener {
     }
 
     public async run(payload: ChatInputCommandSuccessPayload): Promise<void> {
-        const historyEntry: boolean = await this.container.utilities.historyRepo.addCommandHistory({
+        const { repositories } = this.container;
+
+        const historyEntry: boolean = await repositories.commandHistory.addCommandHistory({
             userId: payload.interaction.user.id,
             guildId: payload.interaction.guildId as string,
             commandName: payload.command.name,

@@ -14,7 +14,9 @@ export class ChatInputCommandDeniedListener extends ImperiaListener {
     }
 
     public async run(error: UserError, payload: ChatInputCommandDeniedPayload): Promise<Message | InteractionResponse> {
-        const historyEntry: boolean = await this.container.utilities.historyRepo.addCommandHistory({
+        const { repositories, utilities } = this.container;
+
+        const historyEntry: boolean = await repositories.commandHistory.addCommandHistory({
             userId: payload.interaction.user.id,
             guildId: payload.interaction.guildId as string,
             commandName: payload.command.name,
@@ -30,7 +32,7 @@ export class ChatInputCommandDeniedListener extends ImperiaListener {
             `ChatInputCommandErrorListener: Denied execution of slash command ${payload.command.name} by ${payload.interaction.user.id} in ${payload.interaction.guildId}.`,
         );
 
-        const embed: ImperiaEmbedBuilder = this.container.utilities.toolbox.generateCommandDeniedEmbed(error);
+        const embed: ImperiaEmbedBuilder = utilities.toolbox.generateCommandDeniedEmbed(error);
 
         if (payload.interaction.deferred || payload.interaction.replied) {
             return payload.interaction.editReply({

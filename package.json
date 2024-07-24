@@ -43,7 +43,6 @@
         "@sapphire/plugin-logger": "^4.0.2",
         "@sapphire/plugin-scheduled-tasks": "^10.0.1",
         "@sapphire/plugin-subcommands": "^6.0.3",
-        "@sapphire/plugin-utilities-store": "^2.0.2",
         "@sapphire/time-utilities": "^1.7.12",
         "@sapphire/timer-manager": "^1.0.2",
         "@sapphire/utilities": "^3.16.2",

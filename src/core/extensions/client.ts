@@ -1,6 +1,9 @@
-import { dragonfly as df } from "@/core/database/dragonfly/connection";
-import { onDfConnectInitialize } from "@/core/database/dragonfly/startup-init";
-import { connection, db } from "@/core/database/postgres/connection";
+import { join } from "node:path";
+import { dragonfly as df } from "@/core/databases/dragonfly/connection";
+import { onDfConnectInitialize } from "@/core/databases/dragonfly/startup-init";
+import { connection, db } from "@/core/databases/postgres/connection";
+import { RepositoriesStore } from "@/core/stores/repositories/repositories-store";
+import { ServicesStore } from "@/core/stores/services/services-store";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -34,20 +37,26 @@ export class ImperiaClient extends SapphireClient {
     }
 
     public override async login(token: string): Promise<string> {
-        container.dragonfly = df;
-        container.dragonfly.on("connect", async (): Promise<void> => await onDfConnectInitialize());
-        container.dragonfly.on("error", (error): void => {
+        this.stores.register(new ServicesStore());
+        this.stores.register(new RepositoriesStore());
+
+        const repositoriesPath = join(this.rootData.root, "core", "databases", "postgres", "repositories");
+        this.stores.get("repositories").registerPath(repositoriesPath);
+
+        container.database.dragonfly = df;
+        container.database.dragonfly.on("connect", async (): Promise<void> => await onDfConnectInitialize());
+        container.database.dragonfly.on("error", (error): void => {
             container.logger.error("ImperiaClient: An error occurred with the Dragonfly data store.");
             container.logger.error(error);
 
             process.exit(1);
         });
 
-        container.database = db;
+        container.database.postgres = db;
         container.logger.info("ImperiaClient: Connected to the PostgresQL database.");
         try {
             container.logger.info("ImperiaClient: Testing the PostgresQL database connection.");
-            await container.database.query.users.findFirst();
+            await container.database.postgres.query.users.findFirst();
             container.logger.info("ImperiaClient: PostgresQL database connection test successful.");
         } catch (error) {
             container.logger.error("ImperiaClient: An error occurred with the Postgres database.");
@@ -61,7 +70,7 @@ export class ImperiaClient extends SapphireClient {
     }
 
     public override async destroy() {
-        container.dragonfly.disconnect();
+        container.database.dragonfly.disconnect();
         container.logger.info("ImperiaClient: Disconnected from the Dragonfly data store.");
 
         await connection.end({ timeout: 3 });

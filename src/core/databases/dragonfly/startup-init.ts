@@ -1,6 +1,6 @@
 import { container } from "@sapphire/framework";
 
-import { createSearchIndex } from "@/core/database/dragonfly/search-index";
+import { createSearchIndex } from "@/core/databases/dragonfly/search-index";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 
 interface EmojiDataResponse {
@@ -8,7 +8,7 @@ interface EmojiDataResponse {
 }
 
 async function loadEmojiData(): Promise<void> {
-    const check: number = await container.dragonfly.exists("emojis");
+    const check: number = await container.database.dragonfly.exists("emojis");
     if (check) {
         return container.logger.info("ImperiaClient: Emoji data already exists in the data store, skipping load.");
     }
@@ -17,7 +17,7 @@ async function loadEmojiData(): Promise<void> {
     const data: EmojiDataResponse = await fetch<EmojiDataResponse>(url, FetchResultTypes.JSON);
     if (!data) throw new Error("Failed to fetch emoji data, a feature may not work as expected!");
 
-    await container.dragonfly.call("JSON.SET", "emojis", "$", JSON.stringify(data));
+    await container.database.dragonfly.call("JSON.SET", "emojis", "$", JSON.stringify(data));
     return container.logger.info("ImperiaClient: Emoji data loaded.");
 }
 

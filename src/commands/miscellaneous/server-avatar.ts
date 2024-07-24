@@ -1,5 +1,5 @@
 import { ImperiaCommand } from "@/core/extensions/command";
-import { ImperiaEmbedBuilder } from "@core/extensions/embed-builder";
+import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
 import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { type Guild, type InteractionResponse, type Message, SlashCommandBuilder } from "discord.js";
 

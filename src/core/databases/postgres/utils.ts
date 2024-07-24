@@ -1,4 +1,4 @@
-import { commandStatus, commandType } from "@/~schema";
+import { commandStatus, commandType } from "@/core/databases/postgres/schema";
 import { z } from "zod";
 
 const commandStatusSchema = z.enum(commandStatus.enumValues);

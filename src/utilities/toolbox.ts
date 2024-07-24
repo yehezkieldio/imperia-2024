@@ -1,12 +1,12 @@
 import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
+import { Utility } from "@/core/stores/utilities/utility";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import type { UserError } from "@sapphire/framework";
-import { Utility } from "@sapphire/plugin-utilities-store";
 import { capitalizeFirstLetter } from "@sapphire/utilities";
 import { ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
 
-export class Toolbox extends Utility {
+export class ToolboxUtilities extends Utility {
     public constructor(context: Utility.LoaderContext, options: Utility.Options) {
         super(context, {
             ...options,

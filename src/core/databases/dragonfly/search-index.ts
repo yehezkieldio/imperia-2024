@@ -5,7 +5,7 @@ export async function createSearchIndex(
     prefix: string,
     schema: { [key: string]: string },
 ): Promise<boolean> {
-    const indexes = (await container.dragonfly.call("FT._LIST")) as string[];
+    const indexes = (await container.database.dragonfly.call("FT._LIST")) as string[];
 
     if (!indexes.includes(indexName)) {
         const schemaArray: string[] = [];
@@ -14,7 +14,7 @@ export async function createSearchIndex(
             schemaArray.push(field, type);
         }
 
-        await container.dragonfly.call(
+        await container.database.dragonfly.call(
             "FT.CREATE",
             indexName,
             "ON",

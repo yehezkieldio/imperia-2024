@@ -1,6 +1,6 @@
-import type { CommandStatus, CommandType } from "@/core/database/postgres/utils";
-import { commandHistory } from "@/~schema";
-import { Utility } from "@sapphire/plugin-utilities-store";
+import { commandHistory } from "@/core/databases/postgres/schema";
+import type { CommandStatus, CommandType } from "@/core/databases/postgres/utils";
+import { Repository } from "@/core/stores/repositories/repository";
 
 interface AddCommandHistoryOptions {
     userId: string;
@@ -10,11 +10,11 @@ interface AddCommandHistoryOptions {
     type: CommandType;
 }
 
-export class CommandHistoryRepository extends Utility {
-    public constructor(context: Utility.LoaderContext, options: Utility.Options) {
+export class CommandHistoryRepository extends Repository {
+    public constructor(context: Repository.LoaderContext, options: Repository.Options) {
         super(context, {
             ...options,
-            name: "historyRepo",
+            name: "commandHistory",
         });
     }
 
@@ -25,7 +25,7 @@ export class CommandHistoryRepository extends Utility {
         status,
         type,
     }: AddCommandHistoryOptions): Promise<boolean> {
-        const [entry] = await this.container.database
+        const [entry] = await this.container.database.postgres
             .insert(commandHistory)
             .values({
                 userId: userId,
