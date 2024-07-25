@@ -1,4 +1,4 @@
-import { envVariables } from "@/env";
+import { envVariables } from "@/lib/env";
 
 envVariables.parse(process.env);
 
