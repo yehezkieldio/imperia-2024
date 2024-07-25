@@ -6,6 +6,7 @@ import type { Services } from "@/core/stores/services/services";
 import type { ServicesStore } from "@/core/stores/services/services-store";
 import type { Utilities } from "@/core/stores/utilities/utilities";
 import type { UtilitiesStore } from "@/core/stores/utilities/utilities-store";
+import type { ApiService } from "@/services/api";
 import type { WikipediaService } from "@/services/wikipedia";
 import type { TextUtilities } from "@/utilities/text";
 import type { ToolboxUtilities } from "@/utilities/toolbox";
@@ -35,6 +36,7 @@ declare module "@sapphire/pieces" {
 
     interface Services {
         wikipedia: WikipediaService;
+        api: ApiService;
     }
 
     interface Repositories {
