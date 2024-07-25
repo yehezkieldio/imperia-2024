@@ -2,8 +2,8 @@
 
 ![Header](.github/assets/banner.png)
 
-![Bun](https://img.shields.io/badge/Powered_by_Bun-%23000000.svg?style=flat&logo=bun&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord_Bot-%235865F2.svg?style=flat&logo=discord&logoColor=white)
+![Bun](https://img.shields.io/badge/Powered_by-Bun-%23000000.svg?style=flat&logo=bun&logoColor=white)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome&logoColor=white)](https://biomejs.dev)
 
