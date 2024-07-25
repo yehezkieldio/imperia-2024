@@ -180,10 +180,7 @@ dist
 
 # Docker
 docker/data
-docker/infra/lavalink.yml
-docker/infra/data
-docker/infra/postgresqldata
-docker/infra/dragonflydata
+docker/infrastructure/data
 
-# Hidden
+# Other
 .hidden

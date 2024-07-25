@@ -1,0 +1,29 @@
+{
+    "name": "imperia",
+    "version": "1.0.0",
+    "module": "src/main.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "start": "bun run src/main.ts",
+        "dev": "bun run --watch src/main.ts",
+        "lefthook": "lefthook install",
+        "format": "biome format --write ./src",
+        "format:check": "biome format ./src",
+        "lint": "biome check --write ./src",
+        "lint:unsafe": "biome check --write --unsafe ./src",
+        "lint:check": "biome check ./src",
+        "typecheck": "tsc"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.8.4-nightly.a579bf7",
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@sapphire/shapeshift": "^4.0.0",
+        "lefthook": "^1.7.7"
+    }
+}
