@@ -1,18 +1,20 @@
 import { Service } from "@/core/stores/services/service";
-import type {} from "@/types/services";
-import type { RandomCatFact } from "@/types/services/api/cat-fact";
-import type { RandomChuckNorrisFact } from "@/types/services/api/chucknorris-fact";
-import type { DadJoke } from "@/types/services/api/dadjoke";
-import type { RandomDogFact } from "@/types/services/api/dog-fact";
-import type { RandomCat } from "@/types/services/api/random-cat";
-import type { RandomDog } from "@/types/services/api/random-dog";
-import type { RandomDuck } from "@/types/services/api/random-duck";
-import type { RandomFact } from "@/types/services/api/random-fact";
-import type { RandomFox } from "@/types/services/api/random-fox";
-import type { RandomInspirationalQuote } from "@/types/services/api/random-insp-quote";
-import type { RandomJoke } from "@/types/services/api/random-joke";
-import type { RandomWaifu } from "@/types/services/api/random-waifu";
-import type { YoMama } from "@/types/services/api/yo-mama";
+import type {
+    DadJoke,
+    RandomCat,
+    RandomCatFact,
+    RandomChuckNorrisFact,
+    RandomDog,
+    RandomDogFact,
+    RandomDuck,
+    RandomFact,
+    RandomFox,
+    RandomInspirationalQuote,
+    RandomJoke,
+    RandomWaifu,
+    YoMama,
+} from "@/types/services";
+
 import { FetchResultTypes, QueryError, fetch } from "@sapphire/fetch";
 
 export class ApiService extends Service {
