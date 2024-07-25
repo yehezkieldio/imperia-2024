@@ -10,5 +10,5 @@
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.preferences.preferTypeOnlyAutoImports": true,
-    "vscord.app.privacyMode.enable": true
+    "vscord.app.privacyMode.enable": false
 }
