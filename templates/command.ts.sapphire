@@ -1,0 +1,34 @@
+{
+  "category": "commands"
+}
+---
+import { ImperiaCommand } from "@/core/extensions/command";
+import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
+import { type InteractionResponse, type Message, SlashCommandBuilder } from "discord.js";
+
+export class ExampleCommand extends ImperiaCommand {
+    public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
+        super(context, {
+            description: "",
+            tags: [""],
+            runIn: CommandOptionsRunTypeEnum.GuildText,
+        });
+    }
+
+    public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
+        const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
+
+        void registry.registerChatInputCommand(command, {
+            guildIds: [],
+            idHints: [],
+        });
+    }
+
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
+        return interaction.reply("This command is under construction.");
+    }
+
+    public async messageRun(message: Message): Promise<Message> {
+        return message.reply("This command is under construction.");
+    }
+}
