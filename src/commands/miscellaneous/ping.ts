@@ -23,7 +23,7 @@ export class PingCommand extends ImperiaCommand {
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
         const msg: Message = await interaction.reply({
-            content: "Performing a ping request...",
+            content: "Performing a ping request... ＼(-_- )",
             fetchReply: true,
         });
 
@@ -31,27 +31,27 @@ export class PingCommand extends ImperiaCommand {
             const { diff, ping } = await this.getPing(msg, interaction);
 
             return interaction.editReply(
-                `Ping request returned with these results:\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
+                `(・ω・｀)……….. Returned with these results:\n\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
             );
         }
 
-        return interaction.editReply("Failed to perform ping request.");
+        return interaction.editReply("(／。＼) Failed to perform ping request.");
     }
 
     public async messageRun(message: Message): Promise<Message> {
         const msg: Message = await message.reply({
-            content: "Performing a ping request...",
+            content: "Performing a ping request... ＼(-_- )",
         });
 
         if (isMessageInstance(msg)) {
             const { diff, ping } = await this.getPing(msg, message);
 
             return msg.edit(
-                `Ping request returned with these results:\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
+                `(・ω・｀)……….. Returned with these results:\n\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
             );
         }
 
-        return message.reply("Failed to perform ping request.");
+        return message.reply("(／。＼) Failed to perform ping request.");
     }
 
     private async getPing(

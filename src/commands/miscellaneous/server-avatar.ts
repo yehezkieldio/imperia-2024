@@ -28,6 +28,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
 
         return interaction.reply({
             embeds: [embed],
+            content: "｡ ｡ ゛(ﾉ><)ﾉ Here's the server avatar!",
         });
     }
 
@@ -37,6 +38,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
 
         return message.reply({
             embeds: [embed],
+            content: "｡ ｡ ゛(ﾉ><)ﾉ Here's the server avatar!",
         });
     }
 
@@ -53,7 +55,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isInformationEmbed();
 
         if (avatar === "") {
-            embed.setDescription("This server does not have an avatar!");
+            embed.setDescription("This server does not have an avatar! ~-_ʘᗜʘ_/~ ");
 
             return embed;
         }

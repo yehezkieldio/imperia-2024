@@ -52,7 +52,7 @@ export class FilterImageCommand extends ImperiaCommand {
         if (!this.checkForImageFileExtension(image.url)) {
             throw new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
-                message: "Please provide an image with a valid file extension (jpg, jpeg, png).",
+                message: "( •́ ⍨ •̀) Make sure to provide an image with a valid file extension (jpg, jpeg, png).",
             });
         }
 
@@ -61,7 +61,7 @@ export class FilterImageCommand extends ImperiaCommand {
 
         return interaction.editReply({
             files: [filteredImage],
-            content: `Here's your filtered image!\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
+            content: `( ^_^)／ Here's your filtered image!\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
         });
     }
 
@@ -80,19 +80,19 @@ export class FilterImageCommand extends ImperiaCommand {
 
             throw new UserError({
                 identifier: ImperiaIdentifiers.ArgsMissing,
-                message: "Missing required arguments to execute this command!",
+                message: "(?_?) Please provide a filter to apply to the image!",
             });
         }
 
-        if (message.attachments.size === 0) return message.reply("Please attach an image to apply a filter to.");
+        if (message.attachments.size === 0) return message.reply("(o_O)? You didn't attach an image for me to filter.");
 
         const image: Attachment | undefined = message.attachments.first();
-        if (!image) return message.reply("Please attach an image to apply a filter to.");
+        if (!image) return message.reply("(o_O)? I couldn't find the image you attached.");
 
         if (!this.checkForImageFileExtension(image.url)) {
             throw new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
-                message: "Please provide an image with a valid file extension (jpg, jpeg, png).",
+                message: "( •́ ⍨ •̀) Make sure to provide an image with a valid file extension (jpg, jpeg, png).",
             });
         }
 
@@ -101,7 +101,7 @@ export class FilterImageCommand extends ImperiaCommand {
 
         return message.reply({
             files: [filteredImage],
-            content: `Here's your filtered image!\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
+            content: `( ^_^)／ Here's your filtered image!\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
         });
     }
 

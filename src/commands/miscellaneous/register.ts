@@ -56,7 +56,7 @@ export class RegisterCommand extends ImperiaCommand {
 
     private getAgreementText() {
         return {
-            title: "Welcome to Imperia!",
+            title: "Welcome to Imperia! ＼(-o- )",
             description:
                 "Imperia will be collecting data from you to create your account, please review the agreement below.",
             fields: [

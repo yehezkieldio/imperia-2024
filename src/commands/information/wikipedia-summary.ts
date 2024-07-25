@@ -44,9 +44,9 @@ export class WikipediaSummaryCommand extends ImperiaCommand {
         const titleArgument: ResultType<string> = await args.restResult("string");
 
         if (titleArgument.isErr()) {
-            new UserError({
+            throw new UserError({
                 identifier: ImperiaIdentifiers.ArgsMissing,
-                message: "Please provide a title to search for.",
+                message: "(゜-゜) You didn't provide a title for me to search! How am I supposed to find anything?",
             });
         }
 

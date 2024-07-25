@@ -39,7 +39,7 @@ declare module "@sapphire/pieces" {
 
     interface Repositories {
         user: UserRepository;
-        commadHistory: CommandHistoryRepository;
+        commandHistory: CommandHistoryRepository;
     }
 
     interface Container {
@@ -47,6 +47,7 @@ declare module "@sapphire/pieces" {
             postgres: PostgresJsDatabase<typeof schema>;
             dragonfly: Redis;
         };
+        repositories: Repositories;
         utilities: Utilities;
         services: Services;
     }
@@ -60,6 +61,7 @@ declare module "@sapphire/framework" {
     interface StoreRegistryEntries {
         utilities: UtilitiesStore;
         services: ServicesStore;
+        repositories: RepositoriesStore;
     }
 }
 

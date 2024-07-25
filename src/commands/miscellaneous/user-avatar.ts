@@ -36,6 +36,7 @@ export class UserAvatarCommand extends ImperiaCommand {
 
         return interaction.reply({
             embeds: [embed],
+            content: "(｡´∀｀)ﾉ Here you go!",
         });
     }
 
@@ -48,6 +49,7 @@ export class UserAvatarCommand extends ImperiaCommand {
 
         return message.reply({
             embeds: [embed],
+            content: "(｡´∀｀)ﾉ Here you go!",
         });
     }
 

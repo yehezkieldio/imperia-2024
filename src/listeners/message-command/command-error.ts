@@ -51,9 +51,7 @@ export class MessageCommandErrorListener extends ImperiaListener {
 
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
-                embed.setTitle("Missing required arguments to execute this command!");
-                embed.setDescription("You are missing a required argument to execute this command.");
-                break;
+                return payload.message.reply(error.message);
             case ImperiaIdentifiers.ArgumentFilterImageError:
                 embed.setTitle("The filter provided was not found!");
                 embed.setDescription(error.message);
