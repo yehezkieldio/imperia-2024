@@ -86,16 +86,4 @@ export class ToolboxUtilities extends Utility {
             return false;
         }
     }
-
-    public randomizeArray<T>(array: T[]): T {
-        return array[Math.floor(Math.random() * array.length)];
-    }
-
-    public trimString = (str: string, length: number) => {
-        return str.length > length ? `${str.substring(0, length)}...` : str;
-    };
-
-    public stripHtmlTags = (str: string) => str.replace(/<[^>]*>?/gm, "").replace(/<br\/?>/gm, "\n");
-
-    public slugifyKey = (str: string) => str.toLowerCase().replace(/\s+/g, "_");
 }

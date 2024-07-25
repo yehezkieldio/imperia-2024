@@ -1,4 +1,4 @@
-export interface WikipediaPageSummary {
+export interface WikipediaSummary {
     type: string;
     title: string;
     displaytitle: string;
