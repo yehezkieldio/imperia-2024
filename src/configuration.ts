@@ -3,7 +3,7 @@ import type { ImperiaClientOptions } from "@/lib/extensions/client";
 import { LogLevel, type CooldownOptions as SapphireCooldownOptions } from "@sapphire/framework";
 import type { ScheduledTaskHandlerOptions } from "@sapphire/plugin-scheduled-tasks";
 import { Time } from "@sapphire/time-utilities";
-import { GatewayIntentBits, type MessageMentionOptions, Partials as PartialEnums } from "discord.js";
+import { ActivityType, GatewayIntentBits, type MessageMentionOptions, Partials as PartialEnums } from "discord.js";
 
 const partials: Array<PartialEnums> = [PartialEnums.Message, PartialEnums.User, PartialEnums.GuildMember];
 
@@ -49,6 +49,7 @@ export const configuration: ImperiaClientOptions = {
     logger: { level: Bun.env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info },
     overrideApplicationCommandsRegistries: true,
     partials: partials,
+    presence: { activities: [{ type: ActivityType.Listening, name: "reality, the manifested. ✨" }], status: "dnd" },
     tasks: scheduledTaskOptions,
     typing: true,
 };
