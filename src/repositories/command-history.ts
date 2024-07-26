@@ -14,7 +14,7 @@ export class CommandHistoryRepository extends Repository {
     public constructor(context: Repository.LoaderContext, options: Repository.Options) {
         super(context, {
             ...options,
-            name: "user",
+            name: "history",
         });
     }
 

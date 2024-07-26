@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import { dragonflyClient } from "@/lib/databases/dragonfly/client";
 import { onDragonFlyReadySetup } from "@/lib/databases/dragonfly/on-ready-setup";
 import { database } from "@/lib/databases/postgres/connection";
@@ -8,6 +9,7 @@ import {
     type SapphireClientOptions,
     container,
 } from "@sapphire/framework";
+import { type RootData, getRootData } from "@sapphire/pieces";
 import type { ClientOptions } from "discord.js";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
@@ -15,6 +17,8 @@ export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptio
 }
 
 export class ImperiaClient extends SapphireClient {
+    private rootData: RootData = getRootData();
+
     public constructor(options: ImperiaClientOptions) {
         super(options);
 
@@ -25,6 +29,9 @@ export class ImperiaClient extends SapphireClient {
 
             ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
         }
+
+        const repositoryStore = container.stores.get("repos");
+        repositoryStore.registerPath(join(this.rootData.root, "repositories"));
     }
 
     public override async login(token: string): Promise<string> {
