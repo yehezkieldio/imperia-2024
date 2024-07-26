@@ -23,10 +23,7 @@ export class EmojifyCommand extends ImperiaCommand {
                 option.setName("text").setDescription("The text to emojify.").setRequired(true),
             );
 
-        void registry.registerChatInputCommand(command, {
-            guildIds: [],
-            idHints: [],
-        });
+        void registry.registerChatInputCommand(command);
     }
 
     #reply = "˖ ݁𖥔 ݁˖ Here's what I made for you~";
