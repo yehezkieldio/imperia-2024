@@ -2,6 +2,8 @@ import type { Repositories, RepositoriesStore } from "@/lib/stores/repositories"
 import type { Services, ServicesStore } from "@/lib/stores/services";
 import type { Utilities } from "@/lib/stores/utilities/utilities";
 import type { UtilitiesStore } from "@/lib/stores/utilities/utilities-store";
+import type { CommandHistoryRepository } from "@/repositories/command-history";
+import type { UserRepository } from "@/repositories/user";
 import type { StringUtilities } from "@/utilities/string";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
@@ -28,7 +30,10 @@ declare module "@sapphire/pieces" {
 
     interface Services {}
 
-    interface Repositories {}
+    interface Repositories {
+        user: UserRepository;
+        history: CommandHistoryRepository;
+    }
 
     interface Container {
         utilities: Utilities;

@@ -2,7 +2,7 @@ import { commandHistory } from "@/lib/databases/postgres/schema";
 import type { CommandStatus, CommandType } from "@/lib/databases/postgres/util";
 import { Repository } from "@/lib/stores/repositories";
 
-interface AddCommandHistoryOptions {
+interface NewHistoryEntryOptions {
     userId: string;
     guildId: string;
     commandName: string;
@@ -18,7 +18,7 @@ export class CommandHistoryRepository extends Repository {
         });
     }
 
-    public async addCommandHistory(options: AddCommandHistoryOptions) {
+    public async newEntry(options: NewHistoryEntryOptions) {
         const [entry] = await this.container.db.postgres
             .insert(commandHistory)
             .values({
@@ -30,7 +30,7 @@ export class CommandHistoryRepository extends Repository {
             })
             .returning();
 
-        if (!entry) return null;
-        return entry;
+        if (!entry) return false;
+        return true;
     }
 }
