@@ -11,9 +11,7 @@ export class UserRepository extends Repository {
     }
 
     public async findOne(userId: string) {
-        const user = await this.container.db.postgres.query.users.findFirst({
-            where: eq(users.id, userId),
-        });
+        const user = await this.container.db.postgres.select().from(users).where(eq(users.id, userId));
 
         if (!user) return null;
         return user;
