@@ -1,9 +1,9 @@
-import { configuration } from "@/configuration";
-import { envVariables } from "@/lib/env";
-import { ImperiaClient } from "@/lib/extensions/client";
-
 // Parse the environment variables and verify their existence and correctness.
+import { envVariables } from "@/lib/env";
 envVariables.parse(process.env);
+
+import { configuration } from "@/configuration";
+import { ImperiaClient } from "@/lib/extensions/client";
 
 import "@sapphire/plugin-logger/register";
 import "@sapphire/plugin-scheduled-tasks/register";

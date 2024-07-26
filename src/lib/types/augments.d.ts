@@ -3,6 +3,9 @@ import type { Services, ServicesStore } from "@/lib/stores/services";
 import type { Utilities } from "@/lib/stores/utilities/utilities";
 import type { UtilitiesStore } from "@/lib/stores/utilities/utilities-store";
 import type { StringUtilities } from "@/utilities/string";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+
+export * as schema from "../databases/postgres/schema";
 
 declare module "discord.js" {
     export interface Client {
@@ -33,6 +36,7 @@ declare module "@sapphire/pieces" {
         repos: Repositories;
         db: {
             dragonfly: Redis;
+            postgres: PostgresJsDatabase<typeof schema>;
         };
     }
 }

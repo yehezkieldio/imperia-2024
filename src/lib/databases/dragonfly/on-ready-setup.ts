@@ -24,4 +24,6 @@ export async function onDragonFlyReadySetup() {
 
     container.logger.info("ImperiaClient: Loading emoji data into the data store...");
     await loadEmojiData();
+
+    container.logger.info("ImperiaClient: Dragonfly data store is ready for use.");
 }
