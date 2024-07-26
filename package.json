@@ -13,7 +13,9 @@
         "lint": "biome check --write ./src",
         "lint:unsafe": "biome check --write --unsafe ./src",
         "lint:check": "biome check ./src",
-        "typecheck": "tsc"
+        "typecheck": "tsc",
+        "infra:up": "docker compose --file docker/infrastructure/compose.yml --env-file .env up -d",
+        "infra:down": "docker compose --file docker/infrastructure/compose.yml --env-file .env down"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.8.4-nightly.a579bf7",
