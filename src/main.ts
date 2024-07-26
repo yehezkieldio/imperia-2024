@@ -8,6 +8,9 @@ envVariables.parse(process.env);
 import "@sapphire/plugin-logger/register";
 import "@sapphire/plugin-scheduled-tasks/register";
 
+// Register custom stores, such as the utilities, the services, etc.
+import "./lib/stores/register";
+
 /**
  * The main entrypoint for the bot.
  */
@@ -16,7 +19,7 @@ export async function main(): Promise<void> {
     await client.login(Bun.env.DISCORD_TOKEN);
 
     process.on("SIGINT", async (): Promise<void> => {
-        client.logger.info("Entrypoint: Received SIGINT, exiting...");
+        client.logger.info("EntrypointMain: Received SIGINT, exiting...");
 
         await client.destroy().then((): never => {
             process.exit();

@@ -15,7 +15,7 @@ export class ImperiaClient extends SapphireClient {
     public constructor(options: ImperiaClientOptions) {
         super(options);
 
-        if (options.overrideApplicationCommandsRegistries) {
+        if (options.overrideApplicationCommandsRegistries === true) {
             container.logger.info(
                 "ImperiaClient: Overriding the default behavior for application commands registries to BulkOverwrite.",
             );
