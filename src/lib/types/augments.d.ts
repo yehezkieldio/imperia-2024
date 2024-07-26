@@ -5,8 +5,8 @@ import type { UtilitiesStore } from "@/lib/stores/utilities/utilities-store";
 import type { CommandHistoryRepository } from "@/repositories/command-history";
 import type { UserRepository } from "@/repositories/user";
 import type { StringUtilities } from "@/utilities/string";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 export * as schema from "../databases/postgres/schema";
 
 declare module "discord.js" {
