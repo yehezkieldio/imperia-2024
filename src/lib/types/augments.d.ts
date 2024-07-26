@@ -7,6 +7,7 @@ import type { UserRepository } from "@/repositories/user";
 import type { StringUtilities } from "@/utilities/string";
 
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type { Redis } from "ioredis";
 export * as schema from "../databases/postgres/schema";
 
 declare module "discord.js" {

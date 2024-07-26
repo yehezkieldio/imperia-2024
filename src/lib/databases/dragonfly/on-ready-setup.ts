@@ -1,9 +1,6 @@
+import type { EmojiDataResponse } from "@/lib/types/emojidata";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import { container } from "@sapphire/framework";
-
-interface EmojiDataResponse {
-    [key: string]: string;
-}
 
 async function loadEmojiData(): Promise<void> {
     const check: number = await container.db.dragonfly.exists("emojis");
