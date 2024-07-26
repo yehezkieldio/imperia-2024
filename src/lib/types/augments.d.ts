@@ -31,6 +31,9 @@ declare module "@sapphire/pieces" {
         utilities: Utilities;
         services: Services;
         repos: Repositories;
+        db: {
+            dragonfly: Redis;
+        };
     }
 }
 

@@ -1,3 +1,5 @@
+import { dragonflyClient } from "@/lib/databases/dragonfly/client";
+import { onDragonFlyReadySetup } from "@/lib/databases/dragonfly/on-ready-setup";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -22,6 +24,12 @@ export class ImperiaClient extends SapphireClient {
 
             ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
         }
+
+        container.db = {
+            dragonfly: dragonflyClient,
+        };
+
+        container.db.dragonfly.on("connect", async (): Promise<void> => await onDragonFlyReadySetup());
     }
 
     public override async login(token: string): Promise<string> {
