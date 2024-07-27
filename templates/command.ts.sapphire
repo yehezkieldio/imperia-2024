@@ -18,10 +18,7 @@ export class {{name}}Command extends ImperiaCommand {
     public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
-        void registry.registerChatInputCommand(command, {
-            guildIds: [],
-            idHints: [],
-        });
+        void registry.registerChatInputCommand(command);
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
