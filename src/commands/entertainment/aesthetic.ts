@@ -7,6 +7,7 @@ import { type InteractionResponse, type Message, SlashCommandBuilder } from "dis
 export class AestheticCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
+            ...options,
             description: "Turn your text into aesthetic fullwidth text!",
             aliases: ["fullwidth"],
             tags: ["text", "fun"],

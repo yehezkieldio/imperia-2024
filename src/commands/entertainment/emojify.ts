@@ -9,6 +9,7 @@ import { type InteractionResponse, type Message, SlashCommandBuilder } from "dis
 export class EmojifyCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
+            ...options,
             description: "Add emojis to your text!",
             tags: ["text", "fun"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
