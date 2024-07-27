@@ -18,7 +18,7 @@ export class FilterImageCommand extends ImperiaCommand {
         super(context, {
             ...options,
             description: "Apply a filte or tint to an image.",
-            tags: ["image"],
+            tags: ["image", "image-processing"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
     }
