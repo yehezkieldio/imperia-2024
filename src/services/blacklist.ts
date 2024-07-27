@@ -8,20 +8,23 @@ export class BlacklistService extends Service {
         });
     }
 
+    #serverBlacklistKey = "blacklist:server";
+    #userBlacklistKey = "blacklist:user";
+
     public async getServers(): Promise<string[]> {
-        const blacklistedServers: string[] = await this.container.db.dragonfly.smembers("blacklist:server");
+        const blacklistedServers: string[] = await this.container.db.dragonfly.smembers(this.#serverBlacklistKey);
 
         return blacklistedServers;
     }
 
     public async getUsers(): Promise<string[]> {
-        const blacklistedUsers: string[] = await this.container.db.dragonfly.smembers("blacklist:user");
+        const blacklistedUsers: string[] = await this.container.db.dragonfly.smembers(this.#userBlacklistKey);
 
         return blacklistedUsers;
     }
 
     public async isServerBlacklisted(serverId: string): Promise<boolean> {
-        const isBlacklisted: number = await this.container.db.dragonfly.sismember("blacklist:server", serverId);
+        const isBlacklisted: number = await this.container.db.dragonfly.sismember(this.#serverBlacklistKey, serverId);
         if (isBlacklisted === 1) {
             return true;
         }
@@ -30,7 +33,7 @@ export class BlacklistService extends Service {
     }
 
     public async isUserBlacklisted(userId: string): Promise<boolean> {
-        const isBlacklisted: number = await this.container.db.dragonfly.sismember("blacklist:user", userId);
+        const isBlacklisted: number = await this.container.db.dragonfly.sismember(this.#userBlacklistKey, userId);
         if (isBlacklisted === 1) {
             return true;
         }
@@ -39,18 +42,18 @@ export class BlacklistService extends Service {
     }
 
     public async blacklistServer(serverId: string): Promise<void> {
-        await this.container.db.dragonfly.sadd("blacklist:server", serverId);
+        await this.container.db.dragonfly.sadd(this.#serverBlacklistKey, serverId);
     }
 
     public async blacklistUser(userId: string): Promise<void> {
-        await this.container.db.dragonfly.sadd("blacklist:user", userId);
+        await this.container.db.dragonfly.sadd(this.#userBlacklistKey, userId);
     }
 
     public async unblacklistServer(serverId: string): Promise<void> {
-        await this.container.db.dragonfly.srem("blacklist:server", serverId);
+        await this.container.db.dragonfly.srem(this.#serverBlacklistKey, serverId);
     }
 
     public async unblacklistUser(userId: string): Promise<void> {
-        await this.container.db.dragonfly.srem("blacklist:user", userId);
+        await this.container.db.dragonfly.srem(this.#userBlacklistKey, userId);
     }
 }
