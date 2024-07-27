@@ -4,7 +4,9 @@ import type { Utilities } from "@/lib/stores/utilities/utilities";
 import type { UtilitiesStore } from "@/lib/stores/utilities/utilities-store";
 import type { CommandHistoryRepository } from "@/repositories/command-history";
 import type { UserRepository } from "@/repositories/user";
+import type { BlacklistService } from "@/services/blacklist";
 import type { StringUtilities } from "@/utilities/string";
+import type { Guild } from "discord.js";
 
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Redis } from "ioredis";
@@ -29,7 +31,9 @@ declare module "@sapphire/pieces" {
         string: StringUtilities;
     }
 
-    interface Services {}
+    interface Services {
+        blacklist: BlacklistService;
+    }
 
     interface Repositories {
         user: UserRepository;
@@ -50,6 +54,7 @@ declare module "@sapphire/pieces" {
 declare module "@sapphire/framework" {
     interface ArgType {
         imageFilter: string;
+        guild: Guild;
     }
 
     interface StoreRegistryEntries {
