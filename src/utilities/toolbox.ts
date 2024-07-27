@@ -61,7 +61,7 @@ export class ToolboxUtilities extends Utility {
 
         this.container.logger.debug(error.message);
 
-        return "(͡o‿O͡) Unhandled error occurred while executing this command!";
+        return ">⌓<｡ Unhandled error occurred while executing this command!";
     }
 
     public getChannelType(error: UserError) {
