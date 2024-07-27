@@ -71,14 +71,16 @@ export class UserBlacklistCommand extends ImperiaSubcommand {
         const user = userArgument.unwrap();
 
         if (user.id === this.container.client.user?.id) {
-            return await message.reply({
-                content: "(゜-゜) You can't blacklist me!",
+            new UserError({
+                identifier: ImperiaIdentifiers.InvalidArgumentProvided,
+                message: "(๑′°︿°๑) Seems like you're trying to blacklist me, I'm not going to do that!",
             });
         }
 
         if (user.id === message.author.id) {
-            return await message.reply({
-                content: "(゜-゜) What are you trying to do? Blacklist yourself?",
+            new UserError({
+                identifier: ImperiaIdentifiers.InvalidArgumentProvided,
+                message: "(゜-゜) You can't blacklist yourself! That's not how it works!",
             });
         }
 

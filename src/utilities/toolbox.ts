@@ -25,6 +25,10 @@ export class ToolboxUtilities extends Utility {
 
         /* -------------------------- GENERAL PRECONDITIONS -------------------------- */
 
+        if (error.identifier === ImperiaIdentifiers.InvalidArgumentProvided) {
+            return error.message;
+        }
+
         if (error.identifier === ImperiaIdentifiers.CommandDisabled) {
             return "｀(^ ▼^)´↑ This command is globally disabled! Please try again later...";
         }

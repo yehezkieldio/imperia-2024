@@ -33,7 +33,7 @@ export class ServerBlacklistCommand extends ImperiaSubcommand {
         const blacklistedServers: string[] = await this.container.services.blacklist.getServers();
 
         if (blacklistedServers.length === 0) {
-            return await message.channel.send({
+            return await message.reply({
                 content: "(゜-゜) There are no blacklisted servers. Good for them!",
             });
         }
