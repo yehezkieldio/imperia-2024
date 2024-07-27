@@ -2,6 +2,7 @@ import type { Repositories, RepositoriesStore } from "@/lib/stores/repositories"
 import type { Services, ServicesStore } from "@/lib/stores/services";
 import type { Utilities } from "@/lib/stores/utilities/utilities";
 import type { UtilitiesStore } from "@/lib/stores/utilities/utilities-store";
+import type { BlacklistRepository } from "@/repositories/blacklist";
 import type { CommandHistoryRepository } from "@/repositories/command-history";
 import type { UserRepository } from "@/repositories/user";
 import type { BlacklistService } from "@/services/blacklist";
@@ -40,6 +41,7 @@ declare module "@sapphire/pieces" {
     interface Repositories {
         user: UserRepository;
         history: CommandHistoryRepository;
+        blacklist: BlacklistRepository;
     }
 
     interface Container {
@@ -67,5 +69,12 @@ declare module "@sapphire/framework" {
 
     interface Preconditions {
         DeveloperOnly: never;
+    }
+}
+
+declare module "@sapphire/plugin-scheduled-tasks" {
+    interface ScheduledTasks {
+        pattern: never;
+        interval: never;
     }
 }

@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { dragonflyClient } from "@/lib/databases/dragonfly/client";
 import { onDragonFlyReadySetup } from "@/lib/databases/dragonfly/on-ready-setup";
-import { database } from "@/lib/databases/postgres/connection";
+import { connection, database } from "@/lib/databases/postgres/connection";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -66,6 +66,15 @@ export class ImperiaClient extends SapphireClient {
     }
 
     public override async destroy(): Promise<void> {
+        await connection.end({ timeout: 3 });
+        container.logger.info("ImperiaClient: Disconnected from the PostgresQL database.");
+
+        await container.tasks.client.pause();
+        container.logger.info("ImperiaClient: Paused the scheduled tasks.");
+
+        container.db.dragonfly.disconnect();
+        container.logger.info("ImperiaClient: Disconnected from the Dragonfly data store.");
+
         return super.destroy();
     }
 }

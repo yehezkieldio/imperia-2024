@@ -34,3 +34,20 @@ export const commandHistory = pgTable("command_history", {
     type: commandType("type").notNull(),
     executedAt: timestamp("executedAt").defaultNow(),
 });
+
+export const blacklistType = pgEnum("blacklist_entity_type", ["user", "guild"]);
+
+export const blacklistEntity = pgTable(
+    "blacklist_entity",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        entityId: varchar("entityId").notNull(),
+        entityType: blacklistType("entityType").notNull(),
+    },
+    (blacklistEntity) => ({
+        entityIdTypeUidx: uniqueIndex("blacklist_entity_entity_id_type_uidx").on(
+            blacklistEntity.entityId,
+            blacklistEntity.entityType,
+        ),
+    }),
+);

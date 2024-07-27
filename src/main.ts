@@ -6,10 +6,11 @@ import { configuration } from "@/configuration";
 import { ImperiaClient } from "@/lib/extensions/client";
 
 import "@sapphire/plugin-logger/register";
-import "@sapphire/plugin-scheduled-tasks/register";
 
 // Register custom stores, such as the utilities, the services, etc.
 import "./lib/stores/register";
+
+import "@sapphire/plugin-scheduled-tasks/register";
 
 /**
  * The main entrypoint for the bot.
