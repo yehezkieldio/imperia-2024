@@ -52,10 +52,10 @@ export class MessageCommandErrorListener extends Listener {
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
                 return payload.message.reply(error.message);
+            case ImperiaIdentifiers.InvalidArgumentProvided:
+                return payload.message.reply(error.message);
             case ImperiaIdentifiers.ArgumentFilterImageError:
-                embed.setTitle("(￣ｰ￣) The filter provided was not found!");
-                embed.setDescription(error.message);
-                break;
+                return payload.message.reply(error.message);
             default:
                 embed.setTitle(">⌓<｡ An error occurred while executing this command!");
                 embed.setDescription(error.message);

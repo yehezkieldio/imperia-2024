@@ -2,7 +2,7 @@ import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
 import { Utility } from "@/lib/stores/utilities";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import type { UserError } from "@sapphire/framework";
-import { ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
+import { type Attachment, ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
 
 export class ToolboxUtilities extends Utility {
     public constructor(context: Utility.LoaderContext, options: Utility.Options) {
@@ -95,5 +95,28 @@ export class ToolboxUtilities extends Utility {
             this.container.logger.error(`Error validating URL ${url}:`, error);
             return false;
         }
+    }
+
+    public isValidImageExtension(url: string): boolean {
+        const imageExtensionPattern = /\.(jpg|jpeg|png)$/i;
+
+        try {
+            return imageExtensionPattern.test(new URL(url).pathname);
+        } catch {
+            return false;
+        }
+    }
+
+    public isValidImageContentType(attachment: Attachment): boolean {
+        /**
+         * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+         */
+        const imageContentTypes: string[] = ["image/jpeg", "image/png"];
+
+        return imageContentTypes.includes(attachment.contentType ?? "");
+    }
+
+    public isValidAttachment(attachment: Attachment): boolean {
+        return this.isValidImageContentType(attachment) && this.isValidImageExtension(attachment.url);
     }
 }
