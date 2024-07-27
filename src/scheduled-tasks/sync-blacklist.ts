@@ -24,6 +24,8 @@ export class SyncBlacklistTask extends ScheduledTask {
             await repos.blacklist.createUsers(users);
 
             this.container.logger.info("SyncBlacklistTask: Synced the user blacklist from Dragonfly to Postgres.");
+        } else {
+            await repos.blacklist.deleteUsers();
         }
 
         if (guilds.length !== 0) {
@@ -31,6 +33,8 @@ export class SyncBlacklistTask extends ScheduledTask {
             await repos.blacklist.createServers(guilds);
 
             this.container.logger.info("SyncBlacklistTask: Synced the server blacklist from Dragonfly to Postgres.");
+        } else {
+            await repos.blacklist.deleteServers();
         }
     }
 }
