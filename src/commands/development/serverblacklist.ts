@@ -10,6 +10,7 @@ export class ServerBlacklistCommand extends ImperiaSubcommand {
             ...options,
             description: "Manage the server blacklist.",
             runIn: CommandOptionsRunTypeEnum.GuildText,
+            preconditions: ["DeveloperOnly"],
             subcommands: [
                 {
                     name: "list",

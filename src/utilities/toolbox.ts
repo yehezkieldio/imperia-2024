@@ -13,9 +13,17 @@ export class ToolboxUtilities extends Utility {
     }
 
     public generateCommandDeniedResponse(error: UserError) {
+        /* -------------------------- GLOBAL PRECONDITIONS -------------------------- */
+
         if (error.identifier === ImperiaIdentifiers.BlacklistedServer) {
-            return "(´つヮ⊂) I can't execute this command since this server is blacklisted!";
+            return error.message;
         }
+
+        if (error.identifier === ImperiaIdentifiers.BlacklistedUser) {
+            return error.message;
+        }
+
+        /* -------------------------- GENERAL PRECONDITIONS -------------------------- */
 
         if (error.identifier === ImperiaIdentifiers.CommandDisabled) {
             return "｀(^ ▼^)´↑ This command is globally disabled! Please try again later...";
@@ -28,6 +36,8 @@ export class ToolboxUtilities extends Utility {
         if (error.identifier === ImperiaIdentifiers.PreconditionRunIn) {
             return `(￣ｰ￣) This command is not available in this context! Please use this command in a ${this.getChannelType(error)}`;
         }
+
+        /* ------------------------ PERMISSION PRECONDITIONS ------------------------ */
 
         if (
             error.identifier === ImperiaIdentifiers.PreconditionClientPermissions ||
@@ -42,6 +52,10 @@ export class ToolboxUtilities extends Utility {
         ) {
             return `( /・・)ノ You are missing required permissions to execute this command!\nRequired permission(s): ${this.getMissingPermissions(error)}`;
         }
+
+        /* --------------------------------- DEFAULT -------------------------------- */
+
+        this.container.logger.debug(error.message);
 
         return "(͡o‿O͡) Unhandled error occurred while executing this command!";
     }

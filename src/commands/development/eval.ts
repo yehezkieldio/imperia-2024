@@ -13,6 +13,7 @@ export class EvalCommand extends ImperiaCommand {
             description: "Evaluate a JavaScript code.",
             aliases: ["evalute", "ev"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
+            preconditions: ["DeveloperOnly"],
         });
     }
 
