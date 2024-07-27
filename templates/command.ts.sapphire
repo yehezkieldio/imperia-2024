@@ -9,6 +9,7 @@ import { type InteractionResponse, type Message, SlashCommandBuilder } from "dis
 export class {{name}}Command extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
+            ...options,
             description: "",
             tags: [""],
             runIn: CommandOptionsRunTypeEnum.GuildText,

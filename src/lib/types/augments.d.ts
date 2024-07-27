@@ -57,4 +57,8 @@ declare module "@sapphire/framework" {
         services: ServicesStore;
         repos: RepositoriesStore;
     }
+
+    interface Preconditions {
+        DeveloperOnly: never;
+    }
 }
