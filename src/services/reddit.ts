@@ -55,4 +55,10 @@ export class RedditService extends Service {
         await this.container.db.dragonfly.rpush(cacheKey, ...urls);
         await this.container.db.dragonfly.expire(cacheKey, 7600);
     }
+
+    public async getRandomMeme(): Promise<string> {
+        const urls: string[] = await this.container.db.dragonfly.lrange(this.#randomMemeKey, 0, -1);
+
+        return pickRandom(urls);
+    }
 }
