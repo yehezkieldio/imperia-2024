@@ -52,6 +52,8 @@ export class ChatInputCommandErrorListener extends Listener {
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
                 return payload.interaction.reply(error.message);
+            case ImperiaIdentifiers.CommandServiceError:
+                return payload.interaction.reply(error.message);
             case ImperiaIdentifiers.ArgumentFilterImageError ||
                 ImperiaIdentifiers.ArgumentEffectImageError ||
                 ImperiaIdentifiers.ArgumentEffectMonochromeError:

@@ -52,6 +52,8 @@ export class MessageCommandErrorListener extends Listener {
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
                 return payload.message.reply(error.message);
+            case ImperiaIdentifiers.CommandServiceError:
+                return payload.message.reply(error.message);
             case ImperiaIdentifiers.InvalidArgumentProvided:
                 return payload.message.reply(error.message);
             case ImperiaIdentifiers.ArgumentFilterImageError ||
