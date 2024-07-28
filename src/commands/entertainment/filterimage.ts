@@ -9,7 +9,6 @@ import {
     type ResultType,
     UserError,
 } from "@sapphire/framework";
-import { capitalizeFirstLetter } from "@sapphire/utilities";
 import * as phonton from "@silvia-odwyer/photon-node";
 import { type Attachment, AttachmentBuilder, type Message, SlashCommandBuilder } from "discord.js";
 
@@ -17,7 +16,7 @@ export class FilterImageCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             ...options,
-            description: "Apply a filte or tint to an image.",
+            description: "Apply a filter or tint to an image.",
             tags: ["image", "image-processing"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
@@ -60,7 +59,7 @@ export class FilterImageCommand extends ImperiaCommand {
 
         return interaction.editReply({
             files: [filteredImage],
-            content: `${this.#reply}\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
+            content: `${this.#reply}`,
         });
     }
 
@@ -110,7 +109,7 @@ export class FilterImageCommand extends ImperiaCommand {
 
         return message.reply({
             files: [filteredImage],
-            content: `${this.#reply}\n\nApplied filter: ${capitalizeFirstLetter(filter)}`,
+            content: `${this.#reply}`,
         });
     }
 

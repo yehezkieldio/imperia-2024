@@ -27,7 +27,7 @@ export class EffectImageCommand extends ImperiaCommand {
             .setName(this.name)
             .setDescription(this.description)
             .addAttachmentOption((option) =>
-                option.setName("image").setDescription("The image to apply a filter to.").setRequired(true),
+                option.setName("image").setDescription("The image to apply a effect to.").setRequired(true),
             )
             .addStringOption((option) =>
                 option
@@ -59,7 +59,7 @@ export class EffectImageCommand extends ImperiaCommand {
 
         return interaction.editReply({
             files: [effectedImage],
-            content: `${this.#reply}\n\nApplied filter: ${this.container.utilities.string.convertToSpaced(effect)}`,
+            content: `${this.#reply}`,
         });
     }
 
@@ -109,7 +109,7 @@ export class EffectImageCommand extends ImperiaCommand {
 
         return message.reply({
             files: [effectedImage],
-            content: `${this.#reply}\n\nApplied filter: ${this.container.utilities.string.convertToSpaced(effect)}`,
+            content: `${this.#reply}`,
         });
     }
 
