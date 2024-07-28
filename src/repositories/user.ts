@@ -11,7 +11,19 @@ export class UserRepository extends Repository {
     }
 
     public async findOne(userId: string) {
-        const user = await this.container.db.postgres.select().from(users).where(eq(users.id, userId));
+        const user = await this.container.db.postgres.select().from(users).where(eq(users.discordId, userId));
+
+        if (!user) return null;
+        return user;
+    }
+
+    public async create(discordId: string) {
+        const [user] = await this.container.db.postgres
+            .insert(users)
+            .values({
+                discordId: discordId,
+            })
+            .returning();
 
         if (!user) return null;
         return user;
