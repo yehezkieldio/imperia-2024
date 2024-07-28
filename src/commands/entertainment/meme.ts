@@ -42,7 +42,7 @@ export class MemeCommand extends ImperiaCommand {
         embed
             .setImage(url)
             .setDescription(
-                `This meme was provided to you by ${hyperlink("r/DanMemes", "https://www.reddit.com/r/dankmemes")}`,
+                `This meme was provided to you by ${hyperlink("r/DankMemes", "https://www.reddit.com/r/dankmemes")}`,
             );
 
         return {
