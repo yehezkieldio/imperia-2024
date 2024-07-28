@@ -1,4 +1,8 @@
-import { resolveImageEffect as IresolveImageEffect, resolveImageFilter as IresolveImageFilter } from "@/lib/resolvers";
+import {
+    resolveImageEffect as IresolveImageEffect,
+    resolveImageFilter as IresolveImageFilter,
+    resolveMonochromeEffect as IresolveMonochromeEffect,
+} from "@/lib/resolvers";
 import { Resolvers as SapphireResolvers } from "@sapphire/framework";
 
 /**
@@ -7,6 +11,7 @@ import { Resolvers as SapphireResolvers } from "@sapphire/framework";
 export namespace Resolvers {
     export const resolveImageFilter = IresolveImageFilter;
     export const resolveImageEffect = IresolveImageEffect;
+    export const resolveMonochromeEffect = IresolveMonochromeEffect;
 }
 
 type CombinedResolvers = typeof Resolvers & typeof SapphireResolvers;
