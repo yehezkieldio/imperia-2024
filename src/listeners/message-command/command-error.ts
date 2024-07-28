@@ -54,7 +54,9 @@ export class MessageCommandErrorListener extends Listener {
                 return payload.message.reply(error.message);
             case ImperiaIdentifiers.InvalidArgumentProvided:
                 return payload.message.reply(error.message);
-            case ImperiaIdentifiers.ArgumentFilterImageError:
+            case ImperiaIdentifiers.ArgumentFilterImageError ||
+                ImperiaIdentifiers.ArgumentEffectImageError ||
+                ImperiaIdentifiers.ArgumentEffectMonochromeError:
                 return payload.message.reply(error.message);
             default:
                 embed.setTitle(">⌓<｡ An error occurred while executing this command!");

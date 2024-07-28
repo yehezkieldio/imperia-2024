@@ -52,10 +52,10 @@ export class ChatInputCommandErrorListener extends Listener {
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
                 return payload.interaction.reply(error.message);
-            case ImperiaIdentifiers.ArgumentFilterImageError:
-                embed.setTitle("(￣ｰ￣) The filter provided was not found!");
-                embed.setDescription(error.message);
-                break;
+            case ImperiaIdentifiers.ArgumentFilterImageError ||
+                ImperiaIdentifiers.ArgumentEffectImageError ||
+                ImperiaIdentifiers.ArgumentEffectMonochromeError:
+                return payload.interaction.reply(error.message);
             default:
                 embed.setTitle(">⌓<｡ An error occurred while executing this command!");
                 embed.setDescription(error.message);
