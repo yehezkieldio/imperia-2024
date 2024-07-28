@@ -31,17 +31,15 @@ export const effectAvailable: ImageEffect[] = [
     },
 ];
 
-export namespace Resolvers {
-    export function resolveImageEffect(effectName: string): Result<string, string[]> {
-        const filter: ImageEffect | undefined = effectAvailable.find(
-            (f: ImageEffect): boolean => f.name.toLowerCase() === effectName.toLowerCase(),
-        );
+export function resolveImageEffect(effectName: string): Result<string, string[]> {
+    const filter: ImageEffect | undefined = effectAvailable.find(
+        (f: ImageEffect): boolean => f.name.toLowerCase() === effectName.toLowerCase(),
+    );
 
-        if (!filter) {
-            const filterList: string[] = effectAvailable.map((f) => inlineCode(f.name));
-            return Result.err(filterList);
-        }
-
-        return Result.ok(filter?.value);
+    if (!filter) {
+        const filterList: string[] = effectAvailable.map((f) => inlineCode(f.name));
+        return Result.err(filterList);
     }
+
+    return Result.ok(filter?.value);
 }

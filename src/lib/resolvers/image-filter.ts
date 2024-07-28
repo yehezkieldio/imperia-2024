@@ -81,17 +81,15 @@ export const filtersAvailable: ImageFilter[] = [
     },
 ];
 
-export namespace Resolvers {
-    export function resolveImageFilter(filterName: string): Result<string, string[]> {
-        const filter: ImageFilter | undefined = filtersAvailable.find(
-            (f: ImageFilter): boolean => f.name.toLowerCase() === filterName.toLowerCase(),
-        );
+export function resolveImageFilter(filterName: string): Result<string, string[]> {
+    const filter: ImageFilter | undefined = filtersAvailable.find(
+        (f: ImageFilter): boolean => f.name.toLowerCase() === filterName.toLowerCase(),
+    );
 
-        if (!filter) {
-            const filterList: string[] = filtersAvailable.map((f) => inlineCode(f.name));
-            return Result.err(filterList);
-        }
-
-        return Result.ok(filter?.value);
+    if (!filter) {
+        const filterList: string[] = filtersAvailable.map((f) => inlineCode(f.name));
+        return Result.err(filterList);
     }
+
+    return Result.ok(filter?.value);
 }
