@@ -1,5 +1,5 @@
 import { ImperiaEvents } from "@/lib/extensions/events";
-import { Listener } from "@sapphire/framework";
+import { Listener, type PluginHook } from "@sapphire/framework";
 
 export class PiecePostLoadListener extends Listener {
     public constructor(context: Listener.LoaderContext, options: Listener.Options) {
@@ -10,7 +10,7 @@ export class PiecePostLoadListener extends Listener {
         });
     }
 
-    public async run(hook: string, name: string): Promise<void> {
+    public async run(hook: PluginHook, name: string): Promise<void> {
         if (name === "Stores-PostLogin") {
             await this.container.services.reddit.postLoadSetup();
         }
