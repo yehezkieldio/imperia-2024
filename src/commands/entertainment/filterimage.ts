@@ -9,7 +9,7 @@ import {
     type ResultType,
     UserError,
 } from "@sapphire/framework";
-import * as phonton from "@silvia-odwyer/photon-node";
+import * as photon from "@silvia-odwyer/photon-node";
 import { type Attachment, AttachmentBuilder, type Message, SlashCommandBuilder } from "discord.js";
 
 export class FilterImageCommand extends ImperiaCommand {
@@ -115,11 +115,11 @@ export class FilterImageCommand extends ImperiaCommand {
 
     private async applyFilterToImage(image: Attachment, filter: string): Promise<AttachmentBuilder> {
         const base64Image: string = await this.convertImagetoBase64(image.url);
-        const phontonImage: phonton.PhotonImage = phonton.PhotonImage.new_from_base64(base64Image);
+        const photonImage: photon.PhotonImage = photon.PhotonImage.new_from_base64(base64Image);
 
-        phonton.filter(phontonImage, filter);
+        photon.filter(photonImage, filter);
 
-        const uint8Array: Uint8Array = phontonImage.get_bytes();
+        const uint8Array: Uint8Array = photonImage.get_bytes();
         const buffer: Buffer = Buffer.from(uint8Array);
 
         return new AttachmentBuilder(buffer, {

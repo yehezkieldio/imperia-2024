@@ -9,7 +9,7 @@ import {
     type ResultType,
     UserError,
 } from "@sapphire/framework";
-import * as phonton from "@silvia-odwyer/photon-node";
+import * as photon from "@silvia-odwyer/photon-node";
 import { type Attachment, AttachmentBuilder, type Message, SlashCommandBuilder } from "discord.js";
 
 export class EffectImageCommand extends ImperiaCommand {
@@ -115,28 +115,28 @@ export class EffectImageCommand extends ImperiaCommand {
 
     private async applyEffectToImage(image: Attachment, filter: string): Promise<AttachmentBuilder> {
         const base64Image: string = await this.convertImagetoBase64(image.url);
-        const phontonImage: phonton.PhotonImage = phonton.PhotonImage.new_from_base64(base64Image);
+        const photonImage: photon.PhotonImage = photon.PhotonImage.new_from_base64(base64Image);
         const effectValues: string[] = effectAvailable.map((effect) => effect.value);
 
         switch (filter) {
             case effectValues[0]:
-                phonton.oil(phontonImage, 4, 55);
+                photon.oil(photonImage, 4, 55);
                 break;
             case effectValues[1]:
-                phonton.solarize(phontonImage);
+                photon.solarize(photonImage);
                 break;
             case effectValues[2]:
-                phonton.offset_red(phontonImage, 30);
+                photon.offset_red(photonImage, 30);
                 break;
             case effectValues[3]:
-                phonton.offset_blue(phontonImage, 30);
+                photon.offset_blue(photonImage, 30);
                 break;
             case effectValues[4]:
-                phonton.offset_green(phontonImage, 30);
+                photon.offset_green(photonImage, 30);
                 break;
         }
 
-        const uint8Array: Uint8Array = phontonImage.get_bytes();
+        const uint8Array: Uint8Array = photonImage.get_bytes();
         const buffer: Buffer = Buffer.from(uint8Array);
 
         return new AttachmentBuilder(buffer, {
