@@ -9,7 +9,7 @@ export class UserAvatarCommand extends ImperiaCommand {
             ...options,
             description: "View the avatar of a user or yourself.",
             aliases: ["user-avatar", "avatar", "av", "pfp"],
-            tags: ["user", "image"],
+            tags: ["user", "image", "utility"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
     }
