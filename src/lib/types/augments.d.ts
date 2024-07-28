@@ -58,6 +58,7 @@ declare module "@sapphire/pieces" {
 declare module "@sapphire/framework" {
     interface ArgType {
         imageFilter: string;
+        imageEffect: string;
         guild: Guild;
     }
 

@@ -69,8 +69,8 @@ export class ImperiaClient extends SapphireClient {
         await connection.end({ timeout: 3 });
         container.logger.info("ImperiaClient: Disconnected from the PostgresQL database.");
 
-        await container.tasks.client.pause();
-        container.logger.info("ImperiaClient: Paused the scheduled tasks.");
+        await container.tasks.client.drain();
+        container.logger.info("ImperiaClient: Drained the task queue.");
 
         container.db.dragonfly.disconnect();
         container.logger.info("ImperiaClient: Disconnected from the Dragonfly data store.");

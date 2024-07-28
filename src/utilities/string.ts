@@ -11,4 +11,11 @@ export class StringUtilities extends Utility {
     public trim(str: string, length: number): string {
         return str.length > length ? `${str.substring(0, length)}` : str;
     }
+
+    public convertToSpaced(str: string): string {
+        return str
+            .split("_")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
 }
