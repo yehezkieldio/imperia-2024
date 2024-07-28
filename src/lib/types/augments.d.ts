@@ -59,6 +59,7 @@ declare module "@sapphire/framework" {
     interface ArgType {
         imageFilter: string;
         imageEffect: string;
+        monochromeEffect: string;
         guild: Guild;
     }
 

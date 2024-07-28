@@ -12,8 +12,11 @@ enum Identifiers {
     CommandServiceError = "commandServiceError",
     // For external APIs that are not available or errored out. Ex: No random cats available.
     RequestResultError = "requestResultError",
+
+    // For specific argument errors
     ArgumentFilterImageError = "argumentFilterImageError",
     ArgumentEffectImageError = "argumentEffectImageError",
+    ArgumentEffectMonochromeError = "argumentEffectMonochromeError",
 }
 
 export const ImperiaIdentifiers = {
