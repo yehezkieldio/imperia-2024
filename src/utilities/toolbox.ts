@@ -1,6 +1,6 @@
 import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
 import { Utility } from "@/lib/stores/utilities";
-import { FetchResultTypes, fetch } from "@sapphire/fetch";
+import { FetchResultTypes, QueryError, fetch } from "@sapphire/fetch";
 import type { UserError } from "@sapphire/framework";
 import { type Attachment, ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
 
@@ -92,7 +92,20 @@ export class ToolboxUtilities extends Utility {
             const response = await fetch(url, { method: "HEAD" }, FetchResultTypes.Result);
             return response.ok;
         } catch (error) {
-            this.container.logger.error(`Error validating URL ${url}:`, error);
+            if (error instanceof QueryError) {
+                if (url.includes("i.redd.it") && error.message.includes("404")) {
+                    return false;
+                }
+
+                if (error.message.includes("UNABLE_TO_VERIFY_LEAF_SIGNATURE") && url.includes("reddit.com")) {
+                    return false;
+                }
+
+                this.container.logger.error(`Error validating URL ${url}:`, error);
+
+                return false;
+            }
+
             return false;
         }
     }

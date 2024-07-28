@@ -6,6 +6,7 @@ import type { BlacklistRepository } from "@/repositories/blacklist";
 import type { CommandHistoryRepository } from "@/repositories/command-history";
 import type { UserRepository } from "@/repositories/user";
 import type { BlacklistService } from "@/services/blacklist";
+import type { RedditService } from "@/services/reddit";
 import type { StringUtilities } from "@/utilities/string";
 import type { ToolboxUtilities } from "@/utilities/toolbox";
 import type { Guild } from "discord.js";
@@ -36,6 +37,7 @@ declare module "@sapphire/pieces" {
 
     interface Services {
         blacklist: BlacklistService;
+        reddit: RedditService;
     }
 
     interface Repositories {

@@ -8,6 +8,7 @@
         "listeners": "listeners",
         "preconditions": "preconditions",
         "interaction-handlers": "interaction-handlers",
+        "services": "services",
         "routes": ""
     },
     "customFileTemplates": {
