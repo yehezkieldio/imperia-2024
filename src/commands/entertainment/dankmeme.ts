@@ -4,12 +4,12 @@ import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
 import { CommandOptionsRunTypeEnum, UserError } from "@sapphire/framework";
 import { type InteractionResponse, type Message, SlashCommandBuilder, bold } from "discord.js";
 
-export class MemeCommand extends ImperiaCommand {
+export class DankMemeCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
             ...options,
             description: "Get a random meme from r/DankMemes",
-            aliases: ["memes", "randommeme", "randommemes"],
+            aliases: ["dankmemes", "randomdankmeme", "randomdankmemes"],
             tags: ["meme", "image"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
@@ -34,7 +34,7 @@ export class MemeCommand extends ImperiaCommand {
     }
 
     private async getMeme() {
-        const { title, url } = await this.container.services.reddit.getRandom("memes");
+        const { title, url } = await this.container.services.reddit.getRandom("DankMemes");
 
         if (!(await this.container.utilities.toolbox.isValidUrl(url))) {
             throw new UserError({
