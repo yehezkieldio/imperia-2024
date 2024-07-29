@@ -58,7 +58,13 @@ export class DadJokeCommand extends ImperiaCommand {
         const url: string = "https://icanhazdadjoke.com/";
 
         try {
-            const response = await fetch<RandomDadJoke>(url, FetchResultTypes.JSON);
+            const response = await fetch<RandomDadJoke>(
+                url,
+                {
+                    headers: { Accept: "application/json" },
+                },
+                FetchResultTypes.JSON,
+            );
 
             const reply = "˖ ݁𖥔 ݁˖ Here's a random dad joke for you~";
 
