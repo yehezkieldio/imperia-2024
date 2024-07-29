@@ -34,7 +34,7 @@ export class DankMemeCommand extends ImperiaCommand {
     }
 
     private async getMeme() {
-        const { title, url } = await this.container.services.reddit.getRandom("dankdemes");
+        const { title, url } = await this.container.services.reddit.getRandom("dankmemes");
 
         if (!(await this.container.utilities.toolbox.isValidUrl(url))) {
             throw new UserError({

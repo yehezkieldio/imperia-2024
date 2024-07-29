@@ -12,7 +12,7 @@ interface RedditSubmission {
  * Case sentitivity is important on subreddit names.
  * Since subreddit names are case sensitive, and can be mistaken for a different subreddit.
  */
-const subreddits = ["memes", "dankdemes", "ProgrammerHumor", "HistoryMemes", "Animemes"] as const;
+const subreddits = ["memes", "dankmemes", "ProgrammerHumor", "HistoryMemes", "Animemes"] as const;
 export type AvailableSubreddit = (typeof subreddits)[number];
 
 export class RedditService extends Service {
