@@ -75,6 +75,10 @@ export class RedditService extends Service {
     public async getRandom(subreddit: AvailableSubreddit): Promise<RedditSubmission> {
         const cacheKey: string = subreddit.toLowerCase();
 
+        if (!(await this.container.db.dragonfly.exists(cacheKey))) {
+            await this.setupCache(subreddit);
+        }
+
         const data: string = (await this.container.db.dragonfly.call("JSON.GET", cacheKey)) as string;
         const parsedData: RedditSubmission[] = JSON.parse(data);
 
