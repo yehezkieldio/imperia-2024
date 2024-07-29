@@ -47,7 +47,7 @@ export class ServerAvatarCommand extends ImperiaCommand {
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().setColorScheme("info");
 
         if (!avatar) {
-            new UserError({
+            throw new UserError({
                 identifier: ImperiaIdentifiers.CommandServiceError,
                 message: "˖ ݁𖥔 ݁˖ Unfortunately, this server doesn't have an avatar!",
             });
