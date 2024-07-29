@@ -23,6 +23,8 @@ export class RedditService extends Service {
         });
     }
 
+    redditIconUrl = "https://www.redditinc.com/assets/images/site/Reddit_Icon_FullColor-1_2023-11-29-161416_munx.jpg";
+
     public isValidSubreddit(subreddit: AvailableSubreddit): subreddit is AvailableSubreddit {
         return subreddits.includes(subreddit);
     }

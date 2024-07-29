@@ -56,7 +56,7 @@ export class ProgrammingMemeCommand extends ImperiaCommand {
 
         embed.setDescription(`— ${bold(title)}`);
         embed.setFooter({
-            iconURL: "https://www.redditinc.com/assets/images/site/Reddit_Icon_FullColor-1_2023-11-29-161416_munx.jpg",
+            iconURL: this.container.services.reddit.redditIconUrl,
             text: "r/ProgrammerHumor",
         });
         embed.setImage(url);
