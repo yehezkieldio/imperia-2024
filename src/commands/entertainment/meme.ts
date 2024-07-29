@@ -9,7 +9,7 @@ export class MemeCommand extends ImperiaCommand {
         super(context, {
             ...options,
             description: "Get a meme from r/memes",
-            aliases: ["memes", "randommeme", "randommemes"],
+            aliases: ["memes"],
             tags: ["meme", "image"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });

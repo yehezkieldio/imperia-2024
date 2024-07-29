@@ -9,7 +9,7 @@ export class DankMemeCommand extends ImperiaCommand {
         super(context, {
             ...options,
             description: "Get a random meme from r/DankMemes",
-            aliases: ["dankmemes", "randomdankmeme", "randomdankmemes"],
+            aliases: ["dankmemes"],
             tags: ["meme", "image"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
