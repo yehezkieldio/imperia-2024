@@ -41,7 +41,7 @@ export class RedditService extends Service {
     }
 
     public async rebuildCache(subreddit: AvailableSubreddit): Promise<void> {
-        const cacheKey: string = subreddit.toLowerCase();
+        const cacheKey: string = `cache:${subreddit.toLowerCase()}`;
 
         if (await this.container.db.dragonfly.exists(cacheKey)) {
             await this.container.db.dragonfly.del(cacheKey);
@@ -51,7 +51,7 @@ export class RedditService extends Service {
     }
 
     private async setupCache(subreddit: AvailableSubreddit): Promise<void> {
-        const cacheKey: string = subreddit.toLowerCase();
+        const cacheKey: string = `cache:${subreddit.toLowerCase()}`;
         const cacheExists: number = await this.container.db.dragonfly.exists(cacheKey);
 
         if (cacheExists) {
@@ -83,12 +83,12 @@ export class RedditService extends Service {
             submission.url.includes("i.redd.it"),
         );
 
-        await this.container.db.dragonfly.call("JSON.SET", cacheKey, "$", JSON.stringify(filteredData));
+        await this.container.db.dragonfly.call("JSON.SET", `cache:${cacheKey}`, "$", JSON.stringify(filteredData));
         await this.container.db.dragonfly.expire(cacheKey, 7600);
     }
 
     public async getRandom(subreddit: AvailableSubreddit): Promise<RedditSubmission> {
-        const cacheKey: string = subreddit.toLowerCase();
+        const cacheKey: string = `cache:${subreddit.toLowerCase()}`;
 
         if (!(await this.container.db.dragonfly.exists(cacheKey))) {
             await this.setupCache(subreddit);
