@@ -3,6 +3,13 @@ import type { PullpushSubmission } from "@/lib/types/pullpush";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
 import { capitalizeFirstLetter, pickRandom, sleep } from "@sapphire/utilities";
 
+interface RedditSubmissionPayload {
+    title: string;
+    url: string;
+}
+
+type Subreddits = "memes" | "programmingmemes";
+
 export class RedditService extends Service {
     public constructor(context: Service.LoaderContext, options: Service.Options) {
         super(context, {
@@ -11,17 +18,18 @@ export class RedditService extends Service {
         });
     }
 
-    #randomMemeKey = "random-memes";
-    #randomProgrammingMemeKey = "random-programming-memes";
-
     public async postLoadSetup() {
         await sleep(3000);
 
-        await this.setupSubredditCache("memes", this.#randomMemeKey, "random memes");
-        await this.setupSubredditCache("programmingmemes", this.#randomProgrammingMemeKey, "random programming memes");
+        await this.setupSubredditCache("memes", "memes", "random memes");
+        await this.setupSubredditCache("programmingmemes", "programmingmemes", "random programming memes");
     }
 
-    private async setupSubredditCache(subreddit: string, cacheKey: string, cacheDescription: string): Promise<void> {
+    private async setupSubredditCache(
+        subreddit: Subreddits,
+        cacheKey: Subreddits,
+        cacheDescription: string,
+    ): Promise<void> {
         const cacheExists: number = await this.container.db.dragonfly.exists(cacheKey);
 
         if (cacheExists) {
@@ -44,21 +52,24 @@ export class RedditService extends Service {
 
         const submissions: PullpushSubmission = await fetch<PullpushSubmission>(url, FetchResultTypes.JSON);
 
-        let urls: string[] = submissions.data.map((data) => data.url);
-        urls = urls.filter((url: string): boolean => url !== "");
+        const data: RedditSubmissionPayload[] = submissions.data.map((data) => ({
+            title: data.title,
+            url: data.url,
+        }));
 
-        /**
-         *  ? should we verify or filter for dead Reddit URLs?
-         *  ? with the current changes, it may lead to false positives with hitting their urls.
-         */
+        const filteredData: RedditSubmissionPayload[] = data.filter((submission: RedditSubmissionPayload): boolean =>
+            submission.url.includes("i.redd.it"),
+        );
 
-        await this.container.db.dragonfly.rpush(cacheKey, ...urls);
+        await this.container.db.dragonfly.call("JSON.SET", cacheKey, "$", JSON.stringify(filteredData));
         await this.container.db.dragonfly.expire(cacheKey, 7600);
     }
 
-    public async getRandomMeme(): Promise<string> {
-        const urls: string[] = await this.container.db.dragonfly.lrange(this.#randomMemeKey, 0, -1);
+    public async getRandom(key: Subreddits): Promise<RedditSubmissionPayload> {
+        const data = (await this.container.db.dragonfly.call("JSON.GET", key)) as string;
+        const parsedData: RedditSubmissionPayload[] = JSON.parse(data);
 
-        return pickRandom(urls);
+        const randomSubmission: RedditSubmissionPayload = pickRandom(parsedData);
+        return randomSubmission;
     }
 }

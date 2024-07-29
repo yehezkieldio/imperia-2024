@@ -1,7 +1,8 @@
 import { ImperiaCommand } from "@/lib/extensions/command";
 import { ImperiaEmbedBuilder } from "@/lib/extensions/embed-builder";
-import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
-import { type InteractionResponse, type Message, SlashCommandBuilder, hyperlink } from "discord.js";
+import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
+import { CommandOptionsRunTypeEnum, UserError } from "@sapphire/framework";
+import { type InteractionResponse, type Message, SlashCommandBuilder, bold } from "discord.js";
 
 export class MemeCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
@@ -33,17 +34,24 @@ export class MemeCommand extends ImperiaCommand {
     }
 
     private async getMeme() {
-        const url = await this.container.services.reddit.getRandomMeme();
+        const { title, url } = await this.container.services.reddit.getRandom("memes");
+
+        if (!(await this.container.utilities.toolbox.isValidUrl(url))) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "d(-_^) Seems like the fetched meme is invalid, please try again.",
+            });
+        }
 
         const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().setColorScheme("info");
-
         const reply = "˖ ݁𖥔 ݁˖ Here's a random meme for you~";
 
-        embed
-            .setImage(url)
-            .setDescription(
-                `This meme was provided to you by ${hyperlink("r/DankMemes", "https://www.reddit.com/r/dankmemes")}`,
-            );
+        embed.setDescription(`— ${bold(title)}`);
+        embed.setFooter({
+            iconURL: "https://www.redditinc.com/assets/images/site/Reddit_Icon_FullColor-1_2023-11-29-161416_munx.jpg",
+            text: "r/DankMemes",
+        });
+        embed.setImage(url);
 
         return {
             reply,

@@ -93,16 +93,7 @@ export class ToolboxUtilities extends Utility {
             return response.ok;
         } catch (error) {
             if (error instanceof QueryError) {
-                if (url.includes("i.redd.it") && error.message.includes("404")) {
-                    return false;
-                }
-
-                if (error.message.includes("UNABLE_TO_VERIFY_LEAF_SIGNATURE") && url.includes("reddit.com")) {
-                    return false;
-                }
-
-                this.container.logger.error(`Error validating URL ${url}:`, error);
-
+                this.container.logger.error(`ToolboxUtilities: Error validating URL ${url}:`, error);
                 return false;
             }
 
