@@ -24,9 +24,8 @@
         "noUnusedParameters": false,
         "noPropertyAccessFromIndexSignature": false,
 
-        "esModuleInterop": true,
+        // Others
         "allowSyntheticDefaultImports": true,
-
         "paths": {
             "@/*": ["./src/*"]
         }

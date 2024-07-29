@@ -1,0 +1,18 @@
+{
+    "$schema": "https://raw.githubusercontent.com/sapphiredev/cli/main/templates/schemas/.sapphirerc.scheme.json",
+    "projectLanguage": "ts",
+    "locations": {
+        "base": "src",
+        "arguments": "arguments",
+        "commands": "commands",
+        "listeners": "listeners",
+        "preconditions": "preconditions",
+        "interaction-handlers": "interaction-handlers",
+        "services": "services",
+        "routes": ""
+    },
+    "customFileTemplates": {
+        "enabled": true,
+        "location": "templates"
+    }
+}

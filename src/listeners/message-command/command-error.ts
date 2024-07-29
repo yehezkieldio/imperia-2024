@@ -1,13 +1,12 @@
-import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
-import { ImperiaEvents } from "@/core/extensions/events";
-import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
-import { ImperiaListener } from "@/core/extensions/listener";
-import { ArgumentError, type MessageCommandErrorPayload, UserError } from "@sapphire/framework";
+import { ImperiaEmbedBuilder } from "@/lib/extensions/embed-builder";
+import { ImperiaEvents } from "@/lib/extensions/events";
+import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
+import { ArgumentError, Listener, type MessageCommandErrorPayload, UserError } from "@sapphire/framework";
 import { capitalizeFirstLetter } from "@sapphire/utilities";
 import { type InteractionResponse, type Message, codeBlock } from "discord.js";
 
-export class MessageCommandErrorListener extends ImperiaListener {
-    public constructor(context: ImperiaListener.Context, options: ImperiaListener.Options) {
+export class MessageCommandErrorListener extends Listener {
+    public constructor(context: Listener.LoaderContext, options: Listener.Options) {
         super(context, {
             ...options,
             once: false,
@@ -16,34 +15,35 @@ export class MessageCommandErrorListener extends ImperiaListener {
     }
 
     public async run(error: Error, payload: MessageCommandErrorPayload): Promise<Message | InteractionResponse> {
-        const { repositories } = this.container;
+        const { repos, logger } = this.container;
+        const { message, command } = payload;
 
-        const historyEntry: boolean = await repositories.commandHistory.addCommandHistory({
-            userId: payload.message.author.id,
-            guildId: payload.message.guildId as string,
-            commandName: payload.command.name,
+        const entry: boolean = await repos.history.newEntry({
+            userId: message.author.id,
+            guildId: message.guild?.id ?? "",
+            commandName: command.name,
             status: "error",
             type: "message",
         });
 
-        if (!historyEntry) {
-            this.container.logger.warn("MessageCommandErrorListener: Failed to add command history entry.");
+        if (!entry) {
+            logger.warn("MessageCommandErrorListener: Failed to add command history entry.");
         }
 
-        this.container.logger.info(
-            `MessageCommandErrorListener: Failed to execute slash command ${payload.command.name} by ${payload.message.author.id} in ${payload.message.guildId}.`,
+        logger.info(
+            `MessageCommandErrorListener: Command ${command.name} error for ${message.author.username} in ${message.guild?.name ?? "DMs"}.`,
         );
 
         if (error instanceof UserError) return this.handleUserError(error, payload);
         if (error instanceof ArgumentError) return this.handleArgumentError(error, payload);
 
-        return payload.message.channel.send(
-            `An unhandled error occurred while executing this command!\n${codeBlock(`${error.message}`)}`,
+        return payload.message.reply(
+            `>⌓<｡ An unhandled error occurred while executing this command!\n${codeBlock(`${error.message}`)}`,
         );
     }
 
     private handleUserError(error: UserError, payload: MessageCommandErrorPayload) {
-        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isErrorEmbed();
+        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().setColorScheme("error");
 
         embed.setFooter({
             text: `Error Identifier: ${capitalizeFirstLetter(error.identifier)}`,
@@ -52,17 +52,21 @@ export class MessageCommandErrorListener extends ImperiaListener {
         switch (error.identifier) {
             case ImperiaIdentifiers.ArgsMissing:
                 return payload.message.reply(error.message);
-            case ImperiaIdentifiers.ArgumentFilterImageError:
-                embed.setTitle("The filter provided was not found!");
-                embed.setDescription(error.message);
-                break;
+            case ImperiaIdentifiers.CommandServiceError:
+                return payload.message.reply(error.message);
+            case ImperiaIdentifiers.InvalidArgumentProvided:
+                return payload.message.reply(error.message);
+            case ImperiaIdentifiers.ArgumentFilterImageError ||
+                ImperiaIdentifiers.ArgumentEffectImageError ||
+                ImperiaIdentifiers.ArgumentEffectMonochromeError:
+                return payload.message.reply(error.message);
             default:
-                embed.setTitle("An error occurred while executing this command!");
+                embed.setTitle(">⌓<｡ An error occurred while executing this command!");
                 embed.setDescription(error.message);
                 break;
         }
 
-        return payload.message.channel.send({ embeds: [embed] });
+        return payload.message.reply({ embeds: [embed] });
     }
 
     private handleArgumentError(error: ArgumentError, payload: MessageCommandErrorPayload) {
@@ -72,9 +76,9 @@ export class MessageCommandErrorListener extends ImperiaListener {
             text: `Error Identifier: ${capitalizeFirstLetter(error.identifier)}`,
         });
 
-        embed.setTitle("An error occurred while parsing arguments for this command!");
+        embed.setTitle(">⌓<｡ An error occurred while parsing arguments for this command!");
         embed.setDescription(codeBlock(`${error.identifier}\n\n${error.message}`));
 
-        return payload.message.channel.send({ embeds: [embed] });
+        return payload.message.reply({ embeds: [embed] });
     }
 }

@@ -2,13 +2,14 @@
   "category": "commands"
 }
 ---
-import { ImperiaCommand } from "@/core/extensions/command";
+import { ImperiaCommand } from "@/lib/extensions/command";
 import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { type InteractionResponse, type Message, SlashCommandBuilder } from "discord.js";
 
-export class ExampleCommand extends ImperiaCommand {
+export class {{name}}Command extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
+            ...options,
             description: "",
             tags: [""],
             runIn: CommandOptionsRunTypeEnum.GuildText,
@@ -18,10 +19,7 @@ export class ExampleCommand extends ImperiaCommand {
     public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
-        void registry.registerChatInputCommand(command, {
-            guildIds: [],
-            idHints: [],
-        });
+        void registry.registerChatInputCommand(command);
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {

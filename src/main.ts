@@ -1,21 +1,34 @@
+// Parse the environment variables and verify their existence and correctness.
+import { envVariables } from "@/lib/env";
+envVariables.parse(process.env);
+
 import { configuration } from "@/configuration";
-import { ImperiaClient } from "@/core/extensions/client";
-import { env } from "@/environment";
+import { ImperiaClient } from "@/lib/extensions/client";
 
 import "@sapphire/plugin-logger/register";
+
+// Register custom stores, such as the utilities, the services, etc.
+import "./lib/stores/register";
+
 import "@sapphire/plugin-scheduled-tasks/register";
 
-import "./core/stores/register";
-
-const main: () => Promise<void> = async (): Promise<void> => {
+/**
+ * The main entrypoint for the bot.
+ */
+export async function main(): Promise<void> {
     const client = new ImperiaClient(configuration);
-    await client.login(env.DISCORD_TOKEN);
+    await client.login(Bun.env.DISCORD_TOKEN);
 
-    process.on("SIGINT", async () => {
-        await client.destroy();
+    process.on("SIGINT", async (): Promise<void> => {
+        client.logger.info("EntrypointMain: Received SIGINT, exiting...");
 
-        process.exit(1);
+        await client.destroy().then((): never => {
+            process.exit();
+        });
     });
-};
+}
 
-void main();
+main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+});

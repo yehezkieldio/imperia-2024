@@ -1,10 +1,8 @@
-import { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
-import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
-import { Utility } from "@/core/stores/utilities/utility";
-import { FetchResultTypes, fetch } from "@sapphire/fetch";
+import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
+import { Utility } from "@/lib/stores/utilities";
+import { FetchResultTypes, QueryError, fetch } from "@sapphire/fetch";
 import type { UserError } from "@sapphire/framework";
-import { capitalizeFirstLetter } from "@sapphire/utilities";
-import { ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
+import { type Attachment, ChannelType, chatInputApplicationCommandMention, inlineCode } from "discord.js";
 
 export class ToolboxUtilities extends Utility {
     public constructor(context: Utility.LoaderContext, options: Utility.Options) {
@@ -14,44 +12,56 @@ export class ToolboxUtilities extends Utility {
         });
     }
 
-    public generateCommandDeniedEmbed(error: UserError) {
-        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().isWarningEmbed();
+    public generateCommandDeniedResponse(error: UserError) {
+        /* -------------------------- GLOBAL PRECONDITIONS -------------------------- */
 
-        embed.setFooter({
-            text: `Error Identifier: ${capitalizeFirstLetter(error.identifier)}`,
-        });
-
-        switch (error.identifier) {
-            // General command errors
-            case ImperiaIdentifiers.CommandDisabled:
-                embed.setDescription("This command is currently disabled!");
-                break;
-            case ImperiaIdentifiers.PreconditionCooldown:
-                embed.setTitle("This command is on cooldown!");
-                embed.setDescription("Please wait for the cooldown to expire.");
-                break;
-            case ImperiaIdentifiers.PreconditionRunIn:
-                embed.setTitle("This command is not available in this context!");
-                embed.setDescription(`Please use this command in a ${this.getChannelType(error)}`);
-                break;
-
-            // Permission errors
-            case ImperiaIdentifiers.PreconditionClientPermissions ||
-                ImperiaIdentifiers.PreconditionClientPermissionsNoPermissions:
-                embed.setTitle("I am missing required permissions to execute this command!");
-                embed.setDescription(`Required permission(s): ${this.getMissingPermissions(error)}`);
-                break;
-            case ImperiaIdentifiers.PreconditionUserPermissions ||
-                ImperiaIdentifiers.PreconditionUserPermissionsNoPermissions:
-                embed.setTitle("You are missing required permissions to execute this command!");
-                embed.setDescription(`Required permission(s): ${this.getMissingPermissions(error)}`);
-                break;
-            default:
-                embed.setDescription("Unhandled error occurred while executing this command!");
-                break;
+        if (error.identifier === ImperiaIdentifiers.BlacklistedServer) {
+            return error.message;
         }
 
-        return embed;
+        if (error.identifier === ImperiaIdentifiers.BlacklistedUser) {
+            return error.message;
+        }
+
+        /* -------------------------- GENERAL PRECONDITIONS -------------------------- */
+
+        if (error.identifier === ImperiaIdentifiers.InvalidArgumentProvided) {
+            return error.message;
+        }
+
+        if (error.identifier === ImperiaIdentifiers.CommandDisabled) {
+            return "｀(^ ▼^)´↑ This command is globally disabled! Please try again later...";
+        }
+
+        if (error.identifier === ImperiaIdentifiers.PreconditionCooldown) {
+            return "(｡･･｡) This command is on cooldown! Please wait for the cooldown to expire...";
+        }
+
+        if (error.identifier === ImperiaIdentifiers.PreconditionRunIn) {
+            return `(￣ｰ￣) This command is not available in this context! Please use this command in a ${this.getChannelType(error)}`;
+        }
+
+        /* ------------------------ PERMISSION PRECONDITIONS ------------------------ */
+
+        if (
+            error.identifier === ImperiaIdentifiers.PreconditionClientPermissions ||
+            error.identifier === ImperiaIdentifiers.PreconditionClientPermissionsNoPermissions
+        ) {
+            return `( /・・)ノ I am missing required permissions to execute this command!\nRequired permission(s): ${this.getMissingPermissions(error)}`;
+        }
+
+        if (
+            error.identifier === ImperiaIdentifiers.PreconditionUserPermissions ||
+            error.identifier === ImperiaIdentifiers.PreconditionUserPermissionsNoPermissions
+        ) {
+            return `( /・・)ノ You are missing required permissions to execute this command!\nRequired permission(s): ${this.getMissingPermissions(error)}`;
+        }
+
+        /* --------------------------------- DEFAULT -------------------------------- */
+
+        this.container.logger.debug(error.message);
+
+        return ">⌓<｡ Unhandled error occurred while executing this command!";
     }
 
     public getChannelType(error: UserError) {
@@ -82,8 +92,35 @@ export class ToolboxUtilities extends Utility {
             const response = await fetch(url, { method: "HEAD" }, FetchResultTypes.Result);
             return response.ok;
         } catch (error) {
-            this.container.logger.error(`Error validating URL ${url}:`, error);
+            if (error instanceof QueryError) {
+                this.container.logger.error(`ToolboxUtilities: Error validating URL ${url}:`, error);
+                return false;
+            }
+
             return false;
         }
+    }
+
+    public isValidImageExtension(url: string): boolean {
+        const imageExtensionPattern = /\.(jpg|jpeg|png)$/i;
+
+        try {
+            return imageExtensionPattern.test(new URL(url).pathname);
+        } catch {
+            return false;
+        }
+    }
+
+    public isValidImageContentType(attachment: Attachment): boolean {
+        /**
+         * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+         */
+        const imageContentTypes: string[] = ["image/jpeg", "image/png"];
+
+        return imageContentTypes.includes(attachment.contentType ?? "");
+    }
+
+    public isValidAttachment(attachment: Attachment): boolean {
+        return this.isValidImageContentType(attachment) && this.isValidImageExtension(attachment.url);
     }
 }

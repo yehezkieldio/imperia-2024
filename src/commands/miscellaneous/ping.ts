@@ -1,4 +1,4 @@
-import { ImperiaCommand } from "@/core/extensions/command";
+import { ImperiaCommand } from "@/lib/extensions/command";
 import { isMessageInstance } from "@sapphire/discord.js-utilities";
 import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { type Message, SlashCommandBuilder } from "discord.js";
@@ -6,7 +6,7 @@ import { type Message, SlashCommandBuilder } from "discord.js";
 export class PingCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
-            description: "Perform a ping command to check the bot's latency.",
+            description: "Check the bot's latency.",
             tags: ["utility"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
@@ -15,58 +15,45 @@ export class PingCommand extends ImperiaCommand {
     public override registerApplicationCommands(registry: ImperiaCommand.Registry): void {
         const command = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
-        void registry.registerChatInputCommand(command, {
-            guildIds: [],
-            idHints: [],
-        });
+        void registry.registerChatInputCommand(command);
     }
+
+    #pleaseWait = "( ノ・・)ノ Please wait...";
+    #failedRequest = "(／。＼) Failed to perform ping request.";
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
         const msg: Message = await interaction.reply({
-            content: "Performing a ping request... ＼(-_- )",
+            content: this.#pleaseWait,
             fetchReply: true,
         });
 
         if (isMessageInstance(msg)) {
-            const { diff, ping } = await this.getPing(msg, interaction);
+            const context: ImperiaCommand.ContextMessage = msg;
+            const response: string = await this.getLatency(msg, context);
 
-            return interaction.editReply(
-                `(・ω・｀)……….. Returned with these results:\n\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
-            );
+            return msg.edit(response);
         }
 
-        return interaction.editReply("(／。＼) Failed to perform ping request.");
+        return interaction.editReply(this.#failedRequest);
     }
 
     public async messageRun(message: Message): Promise<Message> {
-        const msg: Message = await message.reply({
-            content: "Performing a ping request... ＼(-_- )",
-        });
+        const msg: Message = await message.reply(this.#pleaseWait);
 
         if (isMessageInstance(msg)) {
-            const { diff, ping } = await this.getPing(msg, message);
+            const context: ImperiaCommand.ContextMessage = msg;
+            const response: string = await this.getLatency(msg, context);
 
-            return msg.edit(
-                `(・ω・｀)……….. Returned with these results:\n\nRound trip took: ${diff}ms.\nHeartbeat: ${ping}ms.`,
-            );
+            return msg.edit(response);
         }
 
-        return message.reply("(／。＼) Failed to perform ping request.");
+        return message.edit(this.#failedRequest);
     }
 
-    private async getPing(
-        msg: Message,
-        ctx: Message | ImperiaCommand.ChatInputCommandInteraction,
-    ): Promise<{
-        diff: number;
-        ping: number;
-    }> {
-        const diff: number = msg.createdTimestamp - ctx.createdTimestamp;
+    private async getLatency(message: Message, context: ImperiaCommand.ContextMessage) {
+        const diff: number = message.createdTimestamp - context.createdTimestamp;
         const ping: number = Math.round(this.container.client.ws.ping);
 
-        return {
-            diff,
-            ping,
-        };
+        return `( ^_^)／ Latency: ${diff}ms | Ping: ${ping}ms`;
     }
 }

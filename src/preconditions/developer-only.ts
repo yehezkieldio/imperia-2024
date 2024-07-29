@@ -1,6 +1,6 @@
-import { DEVELOPERS } from "@/core/constants";
-import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
-import { Precondition, type PreconditionResult, type Result, type UserError } from "@sapphire/framework";
+import { DEVELOPERS } from "@/lib/const";
+import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
+import { Precondition, type Result, type UserError } from "@sapphire/framework";
 import type { CommandInteraction, Message } from "discord.js";
 
 export class DeveloperOnlyPrecondition extends Precondition {
@@ -12,21 +12,19 @@ export class DeveloperOnlyPrecondition extends Precondition {
     }
 
     public async chatInputRun(interaction: CommandInteraction): Promise<Result<unknown, UserError>> {
-        return this.check(interaction);
+        return this.doDevelopersCheck(interaction.user.id);
     }
 
-    public override async messageRun(message: Message): Promise<Result<unknown, UserError>> {
-        return this.check(message);
+    public async messageRun(message: Message): Promise<Result<unknown, UserError>> {
+        return this.doDevelopersCheck(message.author.id);
     }
 
-    private check(context: CommandInteraction | Message): PreconditionResult {
-        const userId: string | undefined = context.member?.user.id as string;
-
+    private async doDevelopersCheck(userId: string): Promise<Result<unknown, UserError>> {
         return DEVELOPERS.includes(userId)
             ? this.ok()
             : this.error({
+                  message: "┗(･ω･;)┛ My apologies, but this command is for developers only!",
                   identifier: ImperiaIdentifiers.DeveloperOnly,
-                  message: "Congratulations! You've found a developer command. Unfortunately, you're not a developer.",
               });
     }
 }

@@ -1,9 +1,9 @@
-import { ImperiaEvents } from "@/core/extensions/events";
-import { ImperiaListener } from "@/core/extensions/listener";
+import { ImperiaEvents } from "@/lib/extensions/events";
+import { Listener } from "@sapphire/framework";
 import type { Client, ClientUser } from "discord.js";
 
-export class ClientReadyListener extends ImperiaListener {
-    public constructor(context: ImperiaListener.Context, options: ImperiaListener.Options) {
+export class ClientReadyListener extends Listener {
+    public constructor(context: Listener.LoaderContext, options: Listener.Options) {
         super(context, {
             ...options,
             once: true,
@@ -13,6 +13,7 @@ export class ClientReadyListener extends ImperiaListener {
 
     public async run(client: Client): Promise<void> {
         const { username, id } = client.user as ClientUser;
+
         const userCount: number = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
         const guildCount: number = client.guilds.cache.size;
 

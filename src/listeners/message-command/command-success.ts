@@ -1,9 +1,8 @@
-import { ImperiaEvents } from "@/core/extensions/events";
-import { ImperiaListener } from "@/core/extensions/listener";
-import type { MessageCommandSuccessPayload } from "@sapphire/framework";
+import { ImperiaEvents } from "@/lib/extensions/events";
+import { Listener, type MessageCommandSuccessPayload } from "@sapphire/framework";
 
-export class MessageCommandSuccessListener extends ImperiaListener {
-    public constructor(context: ImperiaListener.Context, options: ImperiaListener.Options) {
+export class MessageCommandSuccessListener extends Listener {
+    public constructor(context: Listener.LoaderContext, options: Listener.Options) {
         super(context, {
             ...options,
             once: false,
@@ -12,22 +11,23 @@ export class MessageCommandSuccessListener extends ImperiaListener {
     }
 
     public async run(payload: MessageCommandSuccessPayload): Promise<void> {
-        const { repositories } = this.container;
+        const { repos, logger } = this.container;
+        const { message, command } = payload;
 
-        const historyEntry: boolean = await repositories.commandHistory.addCommandHistory({
-            userId: payload.message.author.id,
-            guildId: payload.message.guildId as string,
-            commandName: payload.command.name,
+        const entry: boolean = await repos.history.newEntry({
+            userId: message.author.id,
+            guildId: message.guild?.id ?? "",
+            commandName: command.name,
             status: "success",
             type: "message",
         });
 
-        if (!historyEntry) {
-            this.container.logger.warn("MessageCommandSuccessListener: Failed to add command history entry.");
+        if (!entry) {
+            logger.warn("MessageCommandSuccessListener: Failed to add command history entry.");
         }
 
-        this.container.logger.info(
-            `MessageCommandSuccessListener: Successfully executed message command ${payload.command.name} by ${payload.message.author.id} in ${payload.message.guildId}.`,
+        logger.info(
+            `MessageCommandSuccessListener: Command ${command.name} executed successfully for ${message.author.username} in ${message.guild?.name ?? "DMs"}.`,
         );
     }
 }

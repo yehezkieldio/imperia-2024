@@ -1,36 +1,31 @@
 {
     "name": "imperia",
+    "version": "1.0.0",
     "module": "src/main.ts",
-    "version": "2.0.0",
     "type": "module",
+    "private": true,
     "scripts": {
         "start": "bun run src/main.ts",
         "dev": "bun run --watch src/main.ts",
-        "test": "bun test",
         "lefthook": "lefthook install",
-        "-- CODE QUALITY": "-------------------------",
         "format": "biome format --write ./src",
         "format:check": "biome format ./src",
         "lint": "biome check --write ./src",
         "lint:unsafe": "biome check --write --unsafe ./src",
         "lint:check": "biome check ./src",
-        "typecheck": "tsc -p tsconfig.typecheck.json",
-        "-- DATABASE": "-------------------------",
+        "typecheck": "tsc",
         "db:push": "drizzle-kit push",
         "db:studio": "drizzle-kit studio",
         "db:generate": "drizzle-kit generate",
-        "-- DOCKER": "-------------------------",
-        "docker:infra:up": "docker-compose --file docker/infra/docker-compose.yml --env-file .env up -d",
-        "docker:infra:down": "docker-compose --file docker/infra/docker-compose.yml --env-file .env down",
-        "docker:prod:build": "docker-compose --file docker/docker-compose.yml --env-file .env.production build",
-        "docker:prod:up": "docker-compose --file docker/docker-compose.yml --env-file .env.production up -d",
-        "docker:prod:down": "docker-compose --file docker/docker-compose.yml --env-file .env.production down"
+        "cache:flush": "bun run scripts/dragonfly-flush.ts",
+        "cache:flush:all": "bun run scripts/dragonfly-flush.ts --all",
+        "infra:up": "docker compose --file docker/infrastructure/compose.yml --env-file .env up -d",
+        "infra:down": "docker compose --file docker/infrastructure/compose.yml --env-file .env down"
     },
     "devDependencies": {
-        "@biomejs/biome": "^1.8.3",
+        "@biomejs/biome": "^1.8.4-nightly.a579bf7",
         "@types/bun": "latest",
-        "drizzle-kit": "^0.23.0",
-        "lefthook": "^1.7.2"
+        "drizzle-kit": "^0.23.0"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
@@ -39,22 +34,17 @@
         "@sapphire/discord.js-utilities": "^7.3.0",
         "@sapphire/fetch": "^3.0.2",
         "@sapphire/framework": "^5.2.1",
-        "@sapphire/pieces": "^4.3.1",
         "@sapphire/plugin-logger": "^4.0.2",
         "@sapphire/plugin-scheduled-tasks": "^10.0.1",
         "@sapphire/plugin-subcommands": "^6.0.3",
+        "@sapphire/shapeshift": "^4.0.0",
         "@sapphire/time-utilities": "^1.7.12",
-        "@sapphire/timer-manager": "^1.0.2",
-        "@sapphire/utilities": "^3.16.2",
+        "@sapphire/utilities": "^3.17.0",
         "@silvia-odwyer/photon-node": "^0.3.3",
-        "@t3-oss/env-core": "^0.10.1",
-        "bullmq": "^5.10.1",
-        "dayjs": "^1.11.11",
         "discord.js": "^14.15.3",
-        "drizzle-cuid2": "^1.0.5",
-        "drizzle-orm": "^0.32.0",
+        "drizzle-orm": "^0.32.1",
         "ioredis": "^5.4.1",
-        "postgres": "^3.4.4",
-        "zod": "^3.23.8"
+        "lefthook": "^1.7.7",
+        "postgres": "^3.4.4"
     }
 }

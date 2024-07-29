@@ -1,13 +1,16 @@
-import { ImperiaCommand } from "@/core/extensions/command";
-import { ImperiaIdentifiers } from "@/core/extensions/identifiers";
+import { ImperiaCommand } from "@/lib/extensions/command";
+import { ImperiaEmbedBuilder } from "@/lib/extensions/embed-builder";
+import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
 import { type Args, CommandOptionsRunTypeEnum, type ResultType, UserError } from "@sapphire/framework";
 import { type InteractionResponse, type Message, SlashCommandBuilder } from "discord.js";
 
 export class AestheticCommand extends ImperiaCommand {
     public constructor(context: ImperiaCommand.Context, options: ImperiaCommand.Options) {
         super(context, {
-            description: "Convert your provided text into aesthetic text.",
-            tags: ["entertainment", "text"],
+            ...options,
+            description: "Turn your text into aesthetic fullwidth text!",
+            aliases: ["fullwidth"],
+            tags: ["text", "fun"],
             runIn: CommandOptionsRunTypeEnum.GuildText,
         });
     }
@@ -17,19 +20,25 @@ export class AestheticCommand extends ImperiaCommand {
             .setName(this.name)
             .setDescription(this.description)
             .addStringOption((option) =>
-                option.setName("text").setDescription("The text to convert into aesthetic text.").setRequired(true),
+                option.setName("text").setDescription("The text to convert.").setRequired(true),
             );
 
-        void registry.registerChatInputCommand(command, {
-            guildIds: [],
-            idHints: [],
-        });
+        void registry.registerChatInputCommand(command);
     }
+
+    #reply = "˖ ݁𖥔 ݁˖ Here's what I converted for you~";
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
         const text: string = interaction.options.getString("text", true);
+        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().setColorScheme("success");
 
-        return interaction.reply(this.toFullWidth(text));
+        const convertedText: string = this.convertToFullWidth(text);
+        embed.setDescription(convertedText);
+
+        return interaction.reply({
+            content: this.#reply,
+            embeds: [embed],
+        });
     }
 
     public async messageRun(message: Message, args: Args): Promise<Message> {
@@ -38,16 +47,23 @@ export class AestheticCommand extends ImperiaCommand {
         if (textArgument.isErr()) {
             throw new UserError({
                 identifier: ImperiaIdentifiers.ArgsMissing,
-                message: "(゜-゜) You didn't provide a text for me! How am I supposed to do anything?",
+                message: "(゜-゜) You didn't provide any text to convert, how am I supposed to do that?",
             });
         }
 
-        const text: string = textArgument.unwrap();
+        const embed: ImperiaEmbedBuilder = new ImperiaEmbedBuilder().setColorScheme("success");
 
-        return message.reply(this.toFullWidth(text));
+        const text: string = textArgument.unwrap();
+        const convertedText: string = this.convertToFullWidth(text);
+        embed.setDescription(`${convertedText}`);
+
+        return message.reply({
+            content: this.#reply,
+            embeds: [embed],
+        });
     }
 
-    private toFullWidth(text: string): string {
+    private convertToFullWidth(text: string): string {
         return text.replace(/[!-~]/g, (char: string): string => {
             const code: number = char.charCodeAt(0);
             return String.fromCharCode(code + 0xfee0);

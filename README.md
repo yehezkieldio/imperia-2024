@@ -1,16 +1,17 @@
-<h2></h2>
+>  *Like a fading summer star, rising from the ocean to shine bright~*
 
-<div align="center">
-<img src=".github/assets/Imperia.png" align="center" width="180px" />
+![Header](.github/assets/banner.png)
 
-<h3>Imperia</h3>
-<p>All-in-one Discord bot solution for various tasks.</p>
-</div>
+![Discord](https://img.shields.io/badge/Discord_Bot-%235865F2.svg?style=flat&logo=discord&logoColor=white)
+[![Bun](https://img.shields.io/badge/Powered_by-Bun-%23000000.svg?style=flat&logo=bun&logoColor=white)](https://bun.sh/)
+[![Sapphire](https://img.shields.io/badge/Built_with-Sapphire-%235865F2.svg?logo=typescript&logoColor=white)](https://sapphirejs.dev/)
+[![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome&logoColor=white)](https://biomejs.dev)
 
 ## Overview
 
-Imperia is a multipurpose Discord bot with an extensive feature set that is seperated into various modules. Planned scope of Imperia is still in it's early stages. It includes performing tasks such as server administration, effortless moderation with automated systems, various entertainment options, information gathering, economy system, etc.
+Imperia is a multipurpose Discord bot with extensive feature sets, including moderation, utility, and entertainment commands. The planned scope of the bot is to provide a wide range of features to Discord servers, with a focus on customization and user experience. The name "Imperia" is of Latin origin; Typically feminine, and comes from the word Impĕro which means command, power, or imperial.
 
 ## License
 
-Imperia is licensed under the [MIT License](LICENSE). Please refer to the license for more information.
+This project is licensed under the [MIT License](LICENSE). Please refer to the license for more information.

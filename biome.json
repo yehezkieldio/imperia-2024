@@ -7,6 +7,9 @@
         "enabled": true,
         "rules": {
             "recommended": true,
+            "style": {
+                "noNonNullAssertion": "off"
+            },
             "correctness": {
                 "noUnusedImports": "error"
             },
@@ -18,6 +21,8 @@
     },
     "formatter": {
         "enabled": true,
+        "formatWithErrors": true,
+        "lineEnding": "lf",
         "indentStyle": "space",
         "indentWidth": 4,
         "lineWidth": 120
@@ -27,9 +32,6 @@
             "indentStyle": "space",
             "indentWidth": 4
         }
-    },
-    "files": {
-        "ignore": ["migrations", "node_modules", "docker", "src/core/stores/register.ts"]
     },
     "vcs": {
         "enabled": true,

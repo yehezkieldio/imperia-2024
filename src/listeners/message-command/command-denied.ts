@@ -1,11 +1,9 @@
-import type { ImperiaEmbedBuilder } from "@/core/extensions/embed-builder";
-import { ImperiaEvents } from "@/core/extensions/events";
-import { ImperiaListener } from "@/core/extensions/listener";
-import type { MessageCommandDeniedPayload, UserError } from "@sapphire/framework";
-import { type InteractionResponse, type Message, MessageType } from "discord.js";
+import { ImperiaEvents } from "@/lib/extensions/events";
+import { Listener, type MessageCommandDeniedPayload, type UserError } from "@sapphire/framework";
+import type { InteractionResponse, Message } from "discord.js";
 
-export class MessageCommandDeniedListener extends ImperiaListener {
-    public constructor(context: ImperiaListener.Context, options: ImperiaListener.Options) {
+export class MessageCommandDeniedListener extends Listener {
+    public constructor(context: Listener.LoaderContext, options: Listener.Options) {
         super(context, {
             ...options,
             once: false,
@@ -14,34 +12,28 @@ export class MessageCommandDeniedListener extends ImperiaListener {
     }
 
     public async run(error: UserError, payload: MessageCommandDeniedPayload): Promise<Message | InteractionResponse> {
-        const { repositories, utilities } = this.container;
+        const { repos, logger, utilities } = this.container;
+        const { message, command } = payload;
 
-        const historyEntry: boolean = await repositories.commandHistory.addCommandHistory({
-            userId: payload.message.author.id,
-            guildId: payload.message.guildId as string,
-            commandName: payload.command.name,
+        const entry: boolean = await repos.history.newEntry({
+            userId: message.author.id,
+            guildId: message.guild?.id ?? "",
+            commandName: command.name,
             status: "denied",
             type: "message",
         });
 
-        if (!historyEntry) {
-            this.container.logger.warn("MessageCommandDeniedListener: Failed to add command history entry.");
+        if (!entry) {
+            logger.warn("MessageCommandSuccessListener: Failed to add command history entry.");
         }
 
-        this.container.logger.info(
-            `MessageCommandDeniedListener: Failed to execute message command ${payload.command.name} by ${payload.message.author.id} in ${payload.message.guildId}.`,
+        logger.info(
+            `MessageCommandSuccessListener: Command ${command.name} denied for ${message.author.username} in ${message.guild?.name ?? "DMs"}.`,
         );
 
-        const embed: ImperiaEmbedBuilder = utilities.toolbox.generateCommandDeniedEmbed(error);
-
-        if (payload.message.type === MessageType.Reply) {
-            return payload.message.edit({
-                embeds: [embed],
-            });
-        }
-
-        return payload.message.channel.send({
-            embeds: [embed],
+        const response: string = utilities.toolbox.generateCommandDeniedResponse(error);
+        return message.reply({
+            content: response,
         });
     }
 }

@@ -1,58 +1,55 @@
-import { DEVELOPERS } from "@/core/constants";
-import type { ImperiaClientOptions } from "@/core/extensions/client";
-import { env } from "@/environment";
+import { DEVELOPERS } from "@/lib/const";
+import type { ImperiaClientOptions } from "@/lib/extensions/client";
 import { LogLevel, type CooldownOptions as SapphireCooldownOptions } from "@sapphire/framework";
 import type { ScheduledTaskHandlerOptions } from "@sapphire/plugin-scheduled-tasks";
 import { Time } from "@sapphire/time-utilities";
-import { GatewayIntentBits, type MessageMentionOptions, Partials as PartialEnums } from "discord.js";
+import { ActivityType, GatewayIntentBits, type MessageMentionOptions, Partials as PartialEnums } from "discord.js";
 
-const Partials: Array<PartialEnums> = [PartialEnums.Message, PartialEnums.User, PartialEnums.GuildMember];
+const partials: Array<PartialEnums> = [PartialEnums.Message, PartialEnums.User, PartialEnums.GuildMember];
 
-const Intents: Array<GatewayIntentBits> = [
+const intents: Array<GatewayIntentBits> = [
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
 ];
 
-const AllowedMentions: MessageMentionOptions = {
+const allowedMentions: MessageMentionOptions = {
     parse: [],
     users: [],
     roles: [],
     repliedUser: true,
 };
 
-const ScheduledTaskOptions: ScheduledTaskHandlerOptions = {
+const scheduledTaskOptions: ScheduledTaskHandlerOptions = {
     queue: "{scheduled-tasks}",
     bull: {
         connection: {
-            host: env.DRAGONFLY_HOST,
-            port: env.DRAGONFLY_PORT,
+            host: Bun.env.DRAGONFLY_HOST,
+            port: Bun.env.DRAGONFLY_PORT,
             db: 4,
         },
     },
 };
 
-const CooldownOptions: SapphireCooldownOptions = {
+const cooldownOptions: SapphireCooldownOptions = {
     delay: Time.Second * 3,
     filteredUsers: DEVELOPERS,
 };
 
-/**
- * This is the overall configuration for the bot.
- */
 export const configuration: ImperiaClientOptions = {
-    allowedMentions: AllowedMentions,
-    defaultCooldown: CooldownOptions,
-    defaultPrefix: "ii.",
-    intents: Intents,
+    allowedMentions: allowedMentions,
+    defaultCooldown: cooldownOptions,
+    defaultPrefix: "imperia ",
+    intents: intents,
     loadApplicationCommandRegistriesStatusListeners: true,
-    loadDefaultErrorListeners: env.NODE_ENV === "development",
+    loadDefaultErrorListeners: Bun.env.NODE_ENV === "development",
     loadMessageCommandListeners: true,
     loadScheduledTaskErrorListeners: true,
-    logger: { level: env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info },
+    logger: { level: Bun.env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info },
     overrideApplicationCommandsRegistries: true,
-    partials: Partials,
-    tasks: ScheduledTaskOptions,
+    partials: partials,
+    presence: { activities: [{ type: ActivityType.Listening, name: "reality, the manifested. ✨" }], status: "dnd" },
+    tasks: scheduledTaskOptions,
     typing: true,
 };
