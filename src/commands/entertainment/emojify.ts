@@ -65,7 +65,7 @@ export class EmojifyCommand extends ImperiaCommand {
     }
 
     private async getEmojis(): Promise<string | number | boolean | object | null> {
-        const emojis = (await this.container.db.dragonfly.call("JSON.GET", "emojis")) as string;
+        const emojis = (await this.container.db.dragonfly.call("JSON.GET", "emojis:json")) as string;
         return tryParseJSON(emojis);
     }
 
