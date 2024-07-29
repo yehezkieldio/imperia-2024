@@ -27,7 +27,16 @@ export class CatFactCommand extends ImperiaCommand {
     }
 
     public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<InteractionResponse> {
-        return interaction.reply("This command is under construction.");
+        const result = await this.getFact();
+
+        if (!result) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "( ノ・・)ノ I can't seem to fetch a cat fact right now, please try again later.",
+            });
+        }
+
+        return interaction.reply({ content: result.reply, embeds: [result.embed] });
     }
 
     public async messageRun(message: Message): Promise<Message> {
