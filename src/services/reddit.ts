@@ -1,14 +1,18 @@
 import { Service } from "@/lib/stores/services";
 import type { PullpushSubmission } from "@/lib/types/pullpush";
 import { FetchResultTypes, fetch } from "@sapphire/fetch";
-import { capitalizeFirstLetter, pickRandom, sleep } from "@sapphire/utilities";
+import { pickRandom, sleep } from "@sapphire/utilities";
 
-interface RedditSubmissionPayload {
+interface RedditSubmission {
     title: string;
     url: string;
 }
 
-type Subreddits = "memes" | "programmingmemes";
+/**
+ * A reminder that case sentitivity is important on subreddit names.
+ * Since subreddit names are case sensitive, and can be mistaken for a different subreddit.
+ */
+type AvailableSubreddit = "memes" | "DankMemes" | "ProgrammerHumor";
 
 export class RedditService extends Service {
     public constructor(context: Service.LoaderContext, options: Service.Options) {
@@ -18,46 +22,49 @@ export class RedditService extends Service {
         });
     }
 
-    public async postLoadSetup() {
-        await sleep(3000);
+    public async _postLoad(): Promise<void> {
+        // We wait for 2 seconds to ensure other components are loaded, before we start setting up the cache.
+        await sleep(2000);
 
-        await this.setupSubredditCache("memes", "memes", "random memes");
-        await this.setupSubredditCache("programmingmemes", "programmingmemes", "random programming memes");
+        const subreddits: AvailableSubreddit[] = ["memes", "DankMemes", "ProgrammerHumor"];
+
+        this.container.logger.info("RedditService: Setting up caches for subreddits");
+        for (const subreddit of subreddits) {
+            await this.setupCache(subreddit);
+        }
+        this.container.logger.info("RedditService: Subreddit caches setup complete");
     }
 
-    private async setupSubredditCache(
-        subreddit: Subreddits,
-        cacheKey: Subreddits,
-        cacheDescription: string,
-    ): Promise<void> {
+    private async setupCache(subreddit: AvailableSubreddit): Promise<void> {
+        const cacheKey: string = subreddit.toLowerCase();
         const cacheExists: number = await this.container.db.dragonfly.exists(cacheKey);
 
         if (cacheExists) {
-            return this.container.logger.info(
-                `RedditService: ${capitalizeFirstLetter(cacheDescription)} cache already exists, skipping setup`,
-            );
+            return this.container.logger.info(`RedditService: r/${subreddit} cache already exists, skipping setup`);
         }
 
-        this.container.logger.info(`RedditService: Setting up ${cacheDescription} cache`);
-
+        this.container.logger.info(`RedditService: Setting up r/${subreddit} cache`);
         await this.fetchSubmissions(subreddit, cacheKey);
-
-        this.container.logger.info(`RedditService: ${capitalizeFirstLetter(cacheDescription)} cache setup complete`);
+        this.container.logger.info(`RedditService: r/${subreddit} cache setup complete`);
     }
 
-    private async fetchSubmissions(subreddit: string, cacheKey: string): Promise<void> {
+    public async fetchSubmissions(subreddit: AvailableSubreddit, cacheKey: string) {
         const sortTypes: string[] = ["score", "num_comments", "created_utc"];
         const type: string = pickRandom(sortTypes);
+
         const url: string = `https://api.pullpush.io/reddit/submission/search?html_decode=True&subreddit=${subreddit}&size=100&sort_type=${type}`;
+        const submissions: PullpushSubmission = await fetch(url, FetchResultTypes.JSON);
 
-        const submissions: PullpushSubmission = await fetch<PullpushSubmission>(url, FetchResultTypes.JSON);
+        const data: RedditSubmission[] = submissions.data
+            .filter((data): string => data.url)
+            .map(
+                (data): RedditSubmission => ({
+                    title: data.title,
+                    url: data.url,
+                }),
+            );
 
-        const data: RedditSubmissionPayload[] = submissions.data.map((data) => ({
-            title: data.title,
-            url: data.url,
-        }));
-
-        const filteredData: RedditSubmissionPayload[] = data.filter((submission: RedditSubmissionPayload): boolean =>
+        const filteredData: RedditSubmission[] = data.filter((submission: RedditSubmission): boolean =>
             submission.url.includes("i.redd.it"),
         );
 
@@ -65,11 +72,12 @@ export class RedditService extends Service {
         await this.container.db.dragonfly.expire(cacheKey, 7600);
     }
 
-    public async getRandom(key: Subreddits): Promise<RedditSubmissionPayload> {
-        const data = (await this.container.db.dragonfly.call("JSON.GET", key)) as string;
-        const parsedData: RedditSubmissionPayload[] = JSON.parse(data);
+    public async getRandom(subreddit: AvailableSubreddit): Promise<RedditSubmission> {
+        const cacheKey: string = subreddit.toLowerCase();
 
-        const randomSubmission: RedditSubmissionPayload = pickRandom(parsedData);
-        return randomSubmission;
+        const data: string = (await this.container.db.dragonfly.call("JSON.GET", cacheKey)) as string;
+        const parsedData: RedditSubmission[] = JSON.parse(data);
+
+        return pickRandom(parsedData);
     }
 }
