@@ -12,7 +12,7 @@ interface RedditSubmission {
  * A reminder that case sentitivity is important on subreddit names.
  * Since subreddit names are case sensitive, and can be mistaken for a different subreddit.
  */
-type AvailableSubreddit = "memes" | "DankMemes" | "ProgrammerHumor";
+export type AvailableSubreddit = "memes" | "DankMemes" | "ProgrammerHumor";
 
 export class RedditService extends Service {
     public constructor(context: Service.LoaderContext, options: Service.Options) {
@@ -20,6 +20,10 @@ export class RedditService extends Service {
             ...options,
             name: "reddit",
         });
+    }
+
+    public isValidSubreddit(subreddit: string): subreddit is AvailableSubreddit {
+        return ["memes", "DankMemes", "ProgrammerHumor"].includes(subreddit);
     }
 
     public async _postLoad(): Promise<void> {
@@ -33,6 +37,16 @@ export class RedditService extends Service {
             await this.setupCache(subreddit);
         }
         this.container.logger.info("RedditService: Subreddit caches setup complete");
+    }
+
+    public async rebuildCache(subreddit: AvailableSubreddit): Promise<void> {
+        const cacheKey: string = subreddit.toLowerCase();
+
+        if (await this.container.db.dragonfly.exists(cacheKey)) {
+            await this.container.db.dragonfly.del(cacheKey);
+        }
+
+        await this.setupCache(subreddit);
     }
 
     private async setupCache(subreddit: AvailableSubreddit): Promise<void> {
