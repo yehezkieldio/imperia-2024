@@ -8,8 +8,8 @@ export class BlacklistService extends Service {
         });
     }
 
-    #serverBlacklistKey = "blacklist:server";
-    #userBlacklistKey = "blacklist:user";
+    #serverBlacklistKey = "app:blacklist:server";
+    #userBlacklistKey = "app:blacklist:user";
 
     public async getServers(): Promise<string[]> {
         const blacklistedServers: string[] = await this.container.db.dragonfly.smembers(this.#serverBlacklistKey);
