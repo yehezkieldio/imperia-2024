@@ -1,7 +1,7 @@
 import { ImperiaCommand } from "@/lib/extensions/command";
 import { ImperiaEmbedBuilder } from "@/lib/extensions/embed-builder";
 import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
-import { CommandOptionsRunTypeEnum, UserError } from "@sapphire/framework";
+import { type Args, CommandOptionsRunTypeEnum, type ResultType, UserError } from "@sapphire/framework";
 import {
     type GuildMember,
     type GuildMemberRoleManager,
@@ -121,7 +121,99 @@ export class KickCommand extends ImperiaCommand {
         });
     }
 
-    public async messageRun(message: Message): Promise<Message> {
-        return message.reply("This command is under construction.");
+    public async messageRun(message: Message, args: Args): Promise<Message> {
+        const userArgument: ResultType<User> = await args.restResult("user");
+
+        if (userArgument.isErr()) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.ArgsMissing,
+                message: "(゜-゜) You didn't provide any user to kick, how am I supposed to do that?",
+            });
+        }
+
+        const reasonArgument: ResultType<string> = await args.restResult("string");
+
+        if (reasonArgument.isErr()) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.ArgsMissing,
+                message: "(゜-゜) You didn't provide any reason for kicking the user.",
+            });
+        }
+
+        const user: User = userArgument.unwrap();
+        const reason: string = reasonArgument.unwrap();
+
+        if (!message.guild) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "This command can only be executed in a server.",
+            });
+        }
+
+        if (user.id === message.author.id) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "( ノ・・)ノ You cannot kick yourself.",
+            });
+        }
+
+        if (user.id === message.client.user.id) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "( ノ・・)ノ You cannot kick me.",
+            });
+        }
+
+        if (user.id === message.guild.ownerId) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "( ノ・・)ノ You cannot kick the server owner.",
+            });
+        }
+
+        const member: GuildMember =
+            message.guild.members.cache.get(user.id) ?? (await message.guild.members.fetch(user.id));
+
+        if (
+            member.permissions.has(PermissionsBitField.Flags.KickMembers) ||
+            member.permissions.has(PermissionsBitField.Flags.BanMembers)
+        ) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "( ノ・・)ノ You cannot kick this user.",
+            });
+        }
+
+        if (message.member) {
+            if ((message.member.roles as GuildMemberRoleManager).highest.position <= member.roles.highest.position) {
+                throw new UserError({
+                    identifier: ImperiaIdentifiers.CommandServiceError,
+                    message: "( ノ・・)ノ You cannot kick this user.",
+                });
+            }
+        }
+
+        if (!member.kickable) {
+            throw new UserError({
+                identifier: ImperiaIdentifiers.CommandServiceError,
+                message: "( ノ・・)ノ I cannot kick this user.",
+            });
+        }
+
+        await member.kick(reason);
+
+        member.send({
+            embeds: [
+                new ImperiaEmbedBuilder()
+                    .setColorScheme("warning")
+                    .setDescription(
+                        `You have been kicked from **${message.guild.name}** for the following reason: ${reason}`,
+                    ),
+            ],
+        });
+
+        return message.reply({
+            content: `˖ ݁𖥔 ݁˖ Successfully kicked **${user.tag}** from the server.`,
+        });
     }
 }
