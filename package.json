@@ -13,39 +13,17 @@
         "lint": "biome check --write ./src",
         "lint:unsafe": "biome check --write --unsafe ./src",
         "lint:check": "biome check ./src",
-        "typecheck": "tsc",
-        "db:push": "drizzle-kit push",
-        "db:studio": "drizzle-kit studio",
-        "db:generate": "drizzle-kit generate",
-        "cache:flush": "bun run scripts/dragonfly-flush.ts",
-        "cache:flush:all": "bun run scripts/dragonfly-flush.ts --all",
-        "infra:up": "docker compose --file docker/infrastructure/compose.yml --env-file .env up -d",
-        "infra:down": "docker compose --file docker/infrastructure/compose.yml --env-file .env down"
+        "typecheck": "tsc"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.8.3",
-        "@types/bun": "latest",
-        "drizzle-kit": "^0.23.0"
+        "@types/bun": "latest"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
     },
     "dependencies": {
-        "@sapphire/discord.js-utilities": "^7.3.0",
-        "@sapphire/fetch": "^3.0.2",
-        "@sapphire/framework": "^5.2.1",
-        "@sapphire/plugin-logger": "^4.0.2",
-        "@sapphire/plugin-scheduled-tasks": "^10.0.1",
-        "@sapphire/plugin-subcommands": "^6.0.3",
-        "@sapphire/shapeshift": "^4.0.0",
-        "@sapphire/time-utilities": "^1.7.12",
-        "@sapphire/utilities": "^3.17.0",
-        "@silvia-odwyer/photon-node": "^0.3.3",
-        "discord.js": "^14.15.3",
-        "drizzle-orm": "^0.32.1",
-        "ioredis": "^5.4.1",
-        "lefthook": "^1.7.7",
-        "postgres": "^3.4.4"
+        "lefthook": "^1.7.7"
     },
     "trustedDependencies": ["@biomejs/biome"]
 }
