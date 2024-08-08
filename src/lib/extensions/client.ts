@@ -1,4 +1,5 @@
 import { dragonflyClient } from "@/lib/databases/dragonfly/client";
+import { database } from "@/lib/databases/postgres/connection";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -27,6 +28,7 @@ export class ImperiaClient extends SapphireClient {
 
     public override async login(token: string): Promise<string> {
         container.dragonfly = dragonflyClient;
+        container.database = database;
 
         return super.login(token);
     }
