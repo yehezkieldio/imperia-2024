@@ -9,3 +9,8 @@ declare module "@sapphire/pieces" {
         database: PostgresJsDatabase<typeof schema>;
     }
 }
+declare module "@sapphire/framework" {
+    interface Preconditions {
+        DeveloperUserOnly: never;
+    }
+}

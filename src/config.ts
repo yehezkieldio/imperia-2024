@@ -20,7 +20,6 @@ export const configuration: ImperiaClientOptions = {
         filteredUsers: DEVELOPERS,
     },
     defaultPrefix: "imperia ",
-    developerIds: DEVELOPERS,
     intents: [
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.Guilds,
