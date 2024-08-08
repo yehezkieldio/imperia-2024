@@ -10,10 +10,20 @@ import {
 import type { ClientOptions } from "discord.js";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
+    /**
+     * Whether to override the default behavior for application commands registries.
+     */
     overrideApplicationCommandsRegistries?: boolean;
+
+    /**
+     * The Discord user IDs of the developers.
+     */
+    developerIds: string[];
 }
 
 export class ImperiaClient extends SapphireClient {
+    public developerIds: string[];
+
     public constructor(options: ImperiaClientOptions) {
         super(options);
 
@@ -24,6 +34,8 @@ export class ImperiaClient extends SapphireClient {
 
             ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
         }
+
+        this.developerIds = options.developerIds;
     }
 
     public override async login(token: string): Promise<string> {

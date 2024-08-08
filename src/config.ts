@@ -9,7 +9,6 @@ export const DEVELOPERS: string[] = ["327849142774923266"];
  * The configuration for the bot.
  */
 export const configuration: ImperiaClientOptions = {
-    defaultPrefix: "imperia ",
     allowedMentions: {
         parse: [],
         users: [],
@@ -20,6 +19,8 @@ export const configuration: ImperiaClientOptions = {
         delay: Time.Second * 2,
         filteredUsers: DEVELOPERS,
     },
+    defaultPrefix: "imperia ",
+    developerIds: DEVELOPERS,
     intents: [
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.Guilds,
