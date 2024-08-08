@@ -1,3 +1,4 @@
+import { dragonflyClient } from "@/lib/databases/dragonfly/client";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -22,5 +23,11 @@ export class ImperiaClient extends SapphireClient {
 
             ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
         }
+    }
+
+    public override async login(token: string): Promise<string> {
+        container.dragonfly = dragonflyClient;
+
+        return super.login(token);
     }
 }

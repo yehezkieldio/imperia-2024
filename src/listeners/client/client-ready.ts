@@ -12,6 +12,8 @@ export class ClientReadyListener extends Listener {
     }
 
     public async run(client: Client): Promise<void> {
+        this.container.dragonfly.connect();
+
         const { username, id } = client.user as ClientUser;
 
         const userCount: number = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
