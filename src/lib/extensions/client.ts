@@ -27,7 +27,7 @@ export class ImperiaClient extends SapphireClient {
     }
 
     public override async login(token: string): Promise<string> {
-        container.dragonfly = dragonflyClient;
+        container.datastore = dragonflyClient;
         container.database = database;
 
         return super.login(token);

@@ -5,7 +5,7 @@ export * as schema from "../databases/postgres/schema";
 
 declare module "@sapphire/pieces" {
     interface Container {
-        dragonfly: Redis;
+        datastore: Redis;
         database: PostgresJsDatabase<typeof schema>;
     }
 }

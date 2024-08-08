@@ -12,7 +12,7 @@ export class ClientReadyListener extends Listener {
     }
 
     public async run(client: Client): Promise<void> {
-        this.container.dragonfly.connect();
+        this.container.datastore.connect();
 
         const { username, id } = client.user as ClientUser;
 
