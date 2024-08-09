@@ -1,1 +1,0 @@
-![Header](.github/assets/banner.png)
