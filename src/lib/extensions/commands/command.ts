@@ -1,5 +1,5 @@
+import type { MessageChatContext } from "@/lib/types/union";
 import { Command, type CommandOptions } from "@sapphire/framework";
-import type { Message } from "discord.js";
 
 interface ImperiaCommandOptions extends CommandOptions {
     tags: string[];
@@ -26,5 +26,5 @@ export declare namespace ImperiaCommand {
     type ContextMenuCommandInteraction = Command.ContextMenuCommandInteraction;
     type AutocompleteInteraction = Command.AutocompleteInteraction;
     type Registry = Command.Registry;
-    type ContextMessage = Message | ImperiaCommand.ChatInputCommandInteraction;
+    type ContextMessage = MessageChatContext;
 }
