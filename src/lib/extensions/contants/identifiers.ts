@@ -2,8 +2,8 @@ import { Identifiers as SapphireIdentifiers } from "@sapphire/framework";
 import { SubcommandPluginIdentifiers } from "@sapphire/plugin-subcommands";
 
 enum Identifiers {
-    RegisteredUserOnly = "registeredUserOnly",
-    DeveloperUserOnly = "developerUserOnly",
+    RegisteredUserOnly = "RegisteredUserOnly",
+    DeveloperUserOnly = "DeveloperUserOnly",
     ServerBlacklisted = "serverBlacklisted",
     UserBlacklisted = "userBlacklisted",
     PerServerCommandDisabled = "perServerCommandDisabled",
