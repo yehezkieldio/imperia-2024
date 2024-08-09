@@ -20,6 +20,8 @@ export class ImperiaClient extends SapphireClient {
     public constructor(options: ImperiaClientOptions) {
         super(options);
 
+        container.logger.info(`ImperiaClient: Running a ${Bun.env.NODE_ENV} environment!`);
+
         if (options.overrideApplicationCommandsRegistries) {
             container.logger.info(
                 "ImperiaClient: Overriding the default behavior for application commands registries to BulkOverwrite.",
