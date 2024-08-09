@@ -32,18 +32,6 @@ export class AnalyticsService extends Service {
 
         if (!result) return "Failed to insert a new analytics entry. Skipping...";
 
-        let resultString: string;
-        switch (options.result) {
-            case "success":
-                resultString = "successfully";
-                break;
-            case "error":
-                resultString = "unsuccessfully";
-                break;
-            default:
-                resultString = "was denied";
-        }
-
-        return `Command ${options.command} (${options.type}) ran by ${userId} in guild ${guildId} ${resultString}!`;
+        return `Command ${options.result} for "${options.command}" (${options.type}) ran by "${userId}" in guild "${guildId}"`;
     }
 }
