@@ -1,5 +1,6 @@
 import { join } from "node:path";
 import { dragonflyClient } from "@/lib/databases/dragonfly/client";
+import { database } from "@/lib/databases/postgres/connection";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -9,7 +10,10 @@ import {
 } from "@sapphire/framework";
 import { type RootData, getRootData } from "@sapphire/pieces";
 import type { ClientOptions } from "discord.js";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Redis } from "ioredis";
+
+import type * as schema from "../databases/postgres/schema";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
     overrideApplicationCommandsRegistries?: boolean;
@@ -37,6 +41,7 @@ export class ImperiaClient extends SapphireClient {
 
     public override async login(token: string): Promise<string> {
         container.datastore = dragonflyClient;
+        container.database = database;
 
         return super.login(token);
     }
@@ -49,5 +54,6 @@ export class ImperiaClient extends SapphireClient {
 declare module "@sapphire/pieces" {
     interface Container {
         datastore: Redis;
+        database: PostgresJsDatabase<typeof schema>;
     }
 }
