@@ -20,7 +20,7 @@ export abstract class ImperiaSubcommand extends Subcommand {
 export declare namespace ImperiaSubcommand {
     type Options = ImperiaSubcommandOptions;
     type JSON = Subcommand.JSON;
-    type LoaderContext = Subcommand.LoaderContext;
+    type Context = Subcommand.LoaderContext;
     type RunInTypes = Subcommand.RunInTypes;
     type ChatInputCommandInteraction = Subcommand.ChatInputCommandInteraction;
     type ContextMenuCommandInteraction = Subcommand.ContextMenuCommandInteraction;

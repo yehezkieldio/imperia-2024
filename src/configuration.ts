@@ -4,6 +4,7 @@ import { Time } from "@sapphire/time-utilities";
 import { ActivityType, GatewayIntentBits, Partials } from "discord.js";
 
 export const DEVELOPERS: string[] = ["327849142774923266"];
+export const DEVELOPMENT_SERVERS: string[] = ["1209737959587450980"];
 
 /**
  * The configuration for the bot.
