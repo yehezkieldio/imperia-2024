@@ -26,14 +26,14 @@ export const configuration: ImperiaClientOptions = {
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
     ],
-    loadApplicationCommandRegistriesStatusListeners: Bun.env.NODE_ENV === "production",
-    loadDefaultErrorListeners: Bun.env.NODE_ENV === "production",
+    loadApplicationCommandRegistriesStatusListeners: Bun.env.NODE_ENV === "development",
+    loadDefaultErrorListeners: Bun.env.NODE_ENV === "development",
     loadSubcommandErrorListeners: true,
     loadMessageCommandListeners: true,
     logger: {
-        level: Bun.env.NODE_ENV === "production" ? LogLevel.Debug : LogLevel.Info,
+        level: Bun.env.NODE_ENV === "development" ? LogLevel.Debug : LogLevel.Info,
     },
-    overrideApplicationCommandsRegistries: Bun.env.NODE_ENV === "production",
+    overrideApplicationCommandsRegistries: Bun.env.NODE_ENV === "development",
     partials: [Partials.Message, Partials.User, Partials.GuildMember],
     presence: {
         activities: [

@@ -14,7 +14,7 @@ export class AnalyticsService extends Service {
     public constructor(context: Service.LoaderContext, options: Service.Options) {
         super(context, {
             ...options,
-            name: "services",
+            name: "analytics",
         });
     }
 
