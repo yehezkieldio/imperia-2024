@@ -44,6 +44,6 @@ export class AnalyticsService extends Service {
                 resultString = "was denied";
         }
 
-        return `Command ${options.command} ran by ${userId} in guild ${guildId} ${resultString}!`;
+        return `Command ${options.command} (${options.type}) ran by ${userId} in guild ${guildId} ${resultString}!`;
     }
 }
