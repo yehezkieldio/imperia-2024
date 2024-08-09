@@ -2,7 +2,7 @@ import { Events as SapphireEvents } from "@sapphire/framework";
 import { SubcommandPluginEvents } from "@sapphire/plugin-subcommands";
 
 const Events = {
-    DragonflyReady: "dragonflyReady",
+    DragonflyReady: "ready",
 };
 
 export const ImperiaEvents = {

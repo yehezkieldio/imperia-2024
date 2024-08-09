@@ -1,4 +1,5 @@
 import { join } from "node:path";
+import { dragonflyClient } from "@/lib/databases/dragonfly/client";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -8,6 +9,7 @@ import {
 } from "@sapphire/framework";
 import { type RootData, getRootData } from "@sapphire/pieces";
 import type { ClientOptions } from "discord.js";
+import type { Redis } from "ioredis";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
     overrideApplicationCommandsRegistries?: boolean;
@@ -34,10 +36,18 @@ export class ImperiaClient extends SapphireClient {
     }
 
     public override async login(token: string): Promise<string> {
+        container.datastore = dragonflyClient;
+
         return super.login(token);
     }
 
     public override async destroy(): Promise<void> {
         return super.destroy();
+    }
+}
+
+declare module "@sapphire/pieces" {
+    interface Container {
+        datastore: Redis;
     }
 }
