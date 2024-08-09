@@ -4,7 +4,6 @@ import { CommandOptionsRunTypeEnum } from "@sapphire/framework";
 import { capitalizeFirstLetter } from "@sapphire/utilities";
 import type { Guild, User } from "discord.js";
 
-// Extend `ImperiaSubcommand` instead of `Command`
 export class BlacklistCommand extends ImperiaSubcommand {
     public constructor(context: ImperiaSubcommand.Context, options: ImperiaSubcommand.Options) {
         super(context, {
