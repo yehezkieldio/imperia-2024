@@ -1,6 +1,7 @@
 import {
     type PgTableFn,
     index,
+    jsonb,
     pgEnum,
     pgTable,
     pgTableCreator,
@@ -22,6 +23,20 @@ export const users = pgTable(
     },
     (user) => ({
         discordIdUidx: uniqueIndex("user_discord_id_uidx").on(user.discordId),
+    }),
+);
+
+/* ---------------------------------- GUILD --------------------------------- */
+
+export const guilds = pgTable(
+    "guild",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        discordId: varchar("discord_id").notNull(),
+        commandsDisabled: jsonb("commands_disabled").notNull().default("{}"),
+    },
+    (guild) => ({
+        discordIdUidx: uniqueIndex("guild_discord_id_uidx").on(guild.discordId),
     }),
 );
 
