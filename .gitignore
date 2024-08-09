@@ -175,4 +175,6 @@ dist
 .DS_Store
 
 # Docker Compose
-docker/infrastucture/data
+docker/infrastructure/data
+docker/infrastructure/data/pg/
+docker/infrastructure/data/pg/
