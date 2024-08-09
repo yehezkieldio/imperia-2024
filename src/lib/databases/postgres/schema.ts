@@ -4,6 +4,7 @@ import {
     pgEnum,
     pgTable,
     pgTableCreator,
+    timestamp,
     uniqueIndex,
     uuid,
     varchar,
@@ -39,5 +40,33 @@ export const blacklists = pgTable(
     (blacklist) => ({
         blacklistIdUidx: uniqueIndex("blacklist_blacklist_id_uidx").on(blacklist.blacklistId),
         blacklistTypeEnumIdx: index("blacklist_blacklist_type_enum_idx").on(blacklist.blacklistType),
+    }),
+);
+
+/* ---------------------------- COMMAND ANALYTIC ---------------------------- */
+
+export const commandTypeEnum = pgEnum("command_type", ["chatinput", "message"]);
+export type CommandType = (typeof commandTypeEnum.enumValues)[number];
+
+export const commandResultTypeEnum = pgEnum("command_result_type", ["success", "error", "denied"]);
+export type CommandResultType = (typeof commandResultTypeEnum.enumValues)[number];
+
+export const commandAnalytics = pgTable(
+    "command_analytic",
+    {
+        id: uuid("id").defaultRandom().primaryKey(),
+        userId: varchar("user_id").notNull(),
+        guildId: varchar("guild_id").notNull(),
+        command: varchar("command").notNull(),
+        result: commandResultTypeEnum("result").notNull(),
+        type: commandTypeEnum("type").notNull(),
+        createdAt: timestamp("created_at").defaultNow(),
+    },
+    (commandAnalytics) => ({
+        userIdIdx: index("command_analytic_user_id_idx").on(commandAnalytics.userId),
+        guildIdIdx: index("command_analytic_guild_id_idx").on(commandAnalytics.guildId),
+        commandIdx: index("command_analytic_command_idx").on(commandAnalytics.command),
+        resultIdx: index("command_analytic_result_idx").on(commandAnalytics.result),
+        createdAtIdx: index("command_analytic_created_at_idx").on(commandAnalytics.createdAt),
     }),
 );

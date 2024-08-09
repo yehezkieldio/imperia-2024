@@ -2,6 +2,7 @@ import type { Repositories } from "@/lib/stores/repository/repositories";
 import type { RepositoriesStore } from "@/lib/stores/repository/repositories-store";
 import type { Services, ServicesStore } from "@/lib/stores/service";
 import type { Utilities, UtilitiesStore } from "@/lib/stores/utility";
+import type { AnalyticsRepository } from "@/repositories/analytics";
 
 declare module "discord.js" {
     export interface Client {
@@ -16,6 +17,14 @@ declare module "@sapphire/pieces" {
         repos: RepositoriesStore;
         services: ServicesStore;
         utilities: UtilitiesStore;
+    }
+
+    interface Repositories {
+        analytics: AnalyticsRepository;
+    }
+
+    interface Container {
+        repos: Repositories;
     }
 }
 
