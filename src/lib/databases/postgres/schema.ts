@@ -1,10 +1,11 @@
+import { sql } from "drizzle-orm";
 import {
     type PgTableFn,
     index,
-    jsonb,
     pgEnum,
     pgTable,
     pgTableCreator,
+    text,
     timestamp,
     uniqueIndex,
     uuid,
@@ -33,7 +34,7 @@ export const guilds = pgTable(
     {
         id: uuid("id").defaultRandom().primaryKey(),
         discordId: varchar("discord_id").notNull(),
-        commandsDisabled: jsonb("commands_disabled").notNull().default("{}"),
+        commandsDisabled: text("commands_disabled").array().notNull().default(sql`'{}'::text[]`),
     },
     (guild) => ({
         discordIdUidx: uniqueIndex("guild_discord_id_uidx").on(guild.discordId),

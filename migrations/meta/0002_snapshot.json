@@ -1,5 +1,5 @@
 {
-  "id": "8ceb8dba-cdcd-4363-9230-7e6dd768bde8",
+  "id": "48dc1424-e16c-48b3-8eb3-be0f60df9601",
   "prevId": "adcd8329-6261-451b-8bd1-4d25bfc9b4db",
   "version": "7",
   "dialect": "postgresql",
@@ -216,10 +216,10 @@
         },
         "commands_disabled": {
           "name": "commands_disabled",
-          "type": "jsonb",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": true,
-          "default": "'{}'"
+          "default": "'{}'::text[]"
         }
       },
       "indexes": {
