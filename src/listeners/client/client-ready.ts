@@ -1,4 +1,4 @@
-import { ImperiaEvents } from "@/lib/extensions/events";
+import { ImperiaEvents } from "@/lib/extensions/constants/events";
 import { Listener } from "@sapphire/framework";
 import type { Client, ClientUser } from "discord.js";
 
@@ -12,6 +12,8 @@ export class ClientReadyListener extends Listener {
     }
 
     public async run(client: Client): Promise<void> {
+        this.container.datastore.connect();
+
         const { username, id } = client.user as ClientUser;
 
         const userCount: number = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);

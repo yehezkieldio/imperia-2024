@@ -1,13 +1,13 @@
-import { DEVELOPERS } from "@/lib/const";
-import { ImperiaIdentifiers } from "@/lib/extensions/identifiers";
+import { DEVELOPERS } from "@/config";
+import { ImperiaIdentifiers } from "@/lib/extensions/constants/identifiers";
 import { Precondition, type Result, type UserError } from "@sapphire/framework";
 import type { CommandInteraction, Message } from "discord.js";
 
-export class DeveloperOnlyPrecondition extends Precondition {
+export class DeveloperUserOnlyPrecondition extends Precondition {
     public constructor(context: Precondition.LoaderContext, options: Precondition.Options) {
         super(context, {
             ...options,
-            name: ImperiaIdentifiers.DeveloperOnly,
+            name: ImperiaIdentifiers.DeveloperUserOnly,
         });
     }
 
@@ -23,8 +23,8 @@ export class DeveloperOnlyPrecondition extends Precondition {
         return DEVELOPERS.includes(userId)
             ? this.ok()
             : this.error({
-                  message: "┗(･ω･;)┛ My apologies, but this command is for developers only!",
-                  identifier: ImperiaIdentifiers.DeveloperOnly,
+                  message: "This command is restricted to my developers only! What are you trying to do?",
+                  identifier: ImperiaIdentifiers.DeveloperUserOnly,
               });
     }
 }

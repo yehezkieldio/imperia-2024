@@ -1,4 +1,4 @@
-import { COLORS } from "@/lib/util/colors";
+import { COLORS } from "@/lib/colors";
 import { EmbedBuilder } from "discord.js";
 
 export class ImperiaEmbedBuilder extends EmbedBuilder {
@@ -8,10 +8,10 @@ export class ImperiaEmbedBuilder extends EmbedBuilder {
     }
 
     /**
-     * Sets the color of the embed to the specified color.
+     * Set the color of the embed.
      * @see {@link COLORS} for available colors.
      */
-    public setColorScheme(color: keyof typeof COLORS): this {
+    public setTheme(color: keyof typeof COLORS): this {
         this.setColor(COLORS[color]);
         return this;
     }
