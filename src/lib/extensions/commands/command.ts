@@ -26,5 +26,5 @@ export declare namespace ImperiaCommand {
     type ContextMenuCommandInteraction = Command.ContextMenuCommandInteraction;
     type AutocompleteInteraction = Command.AutocompleteInteraction;
     type Registry = Command.Registry;
-    type ContextMessage = MessageChatContext;
+    type MergedContext = MessageChatContext;
 }
