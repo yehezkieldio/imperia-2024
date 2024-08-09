@@ -44,4 +44,8 @@ declare module "@sapphire/framework" {
         services: ServicesStore;
         utilities: UtilitiesStore;
     }
+
+    interface Preconditions {
+        DeveloperUserOnly: never;
+    }
 }
