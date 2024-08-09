@@ -8,7 +8,7 @@
 
 ## Overview
 
-> *Imperia is under a complete rewrite and is not currently functional.*
+> *Imperia is currently under a complete rewrite for version 2.0.0 and is not yet ready for use.*
 
 Imperia is a versatile Discord bot designed to be a comprehensive solution for a wide range of tasks. Planned scope of Imperia is still being defined, but will include features such as: server administration, moderation, utility, and entertainment.
 
