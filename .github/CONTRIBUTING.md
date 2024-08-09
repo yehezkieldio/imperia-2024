@@ -1,43 +1,61 @@
-# Contributing to Imperia
+## Contribung to Imperia
 
-Imperia is written in TypeScript, utilizing the [sapphire/framework](https://sapphirejs.dev/) to interact with the Discord API, and runs on [Bun](https://bun.sh/), a drop-in replacement for [Node.js](https://nodejs.org/). With a few adjustments, you might be able to run the project on Node.js, but you'll be on your own if you choose to do so.
+Imperia is built with TypeScript, leveraging the [Sapphire Framework](https://sapphirejs.dev/) for seamless interaction with the Discord API. The project runs on [Bun](https://bun.sh/), a high-performance alternative to [Node.js](https://nodejs.org/). While it’s possible to adapt the project to run on Node.js with some modifications, official support is only provided for Bun.
 
 ### Prerequisites
 
-To run this project, ensure you have [Bun](https://bun.sh/) installed *(v1.1.22 or higher)*, as well as [PostgreSQL](https://www.postgresql.org/) for data storage. [Dragonfly](https://www.dragonflydb.io/) is also required for caching and additional features, though [Redis](https://redis.io/) can be used as a substitute. Alternatively, if [Docker](https://www.docker.com/) is installed, you can easily set up both PostgreSQL and Dragonfly using the provided docker-compose.yml file.
+To get started with this project, you’ll need to have the following dependencies installed:
+
+- [Bun](https://bun.sh/) (v1.1.22 or higher): The primary runtime for the project.
+- [PostgreSQL](https://www.postgresql.org/): Used for data storage.
+- [Dragonfly](https://www.dragonflydb.io/): Required for caching and additional features. Alternatively, you can use [Redis](https://redis.io/) as a substitute.
+- [Docker](https://www.docker.com/) (optional): If Docker is installed, you can easily set up PostgreSQL and Dragonfly using the provided `compose.yml` file.
+
 
 ### Initial Setup
 
-- Create a `.env` file following the [.env.example](../.env.example) template, and fill in the required values.
+1. Create the `.env` file in the root directory of the project:
+   - Duplicate the `.env.example` file and rename it to .env.
+   - Fill in the required values as specified in the example file.
 
-- Use the [Makefile](../Makefile) to use docker-compose to set up PostgreSQL and Dragonfly.
+2. Set up PostgreSQL and Dragonfly with Docker:
+   - Use the provided Makefile to manage Docker services.
 
-    ```bash
-    # Initialize the PostgreSQL and Dragonfly services
-    make up
+        ```bash
+        # Initialize the PostgreSQL and Dragonfly services
+        make up
 
-    # Destroy the PostgreSQL and Dragonfly services
-    make down
-    ```
+        # Tear down the PostgreSQL and Dragonfly services
+        make down
+        ```
 
-- Install dependencies using `bun install`.
+3. Install project dependencies:
+   - Run the following command to install the necessary packages:
 
-- Perform database migration or push the schema.
+        ```bash
+        bun install
+        ```
 
-    ```bash
-    # Migrate the database schema
-    bun run db:migrate
+4. Perform database migrations:
+   - Migrate the database schema or push the existing schema to the database:
 
-    # Push the database schema
-    bun run db:push
-    ```
+        ```bash
+        # Migrate the database schema
+        bun run db:migrate
+
+        # Push the database schema
+        bun run db:push
+        ```
 
 ## Contributing Guidelines
 
 ### Version Control
 
-All edits to the source code must be based in the `master` branch. The `stable` branch is used for the latest stable release. Commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+- **Branching Strategy**: All development work should be based on the `master` branch. The `stable` branch is reserved for the latest stable release.
+- **Commit Messages**: Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for writing commit messages to ensure clarity and consistency.
 
 ### Code Formatting and Linting
 
-This project uses [Biome](https://biomejs.dev/) to enforce code style and formatting. View the [configuration file](../biome.json) for more information. Lefthook is used to run the linting and formatting checks before each commit.
+- **Code Style**: The project uses [Biome](https://biomejs.dev/) to enforce consistent code formatting and styling. Refer to the [Biome configuration file](../biome.json) for detailed settings.
+- **Pre-Commit Hooks**: Lefthook is configured to automatically run linting and formatting checks before each commit, ensuring that all code adheres to the established guidelines.
+
