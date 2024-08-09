@@ -22,7 +22,7 @@ export class PingCommand extends ImperiaCommand {
     #pleaseWait = "Please wait...";
     #failed = "Failed to retrieve ping latency.";
 
-    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction): Promise<Message> {
+    public async chatInputRun(interaction: ImperiaCommand.ChatInputCommandInteraction) {
         const msg: Message = await interaction.reply({
             content: this.#pleaseWait,
             fetchReply: true,
@@ -38,7 +38,7 @@ export class PingCommand extends ImperiaCommand {
         return interaction.editReply(this.#failed);
     }
 
-    public async messageRun(message: Message): Promise<Message> {
+    public async messageRun(message: Message) {
         const msg: Message = await message.reply(this.#pleaseWait);
 
         if (isMessageInstance(msg)) {
