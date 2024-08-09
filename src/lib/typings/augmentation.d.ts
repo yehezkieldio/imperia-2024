@@ -5,6 +5,7 @@ import type { Utilities, UtilitiesStore } from "@/lib/stores/utility";
 import type { AnalyticsRepository } from "@/repositories/analytics";
 import type { GuildsRepository } from "@/repositories/guilds";
 import type { UsersRepository } from "@/repositories/users";
+import type { AnalyticsService } from "@/services/analytics";
 
 declare module "discord.js" {
     export interface Client {
@@ -27,8 +28,13 @@ declare module "@sapphire/pieces" {
         guilds: GuildsRepository;
     }
 
+    interface Services {
+        analytics: AnalyticsService;
+    }
+
     interface Container {
         repos: Repositories;
+        services: Services;
     }
 }
 
