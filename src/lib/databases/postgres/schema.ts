@@ -30,7 +30,7 @@ export const users = pgTable(
 const blacklistTypeEnum = pgEnum("blacklist_type", ["user", "guild"]);
 export type BlacklistType = (typeof blacklistTypeEnum.enumValues)[number];
 
-export const blacklist = pgTable(
+export const blacklists = pgTable(
     "blacklist",
     {
         id: uuid("id").defaultRandom().primaryKey(),
@@ -45,24 +45,28 @@ export const blacklist = pgTable(
 
 /* -------------------------------------------------------------------------- */
 
+const commandTypeEnum = pgEnum("command_type", ["chatinput", "message"]);
+export type CommandType = (typeof commandTypeEnum.enumValues)[number];
+
 const commandResultTypeEnum = pgEnum("command_result_type", ["success", "error", "denied"]);
 export type CommandResultType = (typeof commandResultTypeEnum.enumValues)[number];
 
-export const analytics = pgTable(
-    "analytics",
+export const commandAnalytics = pgTable(
+    "command_analytic",
     {
         id: uuid("id").defaultRandom().primaryKey(),
         userId: varchar("user_id").notNull(),
         guildId: varchar("guild_id").notNull(),
         command: varchar("command").notNull(),
         result: commandResultTypeEnum("result").notNull(),
+        type: commandTypeEnum("type").notNull(),
         createdAt: timestamp("created_at").defaultNow(),
     },
-    (analytics) => ({
-        userIdIdx: index("analytics_user_id_idx").on(analytics.userId),
-        guildIdIdx: index("analytics_guild_id_idx").on(analytics.guildId),
-        commandIdx: index("analytics_command_idx").on(analytics.command),
-        resultIdx: index("analytics_result_idx").on(analytics.result),
-        createdAtIdx: index("analytics_created_at_idx").on(analytics.createdAt),
+    (commandAnalytics) => ({
+        userIdIdx: index("command_analytic_user_id_idx").on(commandAnalytics.userId),
+        guildIdIdx: index("command_analytic_guild_id_idx").on(commandAnalytics.guildId),
+        commandIdx: index("command_analytic_command_idx").on(commandAnalytics.command),
+        resultIdx: index("command_analytic_result_idx").on(commandAnalytics.result),
+        createdAtIdx: index("command_analytic_created_at_idx").on(commandAnalytics.createdAt),
     }),
 );
