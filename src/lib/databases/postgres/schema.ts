@@ -27,8 +27,7 @@ export const users = pgTable(
 
 /* -------------------------------------------------------------------------- */
 
-const blacklistTypeEnum = pgEnum("blacklist_type", ["user", "guild"]);
-export type BlacklistType = (typeof blacklistTypeEnum.enumValues)[number];
+export const blacklistTypeEnum = pgEnum("blacklist_type_enum", ["user", "guild"]);
 
 export const blacklists = pgTable(
     "blacklist",
@@ -45,11 +44,8 @@ export const blacklists = pgTable(
 
 /* -------------------------------------------------------------------------- */
 
-const commandTypeEnum = pgEnum("command_type", ["chatinput", "message"]);
-export type CommandType = (typeof commandTypeEnum.enumValues)[number];
-
-const commandResultTypeEnum = pgEnum("command_result_type", ["success", "error", "denied"]);
-export type CommandResultType = (typeof commandResultTypeEnum.enumValues)[number];
+export const commandTypeEnum = pgEnum("command_type_enum", ["chatinput", "message"]);
+export const commandResultTypeEnum = pgEnum("command_result_type_enum", ["success", "error", "denied"]);
 
 export const commandAnalytics = pgTable(
     "command_analytic",
