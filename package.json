@@ -8,12 +8,14 @@
     "scripts": {
         "start": "bun run src/main.ts",
         "start:watch": "bun run --watch src/main.ts",
-        "start:hot": "bun run --hot src/main.ts"
+        "start:hot": "bun run --hot src/main.ts",
+        "typecheck": "tsc"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.8.3",
         "@total-typescript/ts-reset": "^0.5.1",
-        "@types/bun": "latest"
+        "@types/bun": "latest",
+        "lefthook": "^1.7.12"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
