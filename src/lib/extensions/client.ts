@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import {
     ApplicationCommandRegistries,
     RegisterBehavior,
@@ -5,6 +6,7 @@ import {
     type SapphireClientOptions,
     container,
 } from "@sapphire/framework";
+import { type RootData, getRootData } from "@sapphire/pieces";
 import type { ClientOptions } from "discord.js";
 
 export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptions {
@@ -12,8 +14,12 @@ export interface ImperiaClientOptions extends SapphireClientOptions, ClientOptio
 }
 
 export class ImperiaClient extends SapphireClient {
+    private rootData: RootData = getRootData();
+
     public constructor(options: ImperiaClientOptions) {
         super(options);
+
+        container.logger.info(`ImperiaClient: Running on a ${Bun.env.NODE_ENV} environment.`);
 
         if (options.overrideApplicationCommandsRegistries === true) {
             container.logger.info(
@@ -22,6 +28,9 @@ export class ImperiaClient extends SapphireClient {
 
             ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
         }
+
+        const repositoryStore = container.stores.get("repos");
+        repositoryStore.registerPath(join(this.rootData.root, "repositories"));
     }
 
     public override async login(token: string): Promise<string> {
