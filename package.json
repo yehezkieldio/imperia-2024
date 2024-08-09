@@ -1,0 +1,21 @@
+{
+    "name": "imperia",
+    "version": "2.0.0",
+    "description": "All-in-one Discord bot solution for various tasks.",
+    "private": true,
+    "module": "src/main.ts",
+    "type": "module",
+    "scripts": {
+        "start": "bun run src/main.ts",
+        "start:watch": "bun run --watch src/main.ts",
+        "start:hot": "bun run --hot src/main.ts"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.8.3",
+        "@total-typescript/ts-reset": "^0.5.1",
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    }
+}
