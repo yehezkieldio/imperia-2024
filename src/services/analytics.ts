@@ -18,7 +18,7 @@ export class AnalyticsService extends Service {
         });
     }
 
-    public async createNewCommandAnalytics(options: CreateNewCommandAnalyticsOptions): Promise<string> {
+    public async command(options: CreateNewCommandAnalyticsOptions): Promise<string> {
         const guildId = options.context.guild?.id as string;
         const userId: string = options.context instanceof Message ? options.context.author.id : options.context.user.id;
 
